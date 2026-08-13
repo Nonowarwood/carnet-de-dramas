@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carrousel — Carnet de dramas</title>
+<meta name="description" content="Les 30 affiches disposées en cylindre : faire glisser pour parcourir la collection.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23000'/><rect x='7' y='7' width='18' height='18' fill='%23ff5c2b'/></svg>">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body class="ring-page">
+
+<header class="bar">
+  <a class="bar__logo" href="index.html">Dramas<sup>26</sup></a>
+  <a class="bar__link" href="visionnages.html">Les visionnages</a>
+  <span class="bar__spacer"></span>
+  <a class="bar__link" href="carrousel.html" aria-current="page">Carrousel</a>
+  <a class="bar__link" href="critiques/melo-movie.html">
+    Critiques
+    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 1v10M1 6h10"/></svg>
+  </a>
+</header>
+
+<div class="ring-progress"><div class="ring-progress__bar" id="progress"></div></div>
+
+<div class="ring" id="ring" tabindex="0" role="group"
+     aria-label="Carrousel des affiches. Utiliser les flèches gauche et droite pour parcourir.">
+
+  <div class="ring__stage" id="stage"></div>
+
+  <p class="ring-hint mono">
+    Glisser &middot; molette &middot; flèches
+  </p>
+
+  <div class="ring-caption">
+    <div>
+      <span class="mono" id="cap-num"></span>
+      <h1 class="ring-caption__title" id="cap-titre"></h1>
+      <p class="ring-caption__meta mono" id="cap-meta"></p>
+    </div>
+    <div class="ring-caption__score" id="cap-note"></div>
+  </div>
+
+</div>
+
+<script src="assets/data.js"></script>
+<script src="assets/site.js"></script>
+<script>
+(function () {
+  var ring = document.getElementById("ring");
+  var stage = document.getElementById("stage");
+  var progress = document.getElementById("progress");
+  var capNum = document.getElementById("cap-num");
+  var capTitre = document.getElementById("cap-titre");
+  var capMeta = document.getElementById("cap-meta");
+  var capNote = document.getElementById("cap-note");
+
+  var N = DRAMAS.length;
+  var PAS = 360 / N;              // écart angulaire entre deux panneaux
+  var rayon = 0;                  // rayon du cylindre, recalculé au redimensionnement
+
+  /* ---------------- Construction des panneaux ---------------- */
+
+  stage.innerHTML = DRAMAS.map(function (d, i) {
+    var img = affiche(d);
+    var contenu = img
+      ? '<img src="' + img + '" alt="Affiche de ' + esc(d.titre) + '" loading="' +
+        (i < 8 ? "eager" : "lazy") + '" draggable="false">'
+      : '<div class="ring__fallback"><span class="mono">' + numero(i) + "</span>" +
+        "<b>" + esc(d.titre) + "</b></div>";
+    return '<div class="ring__item" data-i="' + i + '">' + contenu + "</div>";
+  }).join("");
+
+  var panneaux = Array.prototype.slice.call(stage.children);
+
+  /* ---------------- Géométrie ---------------- */
+
+  function dimensionner() {
+    var largeur = Math.max(
+      150,
+      Math.min(300, Math.round(window.innerWidth * 0.19))
+    );
+    document.documentElement.style.setProperty("--card-w", largeur + "px");
+
+    // Rayon tel que les panneaux se répartissent sans se chevaucher.
+    rayon = (largeur / 2) / Math.tan(Math.PI / N) * 1.12;
+
+    panneaux.forEach(function (el, i) {
+      el.style.transform = "rotateY(" + i * PAS + "deg) translateZ(" + rayon + "px)";
+    });
+  }
+
+  /* ---------------- Boucle d'animation ---------------- */
+
+  var angle = 0;        // rotation courante du cylindre, en degrés
+  var vitesse = 0;      // inertie après un lâcher
+  var DERIVE = 0.035;   // rotation continue, façon plateau tournant
+  var reprise = 0;      // frames avant reprise de la dérive
+  var attrape = false;
+  var dernierIndex = -1;
+
+  function indexDeFace() {
+    // Le panneau i est de face quand angle + i * PAS ≡ 0 (mod 360).
+    var i = Math.round(-angle / PAS) % N;
+    return (i + N) % N;
+  }
+
+  function majLegende() {
+    var i = indexDeFace();
+    if (i === dernierIndex) return;
+    dernierIndex = i;
+
+    var d = DRAMAS[i];
+    capNum.textContent = numero(i) + " / " + N;
+    capTitre.textContent = d.titre;
+    capMeta.textContent = ligneMeta(d, true);
+    capNote.innerHTML =
+      d.note === null
+        ? '<span class="mono">Pas encore notée</span>'
+        : jauge(d.note) + "<span>" + formatNote(d.note) + "/5</span>";
+
+    progress.style.width = ((i + 1) / N) * 100 + "%";
+  }
+
+  function frame() {
+    if (!attrape) {
+      angle += vitesse;
+      vitesse *= 0.94;
+      if (Math.abs(vitesse) < 0.002) vitesse = 0;
+      if (reprise > 0) reprise--;
+      else angle += DERIVE;
+    }
+    stage.style.transform =
+      "translateZ(" + -rayon + "px) rotateY(" + angle + "deg)";
+    majLegende();
+    requestAnimationFrame(frame);
+  }
+
+  /* ---------------- Interactions ---------------- */
+
+  var xDepart = 0, angleDepart = 0, dernierX = 0;
+
+  ring.addEventListener("pointerdown", function (e) {
+    attrape = true;
+    ring.classList.add("is-dragging");
+    ring.setPointerCapture(e.pointerId);
+    xDepart = dernierX = e.clientX;
+    angleDepart = angle;
+    vitesse = 0;
+  });
+
+  ring.addEventListener("pointermove", function (e) {
+    if (!attrape) return;
+    // 0.22°/px : un balayage d'écran fait défiler une bonne partie du cylindre.
+    angle = angleDepart + (e.clientX - xDepart) * 0.22;
+    vitesse = (e.clientX - dernierX) * 0.22;
+    dernierX = e.clientX;
+  });
+
+  function relacher(e) {
+    if (!attrape) return;
+    attrape = false;
+    ring.classList.remove("is-dragging");
+    if (e.pointerId !== undefined && ring.hasPointerCapture(e.pointerId)) {
+      ring.releasePointerCapture(e.pointerId);
+    }
+    reprise = 180; // ~3 s avant que la dérive ne reprenne
+  }
+
+  ring.addEventListener("pointerup", relacher);
+  ring.addEventListener("pointercancel", relacher);
+
+  ring.addEventListener("wheel", function (e) {
+    e.preventDefault();
+    var delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+    vitesse -= delta * 0.012;
+    reprise = 180;
+  }, { passive: false });
+
+  ring.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowLeft") { vitesse += PAS * 0.35; reprise = 180; }
+    else if (e.key === "ArrowRight") { vitesse -= PAS * 0.35; reprise = 180; }
+    else return;
+    e.preventDefault();
+  });
+
+  window.addEventListener("resize", dimensionner);
+
+  dimensionner();
+  requestAnimationFrame(frame);
+})();
+</script>
+
+</body>
+</html>

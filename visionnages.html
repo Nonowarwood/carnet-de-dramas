@@ -3,59 +3,67 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Visionnages — Carnet de dramas</title>
-<meta name="description" content="Tous les dramas visionnés depuis mars 2025, avec ma note, celle des fans et le synopsis.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+<title>Les visionnages — Carnet de dramas</title>
+<meta name="description" content="Les 30 dramas visionnés depuis mars 2025 : affiche, synopsis, ma note et celle des fans.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23000'/><rect x='7' y='7' width='18' height='18' fill='%23ff5c2b'/></svg>">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
-<header class="masthead">
-  <div class="wrap wrap--wide masthead__inner">
-    <p class="masthead__title"><a href="index.html">Carnet de dramas</a></p>
-    <nav class="nav">
-      <a href="index.html">Accueil</a>
-      <a href="visionnages.html" aria-current="page">Visionnages</a>
-    </nav>
-  </div>
+<header class="bar">
+  <a class="bar__logo" href="index.html">Dramas<sup>26</sup></a>
+  <a class="bar__link" href="visionnages.html" aria-current="page">Les visionnages</a>
+  <span class="bar__spacer"></span>
+  <a class="bar__link" href="carrousel.html">Carrousel</a>
+  <a class="bar__link" href="critiques/melo-movie.html">
+    Critiques
+    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 1v10M1 6h10"/></svg>
+  </a>
 </header>
 
-<main class="wrap wrap--wide">
-  <section class="section">
-    <h1 class="hero__title" style="font-size:2rem;text-align:left;margin-bottom:.5rem">Tous les visionnages</h1>
-    <p class="hero__sub" style="margin:0 0 2rem;max-width:38rem">
-      Consignés dans l'ordre où je les ai regardés, depuis mars 2025.
-    </p>
+<div class="wrap opening" style="padding-bottom:1.5rem">
+  <p class="opening__kicker">
+    Dans l'ordre où je les ai regardés. La recherche porte aussi sur les genres
+    et les synopsis.
+  </p>
+  <h1 class="opening__title display">Les<br>visionnages</h1>
+</div>
 
-    <div class="toolbar">
-      <input type="search" id="recherche" placeholder="Rechercher un titre, un genre…" aria-label="Rechercher">
+<main class="wrap section" style="padding-top:1.5rem">
+
+  <div class="toolbar">
+    <div class="toolbar__field">
+      <input type="search" id="recherche" placeholder="Rechercher" aria-label="Rechercher un titre, un genre, un synopsis">
+    </div>
+    <div class="toolbar__field">
       <label for="tri">Tri</label>
       <select id="tri">
         <option value="ordre">Ordre de visionnage</option>
-        <option value="note-desc">Ma note (haut → bas)</option>
-        <option value="note-asc">Ma note (bas → haut)</option>
-        <option value="fans-desc">Note des fans</option>
-        <option value="annee-desc">Année (récent → ancien)</option>
-        <option value="titre">Titre (A → Z)</option>
+        <option value="note-desc">Ma note ↓</option>
+        <option value="note-asc">Ma note ↑</option>
+        <option value="fans-desc">Note des fans ↓</option>
+        <option value="annee-desc">Année ↓</option>
+        <option value="titre">Titre A→Z</option>
       </select>
+    </div>
+    <div class="toolbar__field">
       <label for="pays">Pays</label>
       <select id="pays">
         <option value="">Tous</option>
-        <option value="KR">🇰🇷 Corée du Sud</option>
-        <option value="JP">🇯🇵 Japon</option>
-        <option value="CN">🇨🇳 Chine</option>
+        <option value="KR">Corée du Sud</option>
+        <option value="JP">Japon</option>
+        <option value="CN">Chine</option>
       </select>
     </div>
+  </div>
 
-    <div id="liste"></div>
-  </section>
+  <div id="liste"></div>
+
 </main>
 
-<footer class="footer">
-  <div class="wrap">
-    <p>Carnet personnel &middot; notes issues de mes visionnages<br>
-    Métadonnées et notes des fans&nbsp;: <a href="https://mydramalist.com">MyDramaList</a></p>
-  </div>
+<footer class="wrap footer mono">
+  <span>Carnet personnel &mdash; notes issues de mes visionnages</span>
+  <span>Affiches et notes des fans&nbsp;: <a href="https://mydramalist.com">MyDramaList</a></span>
 </footer>
 
 <script src="assets/data.js"></script>
@@ -67,32 +75,33 @@
   var champPays = document.getElementById("pays");
   var conteneur = document.getElementById("liste");
 
-  var TITRES_PERIODE = {
-    "2025": "Depuis mars 2025",
-    "2026": "Depuis 2026"
-  };
+  var TITRES_PERIODE = { "2025": "Depuis mars 2025", "2026": "Depuis 2026" };
 
-  function correspond(d, q) {
+  // On fige l'index d'origine : la numérotation ne bouge pas avec les tris.
+  var TOUS = DRAMAS.map(function (d, i) { return { d: d, i: i }; });
+
+  function correspond(o, q) {
     if (!q) return true;
-    var champs = [d.titre, d.mention || "", (d.genres || []).join(" "), d.synopsis || ""];
+    var champs = [o.d.titre, o.d.mention || "",
+                  (o.d.genres || []).join(" "), o.d.synopsis || ""];
     return champs.join(" ").toLowerCase().indexOf(q) !== -1;
   }
 
-  // Les non-notés restent en fin de tri plutôt que d'être traités comme des zéros.
+  // Les non-notés vont en fin de classement plutôt que d'être comptés comme zéro.
   function parNote(sens) {
     return function (a, b) {
-      if (a.note === null) return 1;
-      if (b.note === null) return -1;
-      return sens * (b.note - a.note);
+      if (a.d.note === null) return 1;
+      if (b.d.note === null) return -1;
+      return sens * (b.d.note - a.d.note);
     };
   }
 
   var TRIS = {
     "note-desc": parNote(1),
     "note-asc": parNote(-1),
-    "fans-desc": function (a, b) { return (b.noteFans || 0) - (a.noteFans || 0); },
-    "annee-desc": function (a, b) { return (b.annee || 0) - (a.annee || 0); },
-    "titre": function (a, b) { return a.titre.localeCompare(b.titre, "fr"); }
+    "fans-desc": function (a, b) { return (b.d.noteFans || 0) - (a.d.noteFans || 0); },
+    "annee-desc": function (a, b) { return (b.d.annee || 0) - (a.d.annee || 0); },
+    "titre": function (a, b) { return a.d.titre.localeCompare(b.d.titre, "fr"); }
   };
 
   function afficher() {
@@ -100,34 +109,32 @@
     var paysVoulu = champPays.value;
     var tri = champTri.value;
 
-    var liste = DRAMAS.filter(function (d) {
-      return correspond(d, q) && (!paysVoulu || d.pays === paysVoulu);
+    var liste = TOUS.filter(function (o) {
+      return correspond(o, q) && (!paysVoulu || o.d.pays === paysVoulu);
     });
 
     if (!liste.length) {
-      conteneur.innerHTML = '<p class="empty">Aucun visionnage ne correspond.</p>';
+      conteneur.innerHTML = '<p class="empty mono">Aucun visionnage ne correspond</p>';
       return;
     }
 
-    // Sans tri explicite, on conserve les deux blocs de la note d'origine.
+    // Sans tri explicite, on garde les deux blocs de la note d'origine.
     if (tri === "ordre") {
-      var html = "";
-      ["2025", "2026"].forEach(function (periode) {
-        var bloc = liste.filter(function (d) { return d.periode === periode; });
-        if (!bloc.length) return;
-        html += '<h2 class="year-head">' + TITRES_PERIODE[periode] +
-                " &middot; " + bloc.length + "</h2>";
-        html += '<div class="fiches">' +
-                bloc.map(function (d) { return fiche(d); }).join("") +
-                "</div>";
-      });
-      conteneur.innerHTML = html;
+      conteneur.innerHTML = ["2025", "2026"].map(function (periode) {
+        var bloc = liste.filter(function (o) { return o.d.periode === periode; });
+        if (!bloc.length) return "";
+        return '<div class="group-head"><b>' + TITRES_PERIODE[periode] + "</b>" +
+               '<span class="mono">' + String(bloc.length).padStart(2, "0") + " titres</span></div>" +
+               '<div class="fiches">' +
+               bloc.map(function (o) { return fiche(o.d, o.i); }).join("") +
+               "</div>";
+      }).join("");
       return;
     }
 
     conteneur.innerHTML =
       '<div class="fiches">' +
-      liste.slice().sort(TRIS[tri]).map(function (d) { return fiche(d); }).join("") +
+      liste.slice().sort(TRIS[tri]).map(function (o) { return fiche(o.d, o.i); }).join("") +
       "</div>";
   }
 

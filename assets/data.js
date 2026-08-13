@@ -13,7 +13,6 @@
 const DRAMAS = [
   // ------------------------- Depuis mars 2025 -------------------------
   {
-    emoji: "🐙",
     titre: "Squid Game",
     mention: "Saisons 1 à 3",
     pays: "KR",
@@ -27,7 +26,6 @@ const DRAMAS = [
       "Criblé de dettes, Seong Gi-hun accepte de participer à un jeu mystérieux où 456 joueurs désargentés s'affrontent dans des jeux d'enfants. Le vainqueur repartira avec une fortune ; les perdants, eux, ne repartiront pas.",
   },
   {
-    emoji: "🃏",
     titre: "Alice in Borderland",
     mention: "Saisons 1 à 3",
     pays: "JP",
@@ -41,7 +39,6 @@ const DRAMAS = [
       "Arisu, jeune homme désœuvré et accro aux jeux vidéo, se retrouve brutalement projeté dans un Tokyo vidé de ses habitants. Pour survivre, lui et ses amis doivent remporter des épreuves mortelles dont les règles leur échappent.",
   },
   {
-    emoji: "🖊️",
     titre: "Weak Hero Class",
     mention: "Classes 1 et 2",
     pays: "KR",
@@ -55,7 +52,6 @@ const DRAMAS = [
       "Yeon Si-eun est le premier de sa classe. Physiquement frêle, il compense par une intelligence redoutable qu'il transforme en arme face à la violence qui règne dans son lycée.",
   },
   {
-    emoji: "🧟",
     titre: "All of Us Are Dead",
     pays: "KR",
     annee: 2022,
@@ -68,7 +64,6 @@ const DRAMAS = [
       "Un lycée devient l'épicentre d'une épidémie zombie. Piégés dans les bâtiments, les élèves doivent se frayer un chemin vers la sortie avant d'être rattrapés — ou contaminés.",
   },
   {
-    emoji: "🤺",
     titre: "Twenty Five Twenty One",
     pays: "KR",
     annee: 2022,
@@ -81,7 +76,6 @@ const DRAMAS = [
       "En pleine crise financière sud-coréenne, l'équipe d'escrime de la lycéenne Na Hee-do est dissoute. Elle s'accroche pourtant à son rêve d'intégrer l'équipe nationale, pendant que la vie de Baek Yi-jin bascule avec la ruine de sa famille.",
   },
   {
-    emoji: "🪼",
     titre: "Mr. Plankton",
     pays: "KR",
     annee: 2024,
@@ -94,7 +88,6 @@ const DRAMAS = [
       "Hae-jo, mis au ban à cause de ses origines inconnues, part sur les routes à la recherche de son véritable père. Jae-mi, qui rêve d'une famille, décide de l'accompagner malgré ses fiançailles.",
   },
   {
-    emoji: "🥊",
     titre: "Bloodhounds",
     mention: "Saisons 1 et 2",
     pays: "KR",
@@ -108,7 +101,6 @@ const DRAMAS = [
       "Deux jeunes boxeurs et anciens marines, que tout oppose sur le ring, deviennent inséparables. Leur amitié les entraîne dans l'univers brutal des prêteurs sur gages illégaux.",
   },
   {
-    emoji: "🍉",
     titre: "Twinkling Watermelon",
     pays: "KR",
     annee: 2023,
@@ -121,7 +113,6 @@ const DRAMAS = [
       "Eun-gyeol, lycéen né de parents sourds, mène une double vie : élève modèle le jour, guitariste la nuit. Un magasin de musique mystérieux le projette en 1995, où il rencontre son père adolescent — et entendant.",
   },
   {
-    emoji: "🏫",
     titre: "Friendly Rivalry",
     pays: "KR",
     annee: 2025,
@@ -134,7 +125,6 @@ const DRAMAS = [
       "Woo Seul-gi, orpheline venue de province, intègre un lycée d'élite réservé au 1 % des meilleurs élèves. Isolée, elle finit par se lier à Yoo Je-i, la première de l'établissement — une amitié vite trouble.",
   },
   {
-    emoji: "⏱️",
     titre: "A Love So Beautiful",
     mention: "Version coréenne",
     pays: "KR",
@@ -148,7 +138,6 @@ const DRAMAS = [
       "Cha Heon, brillant et distant, cache un cœur qu'il ne sait pas exprimer. Sin Sol-i, sa voisine de toujours, lui déclare sa flamme sans détour depuis des années.",
   },
   {
-    emoji: "⌚️",
     titre: "Lovely Runner",
     pays: "KR",
     annee: 2024,
@@ -161,7 +150,6 @@ const DRAMAS = [
       "Ryu Sun-jae est une star adulée dont la vie parfaite n'est qu'une façade. Quand le pire survient, une fan remonte le temps pour tenter de le sauver — quitte à réécrire sa propre jeunesse.",
   },
   {
-    emoji: "💄",
     titre: "True Beauty",
     pays: "KR",
     annee: 2020,
@@ -174,7 +162,6 @@ const DRAMAS = [
       "Harcelée pour son physique, Lim Ju-gyeong apprend le maquillage sur YouTube et devient du jour au lendemain la beauté du lycée. Reste à savoir combien de temps elle pourra garder son visage démaquillé secret.",
   },
   {
-    emoji: "🥇",
     titre: "Good Boy",
     pays: "KR",
     annee: 2025,
@@ -187,7 +174,6 @@ const DRAMAS = [
       "D'anciens médaillés olympiques rejoignent la police par la voie du recrutement spécial. Leurs disciplines respectives deviennent des armes inattendues face au crime organisé.",
   },
   {
-    emoji: "👩🏻‍🦱",
     titre: "Untangled Love",
     mention: "Film — « Love Untangled »",
     pays: "KR",
@@ -201,7 +187,6 @@ const DRAMAS = [
       "1998. Park Se-ri, 19 ans, veut à tout prix discipliner ses cheveux frisés avant de faire une déclaration qui changera sa vie. C'est le moment que choisit un nouveau venu, Han Yun-seok, pour tout compliquer.",
   },
   {
-    emoji: "🎮",
     titre: "My Dearest Nemesis",
     pays: "KR",
     annee: 2025,
@@ -214,8 +199,8 @@ const DRAMAS = [
       "Son grand amour de lycée, un joueur en ligne surnommé « Dragon Noir », s'était révélé n'être qu'un collégien maladroit. Seize ans plus tard, elle le retrouve — devenu son supérieur hiérarchique.",
   },
   {
-    emoji: "👨‍❤️‍💋‍👨",
     titre: "My Boyfriend Is The Man",
+    affiche: false,
     pays: "KR",
     annee: null,
     episodes: null,
@@ -226,7 +211,6 @@ const DRAMAS = [
     synopsis: null,
   },
   {
-    emoji: "🥘",
     titre: "Itaewon Class",
     pays: "KR",
     annee: 2020,
@@ -241,7 +225,6 @@ const DRAMAS = [
 
   // ---------------------------- Depuis 2026 ----------------------------
   {
-    emoji: "🧮",
     titre: "When I Fly Toward You",
     pays: "CN",
     annee: 2023,
@@ -254,7 +237,6 @@ const DRAMAS = [
       "Su Zai-zai débarque au lycée Yucai et tombe immédiatement sous le charme du distant Zhang Lu-rang. Derrière ses résultats brillants et son milieu privilégié, celui-ci dissimule pourtant un profond manque de confiance.",
   },
   {
-    emoji: "📱",
     titre: "If Wishes Could Kill",
     pays: "KR",
     annee: 2026,
@@ -267,7 +249,6 @@ const DRAMAS = [
       "Au lycée Seorin, cinq amis découvrent Girigo, une application qui exauce les vœux — au prix de la vie de celui qui les formule. Quand le compte à rebours atteint zéro, la mort est inévitable.",
   },
   {
-    emoji: "🏸",
     titre: "Racket Boys",
     pays: "KR",
     annee: 2021,
@@ -280,7 +261,6 @@ const DRAMAS = [
       "Ancien champion de badminton en difficulté, Yoon Hyun-jong accepte d'entraîner l'équipe d'un collège de campagne au bord de la dissolution — trois joueurs en tout et pour tout.",
   },
   {
-    emoji: "👮‍♀️",
     titre: "My Name",
     pays: "KR",
     annee: 2021,
@@ -293,7 +273,6 @@ const DRAMAS = [
       "Après le meurtre de son père, Yoon Ji-woo infiltre la police pour se venger, téléguidée par le chef d'un puissant réseau de trafic de drogue.",
   },
   {
-    emoji: "🧚",
     titre: "Head Over Heels",
     pays: "KR",
     annee: 2025,
@@ -306,7 +285,6 @@ const DRAMAS = [
       "Le jour, Park Seong-a est une lycéenne ordinaire. La nuit, elle exerce comme chamane sous le nom de Fée Cheon-ji, le visage à demi masqué pour préserver son identité.",
   },
   {
-    emoji: "🦸‍♂️",
     titre: "Wonderfools",
     mention: "« The WONDERfools »",
     pays: "KR",
@@ -320,7 +298,6 @@ const DRAMAS = [
       "1999, dans une ville gagnée par la peur de la fin du monde. C'est là qu'émergent des héros aussi improbables qu'inattendus, menés par la fantasque Eun Chae-ni.",
   },
   {
-    emoji: "🇨🇳",
     titre: "Exclusive Fairytale",
     pays: "CN",
     annee: 2023,
@@ -333,7 +310,6 @@ const DRAMAS = [
       "L'histoire de Ling Chao et Xiao Tu, amis d'enfance devenus inséparables, qui traversent ensemble les joies et les peines de l'adolescence puis de l'âge adulte.",
   },
   {
-    emoji: "📖",
     titre: "The Boy of the Last Row",
     mention: "« Notes from the Last Row »",
     pays: "KR",
@@ -347,7 +323,6 @@ const DRAMAS = [
       "Heo Mun-o, écrivain raté devenu professeur de lettres, découvre le talent hors norme de Lee Gang, un élève taciturne assis au dernier rang de sa classe.",
   },
   {
-    emoji: "👨‍🏫",
     titre: "Teach You a Lesson !",
     pays: "KR",
     annee: 2026,
@@ -360,7 +335,6 @@ const DRAMAS = [
       "Les enseignants ne parviennent plus à faire respecter la discipline, et beaucoup ont renoncé à essayer. L'effondrement de leur autorité en classe devient un véritable problème de société.",
   },
   {
-    emoji: "😷",
     titre: "My ID is Gangnam Beauty",
     pays: "KR",
     annee: 2018,
@@ -373,7 +347,6 @@ const DRAMAS = [
       "Longtemps harcelée pour son apparence, Kang Mi-rae a grandi dans la méfiance et le repli. Décidée à repartir de zéro, elle a recours à la chirurgie esthétique — et découvre que le regard des autres ne change pas pour autant.",
   },
   {
-    emoji: "🔪",
     titre: "The Legend of the Kitchen Soldier",
     pays: "KR",
     annee: 2026,
@@ -386,7 +359,6 @@ const DRAMAS = [
       "Engagé à l'armée pour fuir une réalité trop rude, Kang Seong-jae voit apparaître devant lui un écran de « quêtes » virtuel qui le pousse à devenir cuisinier militaire.",
   },
   {
-    emoji: "🎥",
     titre: "Melo Movie",
     pays: "KR",
     annee: 2025,
@@ -403,7 +375,6 @@ const DRAMAS = [
       "Kim Mu-bee, réalisatrice en devenir, travaille dans l'ombre pour suivre les traces de son père. Ko Gyeom, critique passionné, s'est donné pour mission de voir tous les films jamais réalisés. Cinq ans après s'être perdus de vue, ils redeviennent voisins.",
   },
   {
-    emoji: "☀️",
     titre: "Our Beloved Summer",
     pays: "KR",
     annee: 2021,

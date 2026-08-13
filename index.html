@@ -4,61 +4,78 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Carnet de dramas</title>
-<meta name="description" content="Notes de visionnage et critiques de dramas coréens, japonais et chinois, depuis mars 2025.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+<meta name="description" content="Ce que j'ai regardé depuis mars 2025 : 30 dramas coréens, japonais et chinois, mes notes et mes critiques.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23000'/><rect x='7' y='7' width='18' height='18' fill='%23ff5c2b'/></svg>">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
-<header class="masthead">
-  <div class="wrap wrap--wide masthead__inner">
-    <p class="masthead__title"><a href="index.html">Carnet de dramas</a></p>
-    <nav class="nav">
-      <a href="index.html" aria-current="page">Accueil</a>
-      <a href="visionnages.html">Visionnages</a>
-    </nav>
-  </div>
+<header class="bar">
+  <a class="bar__logo" href="index.html">Dramas<sup>26</sup></a>
+  <a class="bar__link bar__link--accent" href="visionnages.html">
+    Les visionnages
+    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 1v10M1 6h10"/></svg>
+  </a>
+  <span class="bar__spacer"></span>
+  <a class="bar__link" href="carrousel.html">Carrousel</a>
+  <a class="bar__link" href="critiques/melo-movie.html">
+    Critiques
+    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 1v10M1 6h10"/></svg>
+  </a>
 </header>
 
-<div class="hero">
-  <div class="wrap">
-    <h1 class="hero__title">Ce que j'ai regardé,<br>et ce que j'en ai pensé</h1>
-    <p class="hero__sub">
-      Un carnet de visionnages tenu depuis mars 2025 : dramas coréens pour l'essentiel,
-      quelques détours par le Japon et la Chine. Notes sur 5, et de temps en temps une vraie critique.
-    </p>
+<div class="mosaic" id="mosaic" aria-hidden="true"></div>
+
+<div class="wrap opening">
+  <p class="opening__kicker">
+    Trente titres consignés au fil des visionnages&nbsp;: mes notes sur cinq,
+    celles des fans, et de temps en temps une vraie critique.
+  </p>
+  <h1 class="opening__title display">Carnet<br>de dramas</h1>
+  <div class="opening__foot mono">
+    <span>Par Noah Guerbois<br>Métadonnées MyDramaList</span>
+    <span>Depuis mars 2025</span>
+    <span>Défiler pour lire
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" style="width:.8em;height:.8em"><path d="M6 1v10M1.5 5.5 6 10l4.5-4.5"/></svg>
+    </span>
   </div>
 </div>
 
-<main class="wrap wrap--wide">
+<div class="figures" id="figures"></div>
 
-  <div class="figures" id="figures"></div>
+<main>
 
-  <section class="section">
-    <h2 class="section__title">Critiques</h2>
+  <section class="wrap section">
+    <div class="section__head">
+      <h2 class="section__title mono">Critiques</h2>
+      <span class="section__count mono" id="compte-critiques"></span>
+    </div>
     <div id="critiques"></div>
   </section>
 
-  <section class="section">
-    <h2 class="section__title">Derniers visionnages</h2>
-    <ul class="entries" id="derniers"></ul>
-    <p style="margin-top:1.5rem">
-      <a class="post__more" href="visionnages.html">Voir les <span id="compte-total"></span> visionnages &rarr;</a>
-    </p>
+  <section class="wrap section">
+    <div class="section__head">
+      <h2 class="section__title mono">Derniers visionnages</h2>
+      <a class="section__count mono" href="visionnages.html" style="text-decoration:none">
+        Voir les <span id="compte-total"></span> &rarr;
+      </a>
+    </div>
+    <div class="index" id="derniers"></div>
   </section>
 
-  <section class="section">
-    <h2 class="section__title">À voir</h2>
+  <section class="wrap section">
+    <div class="section__head">
+      <h2 class="section__title mono">À voir</h2>
+      <span class="section__count mono" id="compte-avoir"></span>
+    </div>
     <ul class="watchlist" id="avoir"></ul>
   </section>
 
 </main>
 
-<footer class="footer">
-  <div class="wrap">
-    <p>Carnet personnel &middot; notes issues de mes visionnages<br>
-    Métadonnées et notes des fans&nbsp;: <a href="https://mydramalist.com">MyDramaList</a></p>
-  </div>
+<footer class="wrap footer mono">
+  <span>Carnet personnel &mdash; notes issues de mes visionnages</span>
+  <span>Affiches et notes des fans&nbsp;: <a href="https://mydramalist.com">MyDramaList</a></span>
 </footer>
 
 <script src="assets/data.js"></script>
@@ -67,39 +84,59 @@
 (function () {
   var stats = calculerStats(DRAMAS);
 
+  // Mosaïque d'ouverture : les affiches les mieux notées, teintées par la charte.
+  var pourMosaique = DRAMAS
+    .filter(function (d) { return d.affiche !== false; })
+    .slice()
+    .sort(function (a, b) { return (b.note || 0) - (a.note || 0); })
+    .slice(0, 16);
+
+  document.getElementById("mosaic").innerHTML = pourMosaique.map(function (d) {
+    return '<div class="mosaic__cell"><img src="' + affiche(d) + '" alt="" loading="eager"></div>';
+  }).join("");
+
   document.getElementById("figures").innerHTML = [
-    ["total", stats.total, "visionnages"],
-    ["moyenne", formatNote(Math.round(stats.moyenne * 100) / 100), "ma moyenne /5"],
-    ["fans", formatNote(Math.round(stats.moyenneFans * 10) / 10), "moyenne des fans /10"],
-    ["coups", stats.coupsDeCoeur, "coups de cœur"]
+    [stats.total, "visionnages"],
+    ["<em>" + formatNote(Math.round(stats.moyenne * 100) / 100) + "</em>", "ma moyenne / 5"],
+    [formatNote(Math.round(stats.moyenneFans * 10) / 10), "moyenne des fans / 10"],
+    [stats.coupsDeCoeur, "notes maximales"]
   ].map(function (f) {
-    return '<div class="figure"><span class="figure__value">' + f[1] +
-           '</span><span class="figure__label">' + f[2] + "</span></div>";
+    return '<div class="figure"><span class="figure__value">' + f[0] +
+           '</span><span class="figure__label mono">' + f[1] + "</span></div>";
   }).join("");
 
   document.getElementById("compte-total").textContent = stats.total;
 
-  // Articles de critique : les dramas qui ont une page dédiée.
+  // Les dramas disposant d'une page de critique.
   var avecCritique = DRAMAS.filter(function (d) { return d.critique; });
+  document.getElementById("compte-critiques").textContent =
+    String(avecCritique.length).padStart(2, "0");
 
   document.getElementById("critiques").innerHTML = avecCritique.map(function (d) {
-    return '<a class="post" href="' + d.critique + '">' +
-      '<span class="post__glyph" aria-hidden="true">' + d.emoji + "</span>" +
-      '<h3 class="post__title">Avis critique sur «&nbsp;' + esc(d.titre) + '&nbsp;»</h3>' +
-      '<p class="post__meta"><span>' + esc(d.critiqueDate) + "</span><span>&middot;</span>" +
-      etoiles(d.note) + '<span class="rating-value">' + formatNote(d.note) + "/5</span></p>" +
-      '<p class="post__excerpt">' + esc(d.critiqueExtrait) + "</p>" +
-      '<span class="post__more">Lire la critique &rarr;</span></a>';
+    return '<a class="feature" href="' + d.critique + '">' +
+      '<div class="feature__media"><img src="' + affiche(d) + '" alt="Affiche de ' + esc(d.titre) + '"></div>' +
+      "<div>" +
+      '<span class="mono">' + esc(d.critiqueDate) + " &middot; " + esc(d.titre) + "</span>" +
+      '<h3 class="feature__title">Avis critique sur «&nbsp;' + esc(d.titre) + '&nbsp;»</h3>' +
+      '<p class="feature__excerpt">' + esc(d.critiqueExtrait) + "</p>" +
+      '<span class="feature__cta mono">Lire la critique ' +
+      '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M1 6h10M6.5 1.5 11 6l-4.5 4.5"/></svg>' +
+      "</span></div></a>";
   }).join("");
 
-  // Les six derniers titres consignés dans la note, du plus récent au plus ancien.
-  var derniers = DRAMAS.slice(-6).reverse();
-  document.getElementById("derniers").innerHTML = derniers.map(function (d) {
-    return ligne(d);
-  }).join("");
+  // Six derniers titres consignés, du plus récent au plus ancien.
+  document.getElementById("derniers").innerHTML = DRAMAS
+    .map(function (d, i) { return { d: d, i: i }; })
+    .slice(-6)
+    .reverse()
+    .map(function (o) { return rangee(o.d, o.i); })
+    .join("");
 
-  document.getElementById("avoir").innerHTML = A_VOIR.map(function (t) {
-    return "<li>" + esc(t) + "</li>";
+  document.getElementById("compte-avoir").textContent =
+    String(A_VOIR.length).padStart(2, "0");
+
+  document.getElementById("avoir").innerHTML = A_VOIR.map(function (t, i) {
+    return '<li><span class="mono">' + numero(i) + "</span>" + esc(t) + "</li>";
   }).join("");
 })();
 </script>
