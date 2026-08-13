@@ -82,43 +82,68 @@
     );
   }
 
-  /* ---------------- Barres horizontales ---------------- */
+  /* ---------------- Barres horizontales ----------------
+
+     Deux dispositions :
+     - sans vignette, le libellé est calé à droite contre la barre et la
+       valeur se pose à sa pointe ;
+     - avec vignette, le libellé et la valeur passent au-dessus de la barre,
+       de part et d'autre. Les titres longs respirent, et plus rien ne
+       déborde en bout de piste. */
 
   function barres(el, donnees, options) {
     options = options || {};
     var unite = options.unite || "";
     var dec = options.decimales || 0;
     var max = plafond(Math.max.apply(null, donnees.map(function (d) { return d.valeur; })));
-    // Une colonne d'images n'apparaît que si au moins une entrée en fournit une.
     var avecImage = donnees.some(function (d) { return d.image; });
+
+    function tip(d) {
+      return echapper(d.detail || (d.label + " — " + fr(d.valeur, dec) + " " + unite));
+    }
 
     var corps = donnees.map(function (d) {
       var pct = (d.valeur / max) * 100;
-      return (
-        '<div class="viz-row">' +
-        // Vignette et libellé forment un seul groupe calé contre la barre,
-        // sinon l'image flotte loin du texte quand le libellé est court.
-        '<span class="viz-row__tete">' +
-        (avecImage
-          ? '<span class="viz-row__img">' +
-            (d.image ? '<img src="' + echapper(d.image) + '" alt="" loading="lazy">' : "") +
-            "</span>"
-          : "") +
-        '<span class="viz-row__label">' + echapper(d.label) + "</span></span>" +
-        // --pct pilote à la fois la longueur de la barre et la position de
-        // l'étiquette de valeur, qui reste ainsi collée à la pointe.
+      var piste =
         '<span class="viz-row__track" style="--pct:' + pct + '%">' +
-        '<span class="viz-row__bar" data-tip="' +
-        echapper(d.detail || (d.label + " — " + fr(d.valeur, dec) + " " + unite)) + '"></span>' +
-        '<span class="viz-row__value">' + fr(d.valeur, dec) + "</span>" +
+        '<span class="viz-row__bar" data-tip="' + tip(d) + '"></span>';
+
+      if (!avecImage) {
+        return (
+          '<div class="viz-row">' +
+          '<span class="viz-row__label">' + echapper(d.label) + "</span>" +
+          piste +
+          '<span class="viz-row__value">' + fr(d.valeur, dec) + "</span>" +
+          "</span></div>"
+        );
+      }
+
+      return (
+        '<div class="viz-row viz-row--image">' +
+        '<span class="viz-row__img">' +
+        (d.image
+          ? '<img src="' + echapper(d.image) + '" alt="" loading="lazy">'
+          : "") +
+        "</span>" +
+        '<span class="viz-row__corps">' +
+        '<span class="viz-row__entete">' +
+        '<span class="viz-row__nom">' + echapper(d.label) + "</span>" +
+        '<span class="viz-row__mesure">' + fr(d.valeur, dec) +
+        (unite ? " " + echapper(unite) : "") + "</span>" +
+        "</span>" +
+        piste + "</span>" +
         "</span></div>"
       );
     }).join("");
 
+    var axe = avecImage
+      ? ""
+      : '<p class="viz-axis mono"><span>0</span><span>' +
+        fr(max, 0) + " " + echapper(unite) + "</span></p>";
+
     el.innerHTML =
       '<div class="viz-plot' + (avecImage ? " viz-plot--images" : "") +
-      '" style="--viz-max:' + max + '">' + corps + "</div>" +
-      '<p class="viz-axis mono"><span>0</span><span>' + fr(max, 0) + " " + echapper(unite) + "</span></p>" +
+      '" style="--viz-max:' + max + '">' + corps + "</div>" + axe +
       tableauDonnees([options.colonne || "Élément", options.mesure || "Valeur"],
         donnees.map(function (d) { return [d.label, fr(d.valeur, dec) + " " + unite]; }));
 

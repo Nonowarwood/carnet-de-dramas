@@ -103,8 +103,8 @@
 
     <div class="portrait-head reveal" style="margin:3.5rem 0 1.5rem">
       <h2 style="font-size:clamp(1.25rem,2.5vw,1.6rem)">Quelle série dans quel genre</h2>
-      <p>Les vingt-huit genres relevés sur les trente séries. Chaque titre renvoie
-      vers la liste filtrée sur ce genre.</p>
+      <p>Tous les genres relevés sur les trente séries. Cliquer sur un genre
+      ouvre la liste filtrée sur celui-ci.</p>
     </div>
     <div class="reveal" id="genres-detail"></div>
 
@@ -278,24 +278,35 @@
     unite: "séries", colonne: "Genre", mesure: "Séries"
   });
 
-  // Index complet : chaque genre et les séries qui le portent.
-  $("genres-detail").innerHTML = Object.keys(genres)
-    .sort(function (a, b) {
-      return genres[b].length - genres[a].length || a.localeCompare(b, "fr");
-    })
-    .map(function (g) {
+  // Index des genres : les genres portés par au moins deux séries ont leur
+  // ligne ; les genres uniques sont regroupés en fin de bloc plutôt que
+  // d'occuper chacun une ligne pour un seul titre.
+  var classes = Object.keys(genres).sort(function (a, b) {
+    return genres[b].length - genres[a].length || a.localeCompare(b, "fr");
+  });
+
+  $("genres-detail").innerHTML =
+    '<div class="genres">' +
+    classes.filter(function (g) { return genres[g].length > 1; }).map(function (g) {
       return (
-        '<div class="genre-rangee">' +
-        '<span class="genre-rangee__nom">' + esc(g) +
-        '<span class="mono">' + genres[g].length + "</span></span>" +
-        '<span class="genre-rangee__titres">' +
-        genres[g].map(function (d) {
-          return '<a class="puce" href="visionnages.html?genre=' +
-            encodeURIComponent(g) + '">' + esc(d.titre) + "</a>";
-        }).join("") +
-        "</span></div>"
+        '<div class="genre">' +
+        '<a class="genre__nom" href="visionnages.html?genre=' + encodeURIComponent(g) + '">' +
+        esc(g) + '<span class="mono">' + genres[g].length + "</span></a>" +
+        '<p class="genre__titres">' +
+        genres[g].map(function (d) { return "<span>" + esc(d.titre) + "</span>"; }).join("") +
+        "</p></div>"
       );
-    }).join("");
+    }).join("") +
+    "</div>" +
+    (function () {
+      var uniques = classes.filter(function (g) { return genres[g].length === 1; });
+      if (!uniques.length) return "";
+      return '<p class="genres__uniques">Et ' + uniques.length +
+        " genres croisés une seule fois&nbsp;: " +
+        uniques.map(function (g) {
+          return "<b>" + esc(g) + "</b> (" + esc(genres[g][0].titre) + ")";
+        }).join(", ") + ".</p>";
+    })();
 
   // Moyenne par genre, restreinte aux genres assez représentés pour
   // qu'une moyenne ait un sens.

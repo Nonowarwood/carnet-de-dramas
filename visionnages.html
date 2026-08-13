@@ -73,7 +73,6 @@
 <script>
 (function () {
   preparerConsensus(DRAMAS);
-  var stats = calculerStats(DRAMAS);
 
   var champRecherche = document.getElementById("recherche");
   var champTri = document.getElementById("tri");
@@ -85,8 +84,14 @@
   DRAMAS.forEach(function (d) {
     (d.genres || []).forEach(function (g) { GENRES[g] = (GENRES[g] || 0) + 1; });
   });
+  // En dessous de trois séries, un genre ne dit rien d'utile : on l'écarte
+  // du filtre pour garder une liste courte et lisible.
+  var GENRES_FILTRABLES = Object.keys(GENRES).filter(function (g) {
+    return GENRES[g] >= 3;
+  });
+
   champGenre.innerHTML = '<option value="">Tous</option>' +
-    Object.keys(GENRES)
+    GENRES_FILTRABLES
       .sort(function (a, b) { return GENRES[b] - GENRES[a] || a.localeCompare(b, "fr"); })
       .map(function (g) {
         return '<option value="' + esc(g) + '">' + esc(g) + " (" + GENRES[g] + ")</option>";
@@ -94,7 +99,7 @@
 
   // Le portrait renvoie ici avec ?genre=… : on préselectionne le filtre.
   var demande = new URLSearchParams(window.location.search).get("genre");
-  if (demande && GENRES[demande]) champGenre.value = demande;
+  if (demande && GENRES_FILTRABLES.indexOf(demande) !== -1) champGenre.value = demande;
   var conteneur = document.getElementById("liste");
 
   var TITRES_PERIODE = { "2025": "Depuis mars 2025", "2026": "Depuis 2026" };
@@ -169,11 +174,9 @@
   champTri.addEventListener("change", afficher);
   champPays.addEventListener("change", afficher);
   champGenre.addEventListener("change", afficher);
-  afficher();
 
-  document.getElementById("note-sources").innerHTML =
-    "Note du public&nbsp;: MyDramaList (" + DRAMAS.length + " titres) et Viki (" +
-    stats.avecViki + "), recentrées avant moyenne";
+  document.getElementById("pied").innerHTML = piedDePage("");
+  afficher();
 })();
 </script>
 <script src="assets/anim.js"></script>

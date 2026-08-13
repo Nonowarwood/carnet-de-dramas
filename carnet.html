@@ -134,10 +134,6 @@
     return '<li class="reveal"><span class="mono">' + numero(i) + "</span>" + esc(t) + "</li>";
   }).join("");
 
-  document.getElementById("note-sources").innerHTML =
-    "Note du public&nbsp;: MyDramaList (" + DRAMAS.length + " titres) et Viki (" +
-    stats.avecViki + "), recentrées avant moyenne";
-
   document.getElementById("pied").innerHTML = piedDePage("");
 
   if (window.Anim) window.Anim.rafraichir();

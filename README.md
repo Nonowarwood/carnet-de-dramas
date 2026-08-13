@@ -130,9 +130,11 @@ Les graphiques du temps et des acteurs portent une vignette par ligne : l'affich
 pour les séries, le portrait pour les acteurs. Il suffit de passer une clé `image`
 dans les données d'une barre pour que la colonne apparaisse.
 
-La section des genres se termine par un index complet — chaque genre et les séries
-qui le portent — dont les puces renvoient vers `visionnages.html?genre=…`, ce qui
-présélectionne le filtre correspondant.
+La section des genres se termine par un index typographique : chaque genre porté par
+au moins deux séries a sa ligne, les genres croisés une seule fois sont regroupés en
+fin de bloc. Le nom du genre renvoie vers `visionnages.html?genre=…`, ce qui
+présélectionne le filtre correspondant. Ce filtre n'expose que les genres présents
+dans au moins trois séries — en dessous, il ne servirait à rien.
 
 À noter : MyDramaList ne recense que le **diffuseur d'origine**, pas le studio de
 production. La section « diffuseurs » mesure donc qui a diffusé, pas qui a produit,
@@ -173,7 +175,8 @@ tête de document, donc la page reste entièrement lisible sans JavaScript.
 Rendu par `piedDePage()` (`assets/site.js`) à partir des données, donc juste par
 construction : nombre de séries, d'épisodes, d'heures, moyenne, pays, dernière série
 vue, titres notés 5 sur 5, et la liste « à voir ». Chaque page l'appelle dans son
-`<footer id="pied">` en passant son préfixe de chemin.
+`<footer id="pied">` en passant son préfixe de chemin. Le carrousel d'accueil en est
+la seule exception : il occupe l'écran entier et ne défile pas.
 
 ## Développement
 

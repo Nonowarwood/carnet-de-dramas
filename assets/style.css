@@ -1434,39 +1434,75 @@ body.guide-ouvert { overflow: hidden; }
   .viz-col__track { height: 8rem; }
 }
 
-/* ---------------- Vignettes dans les graphiques ---------------- */
+/* ---------------- Barres à vignette ----------------
+   Libellé et valeur au-dessus de la barre, affiche ou portrait à gauche.
+   Les titres longs respirent et plus rien ne déborde en bout de piste. */
 
-.viz-plot--images .viz-row { grid-template-columns: minmax(9rem, 15rem) minmax(0, 1fr); }
+.viz-plot--images { padding-right: 0; gap: 1.15rem; }
 
-.viz-row__tete {
-  display: flex;
+.viz-row--image {
+  grid-template-columns: 3.25rem minmax(0, 1fr);
+  gap: 1rem;
   align-items: center;
-  justify-content: flex-end;
-  gap: 0.6rem;
 }
 
 .viz-row__img {
   display: block;
-  flex: none;
-  width: 2.5rem;
+  width: 3.25rem;
   aspect-ratio: 3 / 4;
-  background: var(--grey-20);
   overflow: hidden;
+  background: var(--grey-20);
 }
 
 .viz-row__img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+  transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-.viz-row:hover .viz-row__img img { transform: scale(1.12); }
+.viz-row:hover .viz-row__img img { transform: scale(1.08); }
 
-@media (max-width: 48rem) {
-  .viz-plot--images .viz-row { grid-template-columns: minmax(6.5rem, 9rem) minmax(0, 1fr); }
-  .viz-row__img { width: 1.75rem; }
-  .viz-row__tete { gap: 0.4rem; }
+.viz-row__corps { display: grid; gap: 0.5rem; min-width: 0; }
+
+.viz-row__entete {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.viz-row__nom {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.viz-row__mesure {
+  flex: none;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  font-variant-numeric: tabular-nums;
+  color: var(--grey-50);
+}
+
+/* La barre devient un rail fin sous le titre : c'est le titre qui porte la
+   lecture, la barre ne donne que l'ordre de grandeur. */
+.viz-row--image .viz-row__track {
+  height: 10px;
+  background-image: none;
+  background-color: var(--grey-05);
+}
+
+.viz-row--image .viz-row__bar { border-radius: 0 3px 3px 0; }
+
+@media (max-width: 40rem) {
+  .viz-row--image { grid-template-columns: 2.5rem minmax(0, 1fr); gap: 0.75rem; }
+  .viz-row__img { width: 2.5rem; }
+  .viz-row__nom { font-size: 0.9375rem; }
 }
 
 /* ===============================================================
@@ -1548,49 +1584,68 @@ body.guide-ouvert { overflow: hidden; }
 .pied__bas a { color: var(--grey-70); border-bottom: 1px solid var(--orange); text-decoration: none; }
 .pied__bas a:hover { background: var(--orange); color: var(--paper); }
 
-/* ---------------- Index des genres ---------------- */
+/* ---------------- Index des genres ----------------
+   Composition typographique plutôt qu'un damier de puces encadrées :
+   le genre à gauche, ses séries à droite en une ligne continue. */
 
-.genre-rangee {
+.genres { border-top: 1px solid var(--line); }
+
+.genre {
   display: grid;
-  grid-template-columns: minmax(7rem, 10rem) minmax(0, 1fr);
-  gap: 1rem;
+  grid-template-columns: minmax(8rem, 15rem) minmax(0, 1fr);
+  gap: 0.5rem var(--gut);
   align-items: baseline;
-  padding: 0.85rem 0;
+  padding: 1.35rem 0;
   border-bottom: 1px solid var(--line-hair);
 }
 
-.genre-rangee:first-child { border-top: 1px solid var(--line); }
-
-.genre-rangee__nom {
-  display: flex;
+.genre__nom {
+  display: inline-flex;
   align-items: baseline;
-  justify-content: space-between;
   gap: 0.6rem;
-  font-weight: 600;
-  letter-spacing: -0.015em;
-}
-
-.genre-rangee__nom .mono { color: var(--grey-50); }
-
-.genre-rangee__titres { display: flex; flex-wrap: wrap; gap: 0.35rem; }
-
-.puce {
-  display: inline-block;
-  padding: 0.25rem 0.55rem;
-  background: var(--grey-05);
-  border: 1px solid var(--line-hair);
-  color: var(--grey-70);
-  font-size: 0.8125rem;
+  color: inherit;
   text-decoration: none;
-  transition: background 0.15s linear, color 0.15s linear, border-color 0.15s linear;
+  font-size: clamp(1.05rem, 2vw, 1.45rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  transition: color 0.15s ease;
 }
 
-.puce:hover {
-  background: var(--ink);
-  border-color: var(--ink);
-  color: var(--paper);
+.genre__nom .mono { color: var(--grey-50); font-weight: 400; transition: color 0.15s ease; }
+
+.genre__nom::after {
+  content: "\2192";
+  font-weight: 400;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.2s ease, transform 0.25s cubic-bezier(0.19, 1, 0.22, 1);
 }
+
+.genre__nom:hover { color: var(--orange); }
+.genre__nom:hover .mono { color: var(--orange); }
+.genre__nom:hover::after { opacity: 1; transform: none; }
+
+.genre__titres { color: var(--grey-70); font-size: 1rem; line-height: 1.65; }
+
+/* Séparateur discret entre les titres, sans virgule ni cadre. */
+.genre__titres span + span::before {
+  content: "\00b7";
+  margin: 0 0.5rem;
+  color: var(--grey-20);
+}
+
+.genres__uniques {
+  margin: 1.75rem 0 0;
+  max-width: 52rem;
+  font-size: 0.9375rem;
+  line-height: 1.8;
+  color: var(--grey-50);
+}
+
+.genres__uniques b { color: var(--grey-70); font-weight: 600; }
 
 @media (max-width: 40rem) {
-  .genre-rangee { grid-template-columns: 1fr; gap: 0.5rem; }
+  .genre { grid-template-columns: 1fr; }
+  .genre__titres { font-size: 0.9375rem; }
 }
