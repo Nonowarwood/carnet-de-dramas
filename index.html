@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carnet de dramas</title>
+<meta name="description" content="Notes de visionnage et critiques de dramas coréens, japonais et chinois, depuis mars 2025.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap wrap--wide masthead__inner">
+    <p class="masthead__title"><a href="index.html">Carnet de dramas</a></p>
+    <nav class="nav">
+      <a href="index.html" aria-current="page">Accueil</a>
+      <a href="visionnages.html">Visionnages</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <h1 class="hero__title">Ce que j'ai regardé,<br>et ce que j'en ai pensé</h1>
+    <p class="hero__sub">
+      Un carnet de visionnages tenu depuis mars 2025 : dramas coréens pour l'essentiel,
+      quelques détours par le Japon et la Chine. Notes sur 5, et de temps en temps une vraie critique.
+    </p>
+  </div>
+</div>
+
+<main class="wrap wrap--wide">
+
+  <div class="figures" id="figures"></div>
+
+  <section class="section">
+    <h2 class="section__title">Critiques</h2>
+    <div id="critiques"></div>
+  </section>
+
+  <section class="section">
+    <h2 class="section__title">Derniers visionnages</h2>
+    <ul class="entries" id="derniers"></ul>
+    <p style="margin-top:1.5rem">
+      <a class="post__more" href="visionnages.html">Voir les <span id="compte-total"></span> visionnages &rarr;</a>
+    </p>
+  </section>
+
+  <section class="section">
+    <h2 class="section__title">À voir</h2>
+    <ul class="watchlist" id="avoir"></ul>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <p>Carnet personnel &middot; notes issues de mes visionnages<br>
+    Métadonnées et notes des fans&nbsp;: <a href="https://mydramalist.com">MyDramaList</a></p>
+  </div>
+</footer>
+
+<script src="assets/data.js"></script>
+<script src="assets/site.js"></script>
+<script>
+(function () {
+  var stats = calculerStats(DRAMAS);
+
+  document.getElementById("figures").innerHTML = [
+    ["total", stats.total, "visionnages"],
+    ["moyenne", formatNote(Math.round(stats.moyenne * 100) / 100), "ma moyenne /5"],
+    ["fans", formatNote(Math.round(stats.moyenneFans * 10) / 10), "moyenne des fans /10"],
+    ["coups", stats.coupsDeCoeur, "coups de cœur"]
+  ].map(function (f) {
+    return '<div class="figure"><span class="figure__value">' + f[1] +
+           '</span><span class="figure__label">' + f[2] + "</span></div>";
+  }).join("");
+
+  document.getElementById("compte-total").textContent = stats.total;
+
+  // Articles de critique : les dramas qui ont une page dédiée.
+  var avecCritique = DRAMAS.filter(function (d) { return d.critique; });
+
+  document.getElementById("critiques").innerHTML = avecCritique.map(function (d) {
+    return '<a class="post" href="' + d.critique + '">' +
+      '<span class="post__glyph" aria-hidden="true">' + d.emoji + "</span>" +
+      '<h3 class="post__title">Avis critique sur «&nbsp;' + esc(d.titre) + '&nbsp;»</h3>' +
+      '<p class="post__meta"><span>' + esc(d.critiqueDate) + "</span><span>&middot;</span>" +
+      etoiles(d.note) + '<span class="rating-value">' + formatNote(d.note) + "/5</span></p>" +
+      '<p class="post__excerpt">' + esc(d.critiqueExtrait) + "</p>" +
+      '<span class="post__more">Lire la critique &rarr;</span></a>';
+  }).join("");
+
+  // Les six derniers titres consignés dans la note, du plus récent au plus ancien.
+  var derniers = DRAMAS.slice(-6).reverse();
+  document.getElementById("derniers").innerHTML = derniers.map(function (d) {
+    return ligne(d);
+  }).join("");
+
+  document.getElementById("avoir").innerHTML = A_VOIR.map(function (t) {
+    return "<li>" + esc(t) + "</li>";
+  }).join("");
+})();
+</script>
+
+</body>
+</html>

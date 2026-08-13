@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visionnages — Carnet de dramas</title>
+<meta name="description" content="Tous les dramas visionnés depuis mars 2025, avec ma note, celle des fans et le synopsis.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap wrap--wide masthead__inner">
+    <p class="masthead__title"><a href="index.html">Carnet de dramas</a></p>
+    <nav class="nav">
+      <a href="index.html">Accueil</a>
+      <a href="visionnages.html" aria-current="page">Visionnages</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap wrap--wide">
+  <section class="section">
+    <h1 class="hero__title" style="font-size:2rem;text-align:left;margin-bottom:.5rem">Tous les visionnages</h1>
+    <p class="hero__sub" style="margin:0 0 2rem;max-width:38rem">
+      Consignés dans l'ordre où je les ai regardés, depuis mars 2025.
+    </p>
+
+    <div class="toolbar">
+      <input type="search" id="recherche" placeholder="Rechercher un titre, un genre…" aria-label="Rechercher">
+      <label for="tri">Tri</label>
+      <select id="tri">
+        <option value="ordre">Ordre de visionnage</option>
+        <option value="note-desc">Ma note (haut → bas)</option>
+        <option value="note-asc">Ma note (bas → haut)</option>
+        <option value="fans-desc">Note des fans</option>
+        <option value="annee-desc">Année (récent → ancien)</option>
+        <option value="titre">Titre (A → Z)</option>
+      </select>
+      <label for="pays">Pays</label>
+      <select id="pays">
+        <option value="">Tous</option>
+        <option value="KR">🇰🇷 Corée du Sud</option>
+        <option value="JP">🇯🇵 Japon</option>
+        <option value="CN">🇨🇳 Chine</option>
+      </select>
+    </div>
+
+    <div id="liste"></div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <p>Carnet personnel &middot; notes issues de mes visionnages<br>
+    Métadonnées et notes des fans&nbsp;: <a href="https://mydramalist.com">MyDramaList</a></p>
+  </div>
+</footer>
+
+<script src="assets/data.js"></script>
+<script src="assets/site.js"></script>
+<script>
+(function () {
+  var champRecherche = document.getElementById("recherche");
+  var champTri = document.getElementById("tri");
+  var champPays = document.getElementById("pays");
+  var conteneur = document.getElementById("liste");
+
+  var TITRES_PERIODE = {
+    "2025": "Depuis mars 2025",
+    "2026": "Depuis 2026"
+  };
+
+  function correspond(d, q) {
+    if (!q) return true;
+    var champs = [d.titre, d.mention || "", (d.genres || []).join(" "), d.synopsis || ""];
+    return champs.join(" ").toLowerCase().indexOf(q) !== -1;
+  }
+
+  // Les non-notés restent en fin de tri plutôt que d'être traités comme des zéros.
+  function parNote(sens) {
+    return function (a, b) {
+      if (a.note === null) return 1;
+      if (b.note === null) return -1;
+      return sens * (b.note - a.note);
+    };
+  }
+
+  var TRIS = {
+    "note-desc": parNote(1),
+    "note-asc": parNote(-1),
+    "fans-desc": function (a, b) { return (b.noteFans || 0) - (a.noteFans || 0); },
+    "annee-desc": function (a, b) { return (b.annee || 0) - (a.annee || 0); },
+    "titre": function (a, b) { return a.titre.localeCompare(b.titre, "fr"); }
+  };
+
+  function afficher() {
+    var q = champRecherche.value.trim().toLowerCase();
+    var paysVoulu = champPays.value;
+    var tri = champTri.value;
+
+    var liste = DRAMAS.filter(function (d) {
+      return correspond(d, q) && (!paysVoulu || d.pays === paysVoulu);
+    });
+
+    if (!liste.length) {
+      conteneur.innerHTML = '<p class="empty">Aucun visionnage ne correspond.</p>';
+      return;
+    }
+
+    // Sans tri explicite, on conserve les deux blocs de la note d'origine.
+    if (tri === "ordre") {
+      var html = "";
+      ["2025", "2026"].forEach(function (periode) {
+        var bloc = liste.filter(function (d) { return d.periode === periode; });
+        if (!bloc.length) return;
+        html += '<h2 class="year-head">' + TITRES_PERIODE[periode] +
+                " &middot; " + bloc.length + "</h2>";
+        html += '<div class="fiches">' +
+                bloc.map(function (d) { return fiche(d); }).join("") +
+                "</div>";
+      });
+      conteneur.innerHTML = html;
+      return;
+    }
+
+    conteneur.innerHTML =
+      '<div class="fiches">' +
+      liste.slice().sort(TRIS[tri]).map(function (d) { return fiche(d); }).join("") +
+      "</div>";
+  }
+
+  champRecherche.addEventListener("input", afficher);
+  champTri.addEventListener("change", afficher);
+  champPays.addEventListener("change", afficher);
+  afficher();
+})();
+</script>
+
+</body>
+</html>
