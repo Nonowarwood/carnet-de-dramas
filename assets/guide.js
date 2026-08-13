@@ -109,7 +109,7 @@
         cible: "#section-temps",
         titre: "Le temps passé",
         texte:
-          "Le nombre d'heures est calculé série par série : nombre d'épisodes " +
+          "Le nombre d'heures est calculé série par série : nombre d'épisodes " +
           "multiplié par la durée moyenne d'un épisode, telle que la donne " +
           "MyDramaList.",
       },
@@ -118,14 +118,14 @@
         titre: "Lire un graphique",
         texte:
           "Survole une barre pour voir le détail — ici, les séries dans " +
-          "lesquelles joue l'acteur. Sous chaque graphique, « Voir les données » " +
+          "lesquelles joue l'acteur. Sous chaque graphique, « Voir les données » " +
           "déplie le tableau complet.",
       },
       {
         cible: "#section-pays",
         titre: "Des sections indépendantes",
         texte:
-          "Chaque section a sa propre couleur et se lit séparément : le temps, " +
+          "Chaque section a sa propre couleur et se lit séparément : le temps, " +
           "les acteurs, les années, les diffuseurs, les origines et les genres.",
       },
     ],

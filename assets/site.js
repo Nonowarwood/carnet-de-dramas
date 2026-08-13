@@ -62,6 +62,34 @@ function numero(i) {
   return String(i + 1).padStart(2, "0");
 }
 
+/* ---------------- Mois de visionnage ---------------- */
+
+const MOIS_FR = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet",
+                 "août", "septembre", "octobre", "novembre", "décembre"];
+
+/* « 2025-09 » → « septembre 2025 » */
+function moisEnClair(m) {
+  if (!m) return "";
+  var p = m.split("-");
+  return MOIS_FR[parseInt(p[1], 10) - 1] + " " + p[0];
+}
+
+function anneeDe(m) { return (m || "").slice(0, 4); }
+
+/* Tous les mois entre deux bornes, y compris ceux sans visionnage :
+   un creux dans le rythme est une information, pas un trou à masquer. */
+function moisEntre(debut, fin) {
+  var out = [];
+  var a = parseInt(debut.slice(0, 4), 10), m = parseInt(debut.slice(5), 10);
+  var af = parseInt(fin.slice(0, 4), 10), mf = parseInt(fin.slice(5), 10);
+  while (a < af || (a === af && m <= mf)) {
+    out.push(a + "-" + String(m).padStart(2, "0"));
+    m += 1;
+    if (m > 12) { m = 1; a += 1; }
+  }
+  return out;
+}
+
 /* ---------------- Jauge de note ---------------- */
 
 function jauge(note) {
@@ -202,7 +230,7 @@ function rangee(d, i, base) {
     (d.mention ? '<span class="row__mention mono">' + esc(d.mention) + "</span>" : "") +
     "</span>" +
     '<span class="row__meta mono">' +
-    (PAYS_COURT[d.pays] || "") + (d.annee ? " · " + d.annee : "") + "</span>" +
+    moisEnClair(d.mois) + " · " + (PAYS_COURT[d.pays] || "") + "</span>" +
     '<span class="row__fans mono" title="' + esc(detailSources(d)) + '">' +
     (d.consensus == null ? "—" : "Public " + arrondi(d.consensus, 1)) +
     (d.nbSources > 1 ? '<span class="row__srcs">' + d.nbSources + "</span>" : "") +
@@ -262,6 +290,7 @@ function fiche(d, i, base) {
     '<h3 class="fiche__title">' + esc(d.titre) +
     (d.mention ? ' <span class="fiche__mention">' + esc(d.mention) + "</span>" : "") +
     "</h3>" +
+    '<p class="fiche__vu mono">Vu en ' + moisEnClair(d.mois) + "</p>" +
     '<p class="fiche__meta mono">' + ligneMeta(d, false) + "</p>" +
     synopsis +
     '<div class="fiche__ratings">' + maNote + consensus + lien + "</div>" +
@@ -283,7 +312,9 @@ function piedDePage(base) {
 
   var minutes = DRAMAS.reduce(function (a, d) { return a + d.episodesNb * d.dureeEp; }, 0);
   var episodes = DRAMAS.reduce(function (a, d) { return a + d.episodesNb; }, 0);
+  var premier = DRAMAS[0];
   var dernier = DRAMAS[DRAMAS.length - 1];
+  var mois = moisEntre(premier.mois, dernier.mois);
   var preferees = DRAMAS.filter(function (d) { return d.note === 5; });
   var pays = {};
   DRAMAS.forEach(function (d) { pays[d.pays] = true; });
@@ -301,7 +332,7 @@ function piedDePage(base) {
 
     '<div class="pied__bloc">' +
     '<p class="pied__titre mono">Le carnet</p>' +
-    '<p class="pied__texte">Journal de visionnage tenu depuis mars 2025. ' +
+    '<p class="pied__texte">Journal de visionnage tenu depuis janvier 2025. ' +
     "Chaque série y est notée sur cinq, résumée, et comparée à l'avis du public. " +
     "Quelques-unes ont droit à une vraie critique.</p>" +
     "</div>" +
@@ -335,8 +366,9 @@ function piedDePage(base) {
     lien("moi.html", "Le portrait chiffré") +
     lien("critiques/melo-movie.html", "La critique de Melo Movie") +
     "</ul>" +
-    '<p class="pied__titre mono" style="margin-top:1.25rem">À voir ensuite</p>' +
-    '<p class="pied__detail">' + A_VOIR.map(esc).join("<br>") + "</p>" +
+    '<p class="pied__titre mono" style="margin-top:1.25rem">Période couverte</p>' +
+    '<p class="pied__detail">' + moisEnClair(premier.mois) + " &rarr; " +
+    moisEnClair(dernier.mois) + "<br>" + mois.length + " mois</p>" +
     "</div>" +
 
     "</div>" +

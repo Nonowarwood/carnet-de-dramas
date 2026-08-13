@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Les visionnages — Carnet de dramas</title>
-<meta name="description" content="Les 30 dramas visionnés depuis mars 2025 : affiche, synopsis, ma note et celle du public.">
+<meta name="description" content="Les 30 dramas visionnés depuis janvier 2025 : affiche, synopsis, ma note et celle du public.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23000'/><rect x='7' y='7' width='18' height='18' fill='%23ff5c2b'/></svg>">
 <link rel="stylesheet" href="assets/style.css">
 <script>document.documentElement.classList.add("js");</script>
@@ -102,8 +102,6 @@
   if (demande && GENRES_FILTRABLES.indexOf(demande) !== -1) champGenre.value = demande;
   var conteneur = document.getElementById("liste");
 
-  var TITRES_PERIODE = { "2025": "Depuis mars 2025", "2026": "Depuis 2026" };
-
   // On fige l'index d'origine : la numérotation ne bouge pas avec les tris.
   var TOUS = DRAMAS.map(function (d, i) { return { d: d, i: i }; });
 
@@ -149,12 +147,17 @@
       return;
     }
 
-    // Sans tri explicite, on garde les deux blocs de la note d'origine.
+    // Sans tri explicite, on suit l'ordre de visionnage, groupé par année.
     if (tri === "ordre") {
-      conteneur.innerHTML = ["2025", "2026"].map(function (periode) {
-        var bloc = liste.filter(function (o) { return o.d.periode === periode; });
-        if (!bloc.length) return "";
-        return '<div class="group-head reveal"><b>' + TITRES_PERIODE[periode] + "</b>" +
+      var annees = [];
+      liste.forEach(function (o) {
+        var a = anneeDe(o.d.mois);
+        if (annees.indexOf(a) === -1) annees.push(a);
+      });
+
+      conteneur.innerHTML = annees.sort().map(function (annee) {
+        var bloc = liste.filter(function (o) { return anneeDe(o.d.mois) === annee; });
+        return '<div class="group-head reveal"><b>' + annee + "</b>" +
                '<span class="mono">' + String(bloc.length).padStart(2, "0") + " titres</span></div>" +
                '<div class="fiches">' +
                bloc.map(function (o) { return fiche(o.d, o.i); }).join("") +

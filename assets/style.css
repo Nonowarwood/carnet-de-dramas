@@ -473,23 +473,6 @@ img { display: block; max-width: 100%; }
 .group-head:first-child { padding-top: 0; }
 .group-head b { font-size: clamp(1.25rem, 2.5vw, 1.75rem); font-weight: 700; letter-spacing: -0.03em; }
 
-/* ---------------- Liste « à voir » ---------------- */
-
-.watchlist { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
-
-.watchlist li {
-  display: flex;
-  align-items: baseline;
-  gap: 1.5rem;
-  padding: 1.1rem 0;
-  border-bottom: 1px solid var(--line-hair);
-  font-size: clamp(1.25rem, 3vw, 2rem);
-  font-weight: 600;
-  letter-spacing: -0.03em;
-}
-
-.watchlist span { color: var(--grey-50); }
-
 /* ---------------- Article ---------------- */
 
 .article { padding-top: 3rem; padding-bottom: 5rem; }
@@ -1648,4 +1631,14 @@ body.guide-ouvert { overflow: hidden; }
 @media (max-width: 40rem) {
   .genre { grid-template-columns: 1fr; }
   .genre__titres { font-size: 0.9375rem; }
+}
+
+/* ---------------- Mois de visionnage sur la fiche ---------------- */
+
+.fiche__vu { margin: 0 0 0.35rem; color: var(--orange); }
+
+/* Vingt colonnes de mois : sur petit écran, une étiquette sur deux suffit. */
+@media (max-width: 52rem) {
+  .viz-cols { gap: 0.25rem; }
+  .viz-col:nth-child(even) .viz-col__label { visibility: hidden; }
 }

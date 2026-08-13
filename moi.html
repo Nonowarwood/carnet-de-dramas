@@ -52,10 +52,23 @@
     <div class="reveal" id="graph-temps"></div>
   </section>
 
-  <!-- ------------------------------ 2. Les visages ------------------------------ -->
+  <!-- ------------------------------ 2. Le rythme ------------------------------ -->
+  <section class="wrap portrait-section viz viz--temps" id="section-rythme">
+    <div class="portrait-head reveal">
+      <span class="mono" style="color:var(--orange)">02 — Le rythme</span>
+      <h2>Quand je regarde</h2>
+      <p id="rythme-phrase"></p>
+    </div>
+
+    <div class="figures reveal" id="rythme-chiffres" style="margin-bottom:3rem"></div>
+
+    <div class="reveal" id="graph-rythme"></div>
+  </section>
+
+  <!-- ------------------------------ 3. Les visages ------------------------------ -->
   <section class="wrap portrait-section viz viz--acteurs" id="section-acteurs">
     <div class="portrait-head reveal">
-      <span class="mono" style="color:var(--orange)">02 — Les visages</span>
+      <span class="mono" style="color:var(--orange)">03 — Les visages</span>
       <h2>Les acteurs que je croise partout</h2>
       <p id="acteurs-phrase"></p>
     </div>
@@ -65,7 +78,7 @@
   <!-- ------------------------------ 3. Les années ------------------------------ -->
   <section class="wrap portrait-section viz viz--annees" id="section-annees">
     <div class="portrait-head reveal">
-      <span class="mono" style="color:var(--orange)">03 — Les années</span>
+      <span class="mono" style="color:var(--orange)">04 — Les années</span>
       <h2>Les millésimes que je regarde</h2>
       <p id="annees-phrase"></p>
     </div>
@@ -75,7 +88,7 @@
   <!-- ------------------------------ 4. Les diffuseurs ------------------------------ -->
   <section class="wrap portrait-section viz viz--chaines" id="section-chaines">
     <div class="portrait-head reveal">
-      <span class="mono" style="color:var(--orange)">04 — Les diffuseurs</span>
+      <span class="mono" style="color:var(--orange)">05 — Les diffuseurs</span>
       <h2>Qui produit ce que je regarde</h2>
       <p id="chaines-phrase"></p>
     </div>
@@ -85,7 +98,7 @@
   <!-- ------------------------------ 5. Les origines ------------------------------ -->
   <section class="wrap portrait-section viz" id="section-pays">
     <div class="portrait-head reveal">
-      <span class="mono" style="color:var(--orange)">05 — Les origines</span>
+      <span class="mono" style="color:var(--orange)">06 — Les origines</span>
       <h2>Une géographie très resserrée</h2>
       <p id="pays-phrase"></p>
     </div>
@@ -95,7 +108,7 @@
   <!-- ------------------------------ 6. Les genres ------------------------------ -->
   <section class="wrap portrait-section viz viz--genres" id="section-genres">
     <div class="portrait-head reveal">
-      <span class="mono" style="color:var(--orange)">06 — Les genres</span>
+      <span class="mono" style="color:var(--orange)">07 — Les genres</span>
       <h2>Ce vers quoi je penche</h2>
       <p id="genres-phrase"></p>
     </div>
@@ -146,8 +159,9 @@
   var totalEp = DRAMAS.reduce(function (a, d) { return a + d.episodesNb; }, 0);
   var dureeMoy = Math.round(totalMin / totalEp);
 
-  // Le carnet démarre en mars 2025 : on rapporte le temps à cette durée.
-  var debut = new Date(2025, 2, 1);
+  // Point de départ lu dans les données, pas écrit en dur.
+  var premierMois = DRAMAS[0].mois;
+  var debut = new Date(+premierMois.slice(0, 4), +premierMois.slice(5) - 1, 1);
   var jours = Math.max(1, Math.round((Date.now() - debut) / 86400000));
 
   /* ---------------- 1. Le temps ---------------- */
@@ -156,7 +170,7 @@
 
   $("temps-phrase").textContent =
     "Trente séries, " + totalEp + " épisodes, " + Math.round(totalMin / 60) +
-    " heures cumulées. Étalé depuis mars 2025, cela fait environ " +
+    " heures cumulées. Étalé depuis " + moisEnClair(premierMois) + ", cela fait environ " +
     Math.round(totalMin / jours) + " minutes par jour, tous les jours, sans exception.";
 
   $("temps-chiffres").innerHTML = [
@@ -183,7 +197,47 @@
     .slice(0, 8),
     { unite: "h", decimales: 1, colonne: "Série", mesure: "Heures" });
 
-  /* ---------------- 2. Les visages ---------------- */
+
+  /* ---------------- 2. Le rythme ---------------- */
+
+  // Tous les mois de la période, y compris ceux sans visionnage : un creux
+  // dans le rythme est une information.
+  var parMois = {};
+  DRAMAS.forEach(function (d) { parMois[d.mois] = (parMois[d.mois] || 0) + 1; });
+
+  var calendrier = moisEntre(DRAMAS[0].mois, DRAMAS[DRAMAS.length - 1].mois)
+    .map(function (m) { return { mois: m, n: parMois[m] || 0 }; });
+
+  var creux = calendrier.filter(function (m) { return m.n === 0; });
+  var charge = calendrier.slice().sort(function (a, b) { return b.n - a.n; })[0];
+
+  $("rythme-phrase").textContent =
+    "Trente séries réparties sur " + calendrier.length + " mois, soit " +
+    (Math.round(DRAMAS.length / calendrier.length * 10) / 10).toString().replace(".", ",") +
+    " par mois en moyenne. Mais la moyenne ment : " + moisEnClair(charge.mois) +
+    " en a vu " + charge.n + " à lui seul, quand " + creux.length +
+    " mois n'en comptent aucune.";
+
+  $("rythme-chiffres").innerHTML = [
+    [charge.n, "au meilleur mois"],
+    [creux.length, "mois sans rien"],
+    [calendrier.length, "mois couverts"]
+  ].map(function (f) {
+    return '<div class="figure"><span class="figure__value">' +
+      '<span data-compte="' + f[0] + '" data-decimales="0">0</span></span>' +
+      '<span class="figure__label mono">' + f[1] + "</span></div>";
+  }).join("");
+
+  Viz.colonnes($("graph-rythme"), calendrier.map(function (m) {
+    return {
+      label: m.mois.slice(5) + "/" + m.mois.slice(2, 4),
+      valeur: m.n,
+      detail: moisEnClair(m.mois) + " — " +
+        (m.n === 0 ? "aucune série" : m.n + (m.n > 1 ? " séries" : " série"))
+    };
+  }), { unite: "séries", colonne: "Mois", mesure: "Séries terminées" });
+
+  /* ---------------- 3. Les visages ---------------- */
 
   var acteurs = {};
   DRAMAS.forEach(function (d) {
@@ -212,7 +266,7 @@
     };
   }), { unite: "séries", colonne: "Acteur", mesure: "Rôles principaux" });
 
-  /* ---------------- 3. Les années ---------------- */
+  /* ---------------- 4. Les années ---------------- */
 
   var parAnnee = {};
   DRAMAS.forEach(function (d) { parAnnee[d.annee] = (parAnnee[d.annee] || 0) + 1; });
@@ -228,7 +282,7 @@
     return { label: a, valeur: parAnnee[a], detail: a + " — " + parAnnee[a] + " titres" };
   }), { unite: "titres", colonne: "Année", mesure: "Titres" });
 
-  /* ---------------- 4. Les diffuseurs ---------------- */
+  /* ---------------- 5. Les diffuseurs ---------------- */
 
   var chaines = compter(DRAMAS.map(function (d) {
     return CHAINES[d.chaine] || d.chaine;
@@ -237,14 +291,14 @@
   $("chaines-phrase").textContent =
     chaines[0].label + " diffuse " + chaines[0].valeur + " des trente séries, " +
     chaines[1].label + " en porte " + chaines[1].valeur + ". Le reste se disperse sur " +
-    (chaines.length - 2) + " autres chaînes et plateformes. À noter : MyDramaList " +
+    (chaines.length - 2) + " autres chaînes et plateformes. À noter : MyDramaList " +
     "ne recense que le diffuseur d'origine, pas le studio de production.";
 
   Viz.barres($("graph-chaines"), chaines, {
     unite: "séries", colonne: "Diffuseur", mesure: "Séries"
   });
 
-  /* ---------------- 5. Les origines ---------------- */
+  /* ---------------- 6. Les origines ---------------- */
 
   var NOMS = { KR: "Corée du Sud", JP: "Japon", CN: "Chine" };
   var pays = compter(DRAMAS.map(function (d) { return NOMS[d.pays]; }));
@@ -256,7 +310,7 @@
 
   Viz.empilee($("graph-pays"), pays);
 
-  /* ---------------- 6. Les genres ---------------- */
+  /* ---------------- 7. Les genres ---------------- */
 
   var genres = {};
   DRAMAS.forEach(function (d) {
@@ -272,7 +326,7 @@
     "La romance arrive en tête avec " + genres["Romance"].length + " séries, devant le drame (" +
     genres["Drame"].length + ") et la comédie (" + genres["Comédie"].length +
     "). Le cadre scolaire revient dans " + genres["Scolaire"].length +
-    " titres : l'adolescence est manifestement un décor qui me parle.";
+    " titres : l'adolescence est manifestement un décor qui me parle.";
 
   Viz.barres($("graph-genres"), parVolume, {
     unite: "séries", colonne: "Genre", mesure: "Séries"

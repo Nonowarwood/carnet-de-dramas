@@ -1,6 +1,6 @@
 # Carnet de dramas
 
-Site statique recensant mes visionnages de dramas depuis mars 2025, avec mes notes,
+Site statique recensant mes visionnages de dramas depuis janvier 2025, avec mes notes,
 celles du public, et mes critiques.
 
 En ligne : <https://nonowarwood.github.io/carnet-de-dramas/>
@@ -20,7 +20,7 @@ carnet.html             Chiffres clés, critiques, derniers visionnages, à voir
 visionnages.html        Les 30 fiches, avec recherche, tri et filtre par pays
 moi.html                « Ce que mes visionnages disent de moi » : le portrait chiffré
 critiques/              Une page par critique
-assets/data.js          Toutes les données (dramas + liste « à voir »)
+assets/data.js          Toutes les données de visionnage
 assets/site.js          Icônes, jauges, note de consensus, rendu des fiches
 assets/charts.js        Graphiques (barres, colonnes, barre empilée)
 assets/anim.js          Révélations, compteurs, transitions de page
@@ -78,7 +78,7 @@ Tout se passe dans `assets/data.js`. Copier un bloc du tableau `DRAMAS` et compl
 | `acteurs`    | Rôles principaux, dans l'ordre du générique                    |
 | `mdl`        | Chemin de la fiche MyDramaList, ex. `"/758615-melo-movie"`      |
 | `note`       | Ma note sur 5 (`null` si pas encore notée)                     |
-| `periode`    | `"2025"` ou `"2026"` — les deux blocs de ma note d'origine      |
+| `mois`       | Mois de visionnage, au format `"AAAA-MM"`                       |
 | `synopsis`   | Résumé en français                                             |
 
 Déposer l'affiche dans `assets/posters/` sous le nom donné par le titre en
@@ -103,9 +103,14 @@ Le carnet détecte automatiquement les dramas qui ont une critique.
 
 ## La page portrait
 
-`moi.html` agrège les 30 fiches en six sections indépendantes : le temps passé,
-les acteurs récurrents, les années, les diffuseurs, les origines et les genres.
-Le temps est calculé série par série (`episodesNb × dureeEp`), pas estimé.
+`moi.html` agrège les 30 fiches en sept sections indépendantes : le temps passé, le
+rythme de visionnage, les acteurs récurrents, les années de production, les
+diffuseurs, les origines et les genres. Le temps est calculé série par série
+(`episodesNb × dureeEp`), pas estimé.
+
+La section « rythme » s'appuie sur le champ `mois` et affiche tous les mois de la
+période, y compris ceux sans visionnage : un creux est une information, pas un trou
+à masquer.
 
 Les graphiques sont en HTML et CSS, sans bibliothèque (`assets/charts.js`). Règles
 suivies : une seule teinte par graphique à série unique — la longueur porte déjà la
@@ -174,7 +179,7 @@ tête de document, donc la page reste entièrement lisible sans JavaScript.
 
 Rendu par `piedDePage()` (`assets/site.js`) à partir des données, donc juste par
 construction : nombre de séries, d'épisodes, d'heures, moyenne, pays, dernière série
-vue, titres notés 5 sur 5, et la liste « à voir ». Chaque page l'appelle dans son
+vue, titres notés 5 sur 5, et la période couverte. Chaque page l'appelle dans son
 `<footer id="pied">` en passant son préfixe de chemin. Le carrousel d'accueil en est
 la seule exception : il occupe l'écran entier et ne défile pas.
 

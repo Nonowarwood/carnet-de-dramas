@@ -32,7 +32,7 @@
   <h1 class="opening__title display" data-split>Carnet<br>de dramas</h1>
   <div class="opening__foot mono reveal">
     <span>Par Noah Guerbois<br>Sources MyDramaList &amp; Viki</span>
-    <span>Depuis mars 2025</span>
+    <span>Depuis janvier 2025</span>
     <a href="index.html" style="color:inherit">Revenir au carrousel</a>
   </div>
 </div>
@@ -57,14 +57,6 @@
       </a>
     </div>
     <div class="index" id="derniers"></div>
-  </section>
-
-  <section class="wrap section">
-    <div class="section__head reveal">
-      <h2 class="section__title mono">À voir</h2>
-      <span class="section__count mono" id="compte-avoir"></span>
-    </div>
-    <ul class="watchlist" id="avoir"></ul>
   </section>
 
 </main>
@@ -126,13 +118,6 @@
     .reverse()
     .map(function (o) { return rangee(o.d, o.i); })
     .join("");
-
-  document.getElementById("compte-avoir").textContent =
-    String(A_VOIR.length).padStart(2, "0");
-
-  document.getElementById("avoir").innerHTML = A_VOIR.map(function (t, i) {
-    return '<li class="reveal"><span class="mono">' + numero(i) + "</span>" + esc(t) + "</li>";
-  }).join("");
 
   document.getElementById("pied").innerHTML = piedDePage("");
 
