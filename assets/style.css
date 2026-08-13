@@ -747,3 +747,420 @@ a:focus-visible, button:focus-visible {
   outline: 2px solid var(--orange);
   outline-offset: 2px;
 }
+
+/* ===============================================================
+   ANIMATIONS
+   Les états initiaux ne s'appliquent que si JavaScript est actif
+   (classe « js » posée en tête de document) : sans lui, la page
+   reste entièrement lisible.
+   =============================================================== */
+
+/* ---------------- Entrée et sortie de page ---------------- */
+
+.js body { opacity: 0; }
+
+.js body.est-entree {
+  opacity: 1;
+  transition: opacity 0.5s ease, filter 0.5s ease;
+}
+
+.js body.est-sortie { opacity: 0; filter: blur(2px); transition-duration: 0.26s; }
+
+/* ---------------- Révélation au défilement ---------------- */
+
+.js .reveal {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.js .reveal.est-visible {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* ---------------- Titres découpés ---------------- */
+
+[data-split] .ligne { display: block; }
+
+[data-split] .mot {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  /* Marge de sécurité pour ne pas rogner les jambages. */
+  padding-bottom: 0.09em;
+  margin-bottom: -0.09em;
+}
+
+.js [data-split] .mot__i {
+  display: inline-block;
+  transform: translateY(108%);
+}
+
+.js [data-split].est-visible .mot__i {
+  transform: none;
+  transition: transform 0.9s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* ---------------- Jauge de progression de lecture ---------------- */
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 60;
+  pointer-events: none;
+}
+
+.scroll-progress__bar {
+  height: 100%;
+  background: var(--orange);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+
+/* ---------------- Barre escamotable ---------------- */
+
+.bar {
+  transition: transform 0.35s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.3s ease;
+}
+
+.bar.est-cachee { transform: translateY(-101%); }
+.bar.est-detachee { box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08), 0 10px 30px rgba(0, 0, 0, 0.06); }
+
+/* ---------------- Mosaïque : parallaxe et arrivée ---------------- */
+
+.mosaic__cell img {
+  transform: translateY(calc(var(--decalage, 0px) * -1)) scale(1.06);
+  transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.js .mosaic__cell {
+  opacity: 0;
+  animation: mosaique-entree 0.85s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+}
+
+.js .mosaic__cell:nth-child(1)  { animation-delay: 0.02s; }
+.js .mosaic__cell:nth-child(2)  { animation-delay: 0.06s; }
+.js .mosaic__cell:nth-child(3)  { animation-delay: 0.10s; }
+.js .mosaic__cell:nth-child(4)  { animation-delay: 0.14s; }
+.js .mosaic__cell:nth-child(5)  { animation-delay: 0.18s; }
+.js .mosaic__cell:nth-child(6)  { animation-delay: 0.22s; }
+.js .mosaic__cell:nth-child(7)  { animation-delay: 0.26s; }
+.js .mosaic__cell:nth-child(8)  { animation-delay: 0.30s; }
+.js .mosaic__cell:nth-child(n + 9) { animation-delay: 0.34s; }
+
+@keyframes mosaique-entree {
+  from { opacity: 0; transform: scale(1.12); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---------------- Survols ---------------- */
+
+.row {
+  position: relative;
+  transition: background 0.18s ease, padding-left 0.28s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+a.row:hover { padding-left: 0.6rem; }
+
+.row__thumb { transition: transform 0.35s cubic-bezier(0.19, 1, 0.22, 1); }
+.row:hover .row__thumb { transform: scale(1.14); }
+
+.row__srcs {
+  display: inline-block;
+  margin-left: 0.35rem;
+  padding: 0 0.28rem;
+  background: var(--grey-20);
+  color: var(--grey-70);
+  font-size: 0.9em;
+}
+
+.feature__media img { transition: transform 0.7s cubic-bezier(0.19, 1, 0.22, 1); }
+.feature:hover .feature__media img { transform: scale(1.05); }
+
+.fiche__poster { transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1); }
+.fiche:hover .fiche__poster { transform: translateY(-4px); }
+
+.fiche__stat--consensus { position: relative; cursor: help; }
+
+.fiche__stat--consensus .sources {
+  display: flex;
+  gap: 0.5rem;
+  color: var(--grey-50);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.fiche:hover .fiche__stat--consensus .sources { opacity: 1; transform: none; }
+
+.watchlist li { transition: padding-left 0.3s cubic-bezier(0.19, 1, 0.22, 1); }
+.watchlist li:hover { padding-left: 0.75rem; }
+
+/* Balayage orange sous les liens de l'en-tête. */
+.bar__link::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--orange);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.32s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.bar__link { position: relative; overflow: hidden; }
+.bar__link:hover::before { transform: none; }
+.bar__link[aria-current="page"]::before { display: none; }
+
+/* ---------------- Curseur du carrousel ---------------- */
+
+.curseur {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5.25rem;
+  height: 5.25rem;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.4);
+  transition: opacity 0.25s ease, scale 0.25s ease;
+}
+
+.curseur.est-visible { opacity: 1; }
+.curseur.est-pressee { background: var(--orange); }
+
+@media (pointer: coarse) { .curseur { display: none; } }
+
+/* ===============================================================
+   GUIDE INTERACTIF
+   =============================================================== */
+
+.guide {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s;
+}
+
+.guide.est-ouvert { opacity: 1; visibility: visible; pointer-events: auto; }
+
+.guide__voile { position: absolute; inset: 0; }
+
+/* L'ombre démesurée assombrit toute la page sauf le rectangle éclairé. */
+.guide__projecteur {
+  position: absolute;
+  border: 2px solid var(--orange);
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.74);
+  pointer-events: none;
+  transition:
+    top 0.5s cubic-bezier(0.19, 1, 0.22, 1),
+    left 0.5s cubic-bezier(0.19, 1, 0.22, 1),
+    width 0.5s cubic-bezier(0.19, 1, 0.22, 1),
+    height 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.guide__bulle {
+  position: absolute;
+  width: min(23rem, calc(100vw - 1.5rem));
+  padding: 1.4rem 1.5rem 1.25rem;
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  transition: top 0.5s cubic-bezier(0.19, 1, 0.22, 1), left 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.guide__compteur { margin: 0 0 0.6rem; color: var(--orange); }
+
+.guide__titre {
+  margin: 0 0 0.5rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+}
+
+.guide__texte { margin: 0 0 1.4rem; font-size: 0.9375rem; line-height: 1.5; color: var(--grey-70); }
+
+.guide__pieds {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line-hair);
+}
+
+.guide__points { display: flex; gap: 5px; }
+
+.guide__point {
+  width: 5px;
+  height: 5px;
+  background: var(--grey-20);
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.guide__point.est-actif { background: var(--orange); transform: scaleY(2.2); }
+
+.guide__boutons { display: flex; gap: 0.5rem; }
+
+.guide__btn {
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  padding: 0.55rem 0.85rem;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, opacity 0.18s ease;
+}
+
+.guide__btn:hover { background: var(--grey-05); }
+.guide__btn:disabled { opacity: 0.3; cursor: default; }
+
+.guide__btn--plein { background: var(--ink); color: var(--paper); }
+.guide__btn--plein:hover { background: var(--orange); color: var(--paper); }
+
+.guide__fermer {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  width: 1.75rem;
+  height: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 0;
+  color: var(--grey-50);
+  cursor: pointer;
+}
+
+.guide__fermer:hover { color: var(--orange); }
+.guide__fermer svg { width: 0.75rem; height: 0.75rem; }
+
+body.guide-ouvert { overflow: hidden; }
+
+/* Bouton d'appel dans l'en-tête. */
+.bar__guide {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0 clamp(0.8rem, 2vw, 1.4rem);
+  background: transparent;
+  border: 0;
+  border-left: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.15s linear;
+}
+
+.bar__guide:hover { background: var(--orange); color: var(--paper); }
+
+.bar__guide span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.15rem;
+  height: 1.15rem;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  font-size: 0.65rem;
+}
+
+/* ---------------- Respect des préférences système ---------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .js body { opacity: 1; }
+  .js .reveal { opacity: 1; transform: none; }
+  .js [data-split] .mot__i { transform: none; }
+  .js .mosaic__cell { opacity: 1; animation: none; }
+}
+
+/* ---------------- Compléments de mise en page ---------------- */
+
+/* Lien secondaire, masqué quand la barre devient étroite. */
+@media (max-width: 52rem) {
+  .bar__link--optionnel { display: none; }
+}
+
+/* Colonne droite de la légende du carrousel. */
+.ring-caption__aside {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.9rem;
+}
+
+/* La légende ne capte pas la souris, sauf son appel à l'action. */
+.ring-caption__cta {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1rem;
+  background: var(--ink);
+  color: var(--paper);
+  text-decoration: none;
+  transition: background 0.18s linear, gap 0.28s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.ring-caption__cta:hover { background: var(--orange); gap: 1.1rem; }
+.ring-caption__cta svg { width: 0.7em; height: 0.7em; }
+
+@media (max-width: 48rem) {
+  .ring-caption__aside { flex-direction: row; align-items: center; justify-content: space-between; }
+}
+
+/* Bascule du titre à chaque changement d'affiche en façade. */
+.bascule {
+  display: inline-block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.bascule > span {
+  display: inline-block;
+  animation: bascule-entree 0.55s cubic-bezier(0.19, 1, 0.22, 1) both;
+}
+
+@keyframes bascule-entree {
+  from { transform: translateY(106%); }
+  to   { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bascule > span { animation: none; }
+}

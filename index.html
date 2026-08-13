@@ -4,142 +4,204 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Carnet de dramas</title>
-<meta name="description" content="Ce que j'ai regardé depuis mars 2025 : 30 dramas coréens, japonais et chinois, mes notes et mes critiques.">
+<meta name="description" content="Trente dramas coréens, japonais et chinois regardés depuis mars 2025 : mes notes, celles du public, et mes critiques.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23000'/><rect x='7' y='7' width='18' height='18' fill='%23ff5c2b'/></svg>">
 <link rel="stylesheet" href="assets/style.css">
+<script>document.documentElement.classList.add("js");</script>
 </head>
-<body>
+<body class="ring-page" data-page="accueil">
 
 <header class="bar">
   <a class="bar__logo" href="index.html">Dramas<sup>26</sup></a>
-  <a class="bar__link bar__link--accent" href="visionnages.html">
-    Les visionnages
-    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 1v10M1 6h10"/></svg>
-  </a>
+  <a class="bar__link" href="carnet.html">Le carnet</a>
+  <a class="bar__link" href="visionnages.html">Les visionnages</a>
+  <a class="bar__link bar__link--optionnel" href="critiques/melo-movie.html">Critiques</a>
   <span class="bar__spacer"></span>
-  <a class="bar__link" href="carrousel.html">Carrousel</a>
-  <a class="bar__link" href="critiques/melo-movie.html">
-    Critiques
-    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 1v10M1 6h10"/></svg>
-  </a>
+  <button class="bar__guide" type="button" data-guide><span>?</span> Guide</button>
 </header>
 
-<div class="mosaic" id="mosaic" aria-hidden="true"></div>
+<div class="ring-progress"><div class="ring-progress__bar" id="progress"></div></div>
 
-<div class="wrap opening">
-  <p class="opening__kicker">
-    Trente titres consignés au fil des visionnages&nbsp;: mes notes sur cinq,
-    celles des fans, et de temps en temps une vraie critique.
-  </p>
-  <h1 class="opening__title display">Carnet<br>de dramas</h1>
-  <div class="opening__foot mono">
-    <span>Par Noah Guerbois<br>Métadonnées MyDramaList</span>
-    <span>Depuis mars 2025</span>
-    <span>Défiler pour lire
-      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" style="width:.8em;height:.8em"><path d="M6 1v10M1.5 5.5 6 10l4.5-4.5"/></svg>
-    </span>
-  </div>
-</div>
+<div class="ring" id="ring" tabindex="0" role="group"
+     aria-label="Carrousel des affiches. Utiliser les flèches gauche et droite pour parcourir.">
 
-<div class="figures" id="figures"></div>
+  <div class="ring__stage" id="stage"></div>
 
-<main>
+  <p class="ring-hint mono">Glisser &middot; molette &middot; flèches</p>
 
-  <section class="wrap section">
-    <div class="section__head">
-      <h2 class="section__title mono">Critiques</h2>
-      <span class="section__count mono" id="compte-critiques"></span>
+  <div class="ring-caption">
+    <div>
+      <span class="mono" id="cap-num"></span>
+      <h1 class="ring-caption__title" id="cap-titre"></h1>
+      <p class="ring-caption__meta mono" id="cap-meta"></p>
     </div>
-    <div id="critiques"></div>
-  </section>
-
-  <section class="wrap section">
-    <div class="section__head">
-      <h2 class="section__title mono">Derniers visionnages</h2>
-      <a class="section__count mono" href="visionnages.html" style="text-decoration:none">
-        Voir les <span id="compte-total"></span> &rarr;
+    <div class="ring-caption__aside">
+      <div class="ring-caption__score" id="cap-note"></div>
+      <a class="ring-caption__cta mono" href="carnet.html">
+        Entrer dans le carnet
+        <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M1 6h10M6.5 1.5 11 6l-4.5 4.5"/></svg>
       </a>
     </div>
-    <div class="index" id="derniers"></div>
-  </section>
+  </div>
 
-  <section class="wrap section">
-    <div class="section__head">
-      <h2 class="section__title mono">À voir</h2>
-      <span class="section__count mono" id="compte-avoir"></span>
-    </div>
-    <ul class="watchlist" id="avoir"></ul>
-  </section>
+</div>
 
-</main>
-
-<footer class="wrap footer mono">
-  <span>Carnet personnel &mdash; notes issues de mes visionnages</span>
-  <span>Affiches et notes des fans&nbsp;: <a href="https://mydramalist.com">MyDramaList</a></span>
-</footer>
+<div class="curseur" aria-hidden="true">Glisser</div>
 
 <script src="assets/data.js"></script>
 <script src="assets/site.js"></script>
 <script>
 (function () {
-  var stats = calculerStats(DRAMAS);
+  var ring = document.getElementById("ring");
+  var stage = document.getElementById("stage");
+  var progress = document.getElementById("progress");
+  var capNum = document.getElementById("cap-num");
+  var capTitre = document.getElementById("cap-titre");
+  var capMeta = document.getElementById("cap-meta");
+  var capNote = document.getElementById("cap-note");
 
-  // Mosaïque d'ouverture : les affiches les mieux notées, teintées par la charte.
-  var pourMosaique = DRAMAS
-    .filter(function (d) { return d.affiche !== false; })
-    .slice()
-    .sort(function (a, b) { return (b.note || 0) - (a.note || 0); })
-    .slice(0, 16);
+  preparerConsensus(DRAMAS);
 
-  document.getElementById("mosaic").innerHTML = pourMosaique.map(function (d) {
-    return '<div class="mosaic__cell"><img src="' + affiche(d) + '" alt="" loading="eager"></div>';
+  var N = DRAMAS.length;
+  var PAS = 360 / N;              // écart angulaire entre deux panneaux
+  var rayon = 0;                  // recalculé à chaque redimensionnement
+
+  /* ---------------- Construction des panneaux ---------------- */
+
+  stage.innerHTML = DRAMAS.map(function (d, i) {
+    var img = affiche(d);
+    var contenu = img
+      ? '<img src="' + img + '" alt="Affiche de ' + esc(d.titre) + '" loading="' +
+        (i < 10 ? "eager" : "lazy") + '" draggable="false">'
+      : '<div class="ring__fallback"><span class="mono">' + numero(i) + "</span>" +
+        "<b>" + esc(d.titre) + "</b></div>";
+    return '<div class="ring__item" data-i="' + i + '">' + contenu + "</div>";
   }).join("");
 
-  document.getElementById("figures").innerHTML = [
-    [stats.total, "visionnages"],
-    ["<em>" + formatNote(Math.round(stats.moyenne * 100) / 100) + "</em>", "ma moyenne / 5"],
-    [formatNote(Math.round(stats.moyenneFans * 10) / 10), "moyenne des fans / 10"],
-    [stats.coupsDeCoeur, "notes maximales"]
-  ].map(function (f) {
-    return '<div class="figure"><span class="figure__value">' + f[0] +
-           '</span><span class="figure__label mono">' + f[1] + "</span></div>";
-  }).join("");
+  var panneaux = Array.prototype.slice.call(stage.children);
 
-  document.getElementById("compte-total").textContent = stats.total;
+  /* ---------------- Géométrie ---------------- */
 
-  // Les dramas disposant d'une page de critique.
-  var avecCritique = DRAMAS.filter(function (d) { return d.critique; });
-  document.getElementById("compte-critiques").textContent =
-    String(avecCritique.length).padStart(2, "0");
+  function dimensionner() {
+    var largeur = Math.max(150, Math.min(300, Math.round(window.innerWidth * 0.19)));
+    document.documentElement.style.setProperty("--card-w", largeur + "px");
 
-  document.getElementById("critiques").innerHTML = avecCritique.map(function (d) {
-    return '<a class="feature" href="' + d.critique + '">' +
-      '<div class="feature__media"><img src="' + affiche(d) + '" alt="Affiche de ' + esc(d.titre) + '"></div>' +
-      "<div>" +
-      '<span class="mono">' + esc(d.critiqueDate) + " &middot; " + esc(d.titre) + "</span>" +
-      '<h3 class="feature__title">Avis critique sur «&nbsp;' + esc(d.titre) + '&nbsp;»</h3>' +
-      '<p class="feature__excerpt">' + esc(d.critiqueExtrait) + "</p>" +
-      '<span class="feature__cta mono">Lire la critique ' +
-      '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M1 6h10M6.5 1.5 11 6l-4.5 4.5"/></svg>' +
-      "</span></div></a>";
-  }).join("");
+    // Rayon tel que les panneaux se répartissent sans se chevaucher.
+    rayon = (largeur / 2) / Math.tan(Math.PI / N) * 1.12;
 
-  // Six derniers titres consignés, du plus récent au plus ancien.
-  document.getElementById("derniers").innerHTML = DRAMAS
-    .map(function (d, i) { return { d: d, i: i }; })
-    .slice(-6)
-    .reverse()
-    .map(function (o) { return rangee(o.d, o.i); })
-    .join("");
+    panneaux.forEach(function (el, i) {
+      el.style.transform = "rotateY(" + i * PAS + "deg) translateZ(" + rayon + "px)";
+    });
+  }
 
-  document.getElementById("compte-avoir").textContent =
-    String(A_VOIR.length).padStart(2, "0");
+  /* ---------------- Boucle d'animation ---------------- */
 
-  document.getElementById("avoir").innerHTML = A_VOIR.map(function (t, i) {
-    return '<li><span class="mono">' + numero(i) + "</span>" + esc(t) + "</li>";
-  }).join("");
+  var angle = 0;        // rotation courante, en degrés
+  var vitesse = 0;      // inertie après un lâcher
+  var DERIVE = 0.035;   // rotation continue, façon plateau tournant
+  var reprise = 0;      // frames avant reprise de la dérive
+  var attrape = false;
+  var dernierIndex = -1;
+  var sobre = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function indexDeFace() {
+    // Le panneau i est de face quand angle + i * PAS ≡ 0 (mod 360).
+    var i = Math.round(-angle / PAS) % N;
+    return (i + N) % N;
+  }
+
+  function majLegende() {
+    var i = indexDeFace();
+    if (i === dernierIndex) return;
+    dernierIndex = i;
+
+    var d = DRAMAS[i];
+    capNum.textContent = numero(i) + " / " + N;
+    capMeta.textContent = ligneMeta(d, true);
+    capNote.innerHTML =
+      d.note === null
+        ? '<span class="mono">Pas encore notée</span>'
+        : jauge(d.note) + "<span>" + formatNote(d.note) + "/5</span>";
+
+    // Le titre bascule verticalement à chaque changement de façade.
+    if (sobre) {
+      capTitre.textContent = d.titre;
+    } else {
+      capTitre.innerHTML = '<span class="bascule"><span>' + esc(d.titre) + "</span></span>";
+    }
+
+    progress.style.width = ((i + 1) / N) * 100 + "%";
+  }
+
+  function frame() {
+    if (!attrape) {
+      angle += vitesse;
+      vitesse *= 0.94;
+      if (Math.abs(vitesse) < 0.002) vitesse = 0;
+      if (reprise > 0) reprise--;
+      else if (!sobre) angle += DERIVE;
+    }
+    stage.style.transform = "translateZ(" + -rayon + "px) rotateY(" + angle + "deg)";
+    majLegende();
+    requestAnimationFrame(frame);
+  }
+
+  /* ---------------- Interactions ---------------- */
+
+  var xDepart = 0, angleDepart = 0, dernierX = 0;
+
+  ring.addEventListener("pointerdown", function (e) {
+    attrape = true;
+    ring.classList.add("is-dragging");
+    ring.setPointerCapture(e.pointerId);
+    xDepart = dernierX = e.clientX;
+    angleDepart = angle;
+    vitesse = 0;
+  });
+
+  ring.addEventListener("pointermove", function (e) {
+    if (!attrape) return;
+    // 0,22°/px : un balayage d'écran fait défiler une bonne partie du cylindre.
+    angle = angleDepart + (e.clientX - xDepart) * 0.22;
+    vitesse = (e.clientX - dernierX) * 0.22;
+    dernierX = e.clientX;
+  });
+
+  function relacher(e) {
+    if (!attrape) return;
+    attrape = false;
+    ring.classList.remove("is-dragging");
+    if (e.pointerId !== undefined && ring.hasPointerCapture(e.pointerId)) {
+      ring.releasePointerCapture(e.pointerId);
+    }
+    reprise = 180; // ~3 s avant que la dérive ne reprenne
+  }
+
+  ring.addEventListener("pointerup", relacher);
+  ring.addEventListener("pointercancel", relacher);
+
+  ring.addEventListener("wheel", function (e) {
+    e.preventDefault();
+    var delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+    vitesse -= delta * 0.012;
+    reprise = 180;
+  }, { passive: false });
+
+  ring.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowLeft") { vitesse += PAS * 0.35; reprise = 180; }
+    else if (e.key === "ArrowRight") { vitesse -= PAS * 0.35; reprise = 180; }
+    else return;
+    e.preventDefault();
+  });
+
+  window.addEventListener("resize", dimensionner);
+
+  dimensionner();
+  requestAnimationFrame(frame);
 })();
 </script>
+<script src="assets/anim.js"></script>
+<script src="assets/guide.js"></script>
 
 </body>
 </html>

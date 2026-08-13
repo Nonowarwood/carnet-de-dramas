@@ -1,5 +1,5 @@
 /* ===============================================================
-   Rendu des fiches, jauges et statistiques.
+   Rendu des fiches, jauges, statistiques et note de consensus.
    Aucune dépendance externe. Aucun emoji : les repères visuels
    sont des numéros en monospace et des icônes SVG.
    =============================================================== */
@@ -28,6 +28,12 @@ function formatNote(n) {
   return String(n).replace(".", ",");
 }
 
+/* Arrondi puis mise au format français. */
+function arrondi(n, decimales) {
+  var f = Math.pow(10, decimales);
+  return formatNote(Math.round(n * f) / f);
+}
+
 /* « Mr. Plankton » → « mr-plankton » : sert à retrouver l'affiche. */
 function slug(titre) {
   return titre
@@ -38,7 +44,6 @@ function slug(titre) {
     .replace(/^-+|-+$/g, "");
 }
 
-/* Chemin de l'affiche, ou null si le drama n'en a pas. */
 function affiche(d, base) {
   if (d.affiche === false) return null;
   return (base || "") + "assets/posters/" + slug(d.titre) + ".jpg";
@@ -53,14 +58,12 @@ function esc(s) {
     .replace(/"/g, "&quot;");
 }
 
-/* Numéro d'ordre sur deux chiffres. */
 function numero(i) {
   return String(i + 1).padStart(2, "0");
 }
 
 /* ---------------- Jauge de note ---------------- */
 
-/* Cinq segments : pleins, à moitié, ou vides. */
 function jauge(note) {
   var segments = "";
   for (var i = 1; i <= 5; i++) {
@@ -71,25 +74,84 @@ function jauge(note) {
   }
   return (
     '<span class="gauge" role="img" aria-label="' +
-    formatNote(note) +
-    ' sur 5">' + segments + "</span>"
+    formatNote(note) + ' sur 5">' + segments + "</span>"
   );
+}
+
+/* ===============================================================
+   NOTE DE CONSENSUS
+
+   Les plateformes ne notent pas sur la même échelle : Viki tourne
+   autour de 9,5 (public de fans), MyDramaList autour de 8,4. Une
+   moyenne brute mesurerait surtout cet écart de culture de notation.
+   On centre donc chaque plateforme sur sa propre moyenne et son
+   propre écart-type, on combine les scores centrés réduits, puis on
+   ramène le résultat sur l'échelle MyDramaList — la seule qui
+   couvre les 30 titres, donc la plus lisible comme référence.
+
+   Viki est pondérée par son nombre de votes : une note assise sur
+   6 000 votes pèse moins qu'une note assise sur 280 000.
+   =============================================================== */
+
+function momentsDe(valeurs) {
+  var n = valeurs.length;
+  if (!n) return { moyenne: 0, ecartType: 1, n: 0 };
+  var moyenne = valeurs.reduce(function (a, b) { return a + b; }, 0) / n;
+  var variance =
+    valeurs.reduce(function (a, b) { return a + (b - moyenne) * (b - moyenne); }, 0) / n;
+  return { moyenne: moyenne, ecartType: Math.sqrt(variance) || 1, n: n };
+}
+
+function preparerConsensus(liste) {
+  var mdl = momentsDe(liste.filter(function (d) { return d.noteMdl != null; })
+                           .map(function (d) { return d.noteMdl; }));
+  var viki = momentsDe(liste.filter(function (d) { return d.noteViki != null; })
+                            .map(function (d) { return d.noteViki; }));
+
+  liste.forEach(function (d) {
+    var scores = [], poids = [];
+
+    if (d.noteMdl != null) {
+      scores.push((d.noteMdl - mdl.moyenne) / mdl.ecartType);
+      poids.push(1);
+    }
+    if (d.noteViki != null) {
+      scores.push((d.noteViki - viki.moyenne) / viki.ecartType);
+      // Saturation à 100 000 votes : au-delà, la confiance ne progresse plus.
+      poids.push(Math.min(1, Math.log10(d.votesViki || 1) / 5));
+    }
+
+    if (!scores.length) {
+      d.consensus = null;
+      d.nbSources = 0;
+      return;
+    }
+
+    var total = poids.reduce(function (a, b) { return a + b; }, 0);
+    var z = scores.reduce(function (a, s, i) { return a + s * poids[i]; }, 0) / total;
+
+    d.consensus = Math.max(0, Math.min(10, mdl.moyenne + z * mdl.ecartType));
+    d.nbSources = scores.length;
+  });
+
+  return { mdl: mdl, viki: viki };
 }
 
 /* ---------------- Statistiques ---------------- */
 
 function calculerStats(liste) {
   const notes = liste.filter((d) => d.note !== null).map((d) => d.note);
-  const fans = liste.filter((d) => d.noteFans !== null).map((d) => d.noteFans);
+  const cons = liste.filter((d) => d.consensus != null).map((d) => d.consensus);
   const moyenne = notes.reduce((a, b) => a + b, 0) / notes.length;
-  const moyenneFans = fans.reduce((a, b) => a + b, 0) / fans.length;
+  const moyenneConsensus = cons.reduce((a, b) => a + b, 0) / cons.length;
 
   return {
     total: liste.length,
     notes: notes.length,
     moyenne: moyenne,
-    moyenneFans: moyenneFans,
+    moyenneConsensus: moyenneConsensus,
     coupsDeCoeur: notes.filter((n) => n === 5).length,
+    avecViki: liste.filter((d) => d.noteViki != null).length,
   };
 }
 
@@ -105,6 +167,17 @@ function ligneMeta(d, avecMention) {
   if (d.episodes) bouts.push(d.episodes);
   if (d.genres && d.genres.length) bouts.push(d.genres.join(" / "));
   return bouts.map(esc).join(" — ");
+}
+
+/* Détail des sources, affiché au survol du consensus. */
+function detailSources(d) {
+  var bouts = [];
+  if (d.noteMdl != null) bouts.push("MyDramaList " + formatNote(d.noteMdl));
+  if (d.noteViki != null) {
+    bouts.push("Viki " + formatNote(d.noteViki) +
+      " (" + d.votesViki.toLocaleString("fr-FR") + " votes)");
+  }
+  return bouts.join(" · ");
 }
 
 /* ---------------- Ligne d'index ---------------- */
@@ -130,8 +203,10 @@ function rangee(d, i, base) {
     "</span>" +
     '<span class="row__meta mono">' +
     (PAYS_COURT[d.pays] || "") + (d.annee ? " · " + d.annee : "") + "</span>" +
-    '<span class="row__fans mono">' +
-    (d.noteFans === null ? "—" : "Fans " + formatNote(d.noteFans)) + "</span>" +
+    '<span class="row__fans mono" title="' + esc(detailSources(d)) + '">' +
+    (d.consensus == null ? "—" : "Public " + arrondi(d.consensus, 1)) +
+    (d.nbSources > 1 ? '<span class="row__srcs">' + d.nbSources + "</span>" : "") +
+    "</span>" +
     score;
 
   return d.critique
@@ -151,11 +226,15 @@ function fiche(d, i, base) {
       : '<div class="fiche__stat"><span class="mono">Ma note</span>' +
         jauge(d.note) + "<b>" + formatNote(d.note) + "/5</b></div>";
 
-  const noteFans =
-    d.noteFans === null
+  const consensus =
+    d.consensus == null
       ? ""
-      : '<div class="fiche__stat"><span class="mono">Fans</span><b>' +
-        formatNote(d.noteFans) + "/10</b></div>";
+      : '<div class="fiche__stat fiche__stat--consensus">' +
+        '<span class="mono">Public</span><b>' + arrondi(d.consensus, 1) + "/10</b>" +
+        '<span class="sources mono">' +
+        (d.noteMdl != null ? "<span>MDL " + formatNote(d.noteMdl) + "</span>" : "") +
+        (d.noteViki != null ? "<span>Viki " + formatNote(d.noteViki) + "</span>" : "") +
+        "</span></div>";
 
   const lien = d.critique
     ? '<a class="fiche__link mono" href="' + base + esc(d.critique) + '">' +
@@ -164,10 +243,10 @@ function fiche(d, i, base) {
 
   const synopsis = d.synopsis
     ? '<p class="fiche__synopsis">' + esc(d.synopsis) + "</p>"
-    : '<p class="fiche__synopsis fiche__synopsis--vide">Fiche introuvable sur MyDramaList — à compléter.</p>';
+    : '<p class="fiche__synopsis fiche__synopsis--vide">Synopsis à compléter.</p>';
 
   return (
-    '<article class="fiche">' +
+    '<article class="fiche reveal">' +
     '<div class="fiche__num mono">' + numero(i) + "</div>" +
     "<div>" +
     (img
@@ -180,7 +259,7 @@ function fiche(d, i, base) {
     "</h3>" +
     '<p class="fiche__meta mono">' + ligneMeta(d, false) + "</p>" +
     synopsis +
-    '<div class="fiche__ratings">' + maNote + noteFans + lien + "</div>" +
+    '<div class="fiche__ratings">' + maNote + consensus + lien + "</div>" +
     "</div>" +
     "</article>"
   );

@@ -6,7 +6,9 @@
 
    Pour ajouter un drama : copier un bloc et compléter les champs.
      note      : ta note sur 5 (null si pas encore notée)
-     noteFans  : moyenne des utilisateurs MyDramaList, sur 10
+     noteMdl   : moyenne MyDramaList, sur 10
+     noteViki  : moyenne Viki, sur 10 (facultatif)
+     votesViki : nombre de votes Viki, sert à pondérer le consensus
      periode   : "2025" ou "2026" (les deux blocs de la note d'origine)
    --------------------------------------------------------------- */
 
@@ -19,7 +21,7 @@ const DRAMAS = [
     annee: 2021,
     episodes: "9 ép. (S1)",
     genres: ["Thriller", "Survie", "Drame"],
-    noteFans: 8.4,
+    noteMdl: 8.4,
     note: 2.5,
     periode: "2025",
     synopsis:
@@ -32,7 +34,7 @@ const DRAMAS = [
     annee: 2020,
     episodes: "8 ép. (S1)",
     genres: ["Thriller", "Science-fiction", "Survie"],
-    noteFans: 8.9,
+    noteMdl: 8.9,
     note: 4,
     periode: "2025",
     synopsis:
@@ -45,7 +47,9 @@ const DRAMAS = [
     annee: 2022,
     episodes: "8 ép. (Class 1)",
     genres: ["Drame", "Scolaire", "Action"],
-    noteFans: 9.1,
+    noteMdl: 9.1,
+    noteViki: 9.62,
+    votesViki: 98101,
     note: 4.5,
     periode: "2025",
     synopsis:
@@ -57,7 +61,7 @@ const DRAMAS = [
     annee: 2022,
     episodes: "12 ép.",
     genres: ["Horreur", "Scolaire", "Survie"],
-    noteFans: 8.6,
+    noteMdl: 8.6,
     note: 3.5,
     periode: "2025",
     synopsis:
@@ -69,7 +73,7 @@ const DRAMAS = [
     annee: 2022,
     episodes: "16 ép.",
     genres: ["Romance", "Sport", "Drame"],
-    noteFans: 8.8,
+    noteMdl: 8.8,
     note: 5,
     periode: "2025",
     synopsis:
@@ -81,7 +85,7 @@ const DRAMAS = [
     annee: 2024,
     episodes: "10 ép.",
     genres: ["Romance", "Comédie", "Road-trip"],
-    noteFans: 8.6,
+    noteMdl: 8.6,
     note: 3,
     periode: "2025",
     synopsis:
@@ -94,7 +98,7 @@ const DRAMAS = [
     annee: 2023,
     episodes: "8 ép. (S1)",
     genres: ["Action", "Drame", "Amitié"],
-    noteFans: 8.7,
+    noteMdl: 8.7,
     note: 4,
     periode: "2025",
     synopsis:
@@ -106,7 +110,9 @@ const DRAMAS = [
     annee: 2023,
     episodes: "16 ép.",
     genres: ["Fantastique", "Musique", "Famille"],
-    noteFans: 9.2,
+    noteMdl: 9.2,
+    noteViki: 9.76,
+    votesViki: 149435,
     note: 5,
     periode: "2025",
     synopsis:
@@ -118,7 +124,9 @@ const DRAMAS = [
     annee: 2025,
     episodes: "16 ép.",
     genres: ["Drame", "Mystère", "Thriller"],
-    noteFans: 7.6,
+    noteMdl: 7.6,
+    noteViki: 9.18,
+    votesViki: 6168,
     note: 3,
     periode: "2025",
     synopsis:
@@ -131,7 +139,9 @@ const DRAMAS = [
     annee: 2020,
     episodes: "24 ép.",
     genres: ["Romance", "Scolaire", "Drame"],
-    noteFans: 7.7,
+    noteMdl: 7.7,
+    noteViki: 9.32,
+    votesViki: 85410,
     note: 2.5,
     periode: "2025",
     synopsis:
@@ -143,7 +153,9 @@ const DRAMAS = [
     annee: 2024,
     episodes: "16 ép.",
     genres: ["Romance", "Fantastique", "Voyage temporel"],
-    noteFans: 8.9,
+    noteMdl: 8.9,
+    noteViki: 9.75,
+    votesViki: 287996,
     note: 5,
     periode: "2025",
     synopsis:
@@ -155,7 +167,9 @@ const DRAMAS = [
     annee: 2020,
     episodes: "16 ép.",
     genres: ["Romance", "Comédie", "Scolaire"],
-    noteFans: 8.3,
+    noteMdl: 8.3,
+    noteViki: 9.56,
+    votesViki: 448098,
     note: 4.5,
     periode: "2025",
     synopsis:
@@ -167,7 +181,7 @@ const DRAMAS = [
     annee: 2025,
     episodes: "16 ép.",
     genres: ["Action", "Comédie", "Policier"],
-    noteFans: 8.4,
+    noteMdl: 8.4,
     note: 3.5,
     periode: "2025",
     synopsis:
@@ -180,7 +194,7 @@ const DRAMAS = [
     annee: 2025,
     episodes: "Film",
     genres: ["Romance", "Comédie"],
-    noteFans: 8.4,
+    noteMdl: 8.4,
     note: 2.5,
     periode: "2025",
     synopsis:
@@ -192,23 +206,27 @@ const DRAMAS = [
     annee: 2025,
     episodes: "12 ép.",
     genres: ["Romance", "Comédie", "Bureau"],
-    noteFans: 8.0,
+    noteMdl: 8.0,
+    noteViki: 9.39,
+    votesViki: 126224,
     note: 4,
     periode: "2025",
     synopsis:
       "Son grand amour de lycée, un joueur en ligne surnommé « Dragon Noir », s'était révélé n'être qu'un collégien maladroit. Seize ans plus tard, elle le retrouve — devenu son supérieur hiérarchique.",
   },
   {
-    titre: "My Boyfriend Is The Man",
-    affiche: false,
+    titre: "My Girlfriend Is the Man!",
     pays: "KR",
-    annee: null,
-    episodes: null,
-    genres: [],
-    noteFans: null,
+    annee: 2025,
+    episodes: "12 ép.",
+    genres: ["Romance", "Comédie", "Fantastique"],
+    noteMdl: 7.5,
+    noteViki: 9.08,
+    votesViki: 9754,
     note: 3.5,
     periode: "2025",
-    synopsis: null,
+    synopsis:
+      "Étudiant en astronomie, Park Yun-jae voit sa petite amie se réveiller un matin dans le corps d'un homme. Le couple choisit de rester ensemble et de chercher comment inverser la métamorphose, entre un rival encombrant et des familles qui s'en mêlent.",
   },
   {
     titre: "Itaewon Class",
@@ -216,7 +234,7 @@ const DRAMAS = [
     annee: 2020,
     episodes: "16 ép.",
     genres: ["Drame", "Revanche", "Entreprise"],
-    noteFans: 8.4,
+    noteMdl: 8.4,
     note: 4,
     periode: "2025",
     synopsis:
@@ -230,7 +248,9 @@ const DRAMAS = [
     annee: 2023,
     episodes: "24 ép.",
     genres: ["Romance", "Scolaire", "Jeunesse"],
-    noteFans: 9.0,
+    noteMdl: 9.0,
+    noteViki: 9.67,
+    votesViki: 110773,
     note: 4.5,
     periode: "2026",
     synopsis:
@@ -242,7 +262,7 @@ const DRAMAS = [
     annee: 2026,
     episodes: "8 ép.",
     genres: ["Mystère", "Horreur", "Surnaturel"],
-    noteFans: 8.2,
+    noteMdl: 8.2,
     note: 3.5,
     periode: "2026",
     synopsis:
@@ -254,7 +274,7 @@ const DRAMAS = [
     annee: 2021,
     episodes: "16 ép.",
     genres: ["Sport", "Comédie", "Famille"],
-    noteFans: 8.7,
+    noteMdl: 8.7,
     note: 3.5,
     periode: "2026",
     synopsis:
@@ -266,7 +286,7 @@ const DRAMAS = [
     annee: 2021,
     episodes: "8 ép.",
     genres: ["Action", "Thriller", "Policier"],
-    noteFans: 8.7,
+    noteMdl: 8.7,
     note: null,
     periode: "2026",
     synopsis:
@@ -278,7 +298,7 @@ const DRAMAS = [
     annee: 2025,
     episodes: "12 ép.",
     genres: ["Romance", "Fantastique", "Scolaire"],
-    noteFans: 8.4,
+    noteMdl: 8.4,
     note: 4.5,
     periode: "2026",
     synopsis:
@@ -291,7 +311,7 @@ const DRAMAS = [
     annee: 2026,
     episodes: "8 ép.",
     genres: ["Drame", "Comédie", "Années 90"],
-    noteFans: 8.5,
+    noteMdl: 8.5,
     note: 3,
     periode: "2026",
     synopsis:
@@ -303,7 +323,9 @@ const DRAMAS = [
     annee: 2023,
     episodes: "24 ép.",
     genres: ["Romance", "Drame", "Jeunesse"],
-    noteFans: 8.3,
+    noteMdl: 8.3,
+    noteViki: 9.49,
+    votesViki: 64086,
     note: 4.5,
     periode: "2026",
     synopsis:
@@ -316,7 +338,7 @@ const DRAMAS = [
     annee: 2026,
     episodes: "6 ép.",
     genres: ["Drame", "Littérature"],
-    noteFans: 8.0,
+    noteMdl: 8.0,
     note: 4,
     periode: "2026",
     synopsis:
@@ -328,7 +350,7 @@ const DRAMAS = [
     annee: 2026,
     episodes: "10 ép.",
     genres: ["Drame", "Scolaire", "Social"],
-    noteFans: 9.0,
+    noteMdl: 9.0,
     note: 3.5,
     periode: "2026",
     synopsis:
@@ -340,7 +362,9 @@ const DRAMAS = [
     annee: 2018,
     episodes: "16 ép.",
     genres: ["Romance", "Scolaire", "Drame"],
-    noteFans: 7.6,
+    noteMdl: 7.6,
+    noteViki: 9.33,
+    votesViki: 169118,
     note: 3,
     periode: "2026",
     synopsis:
@@ -352,7 +376,9 @@ const DRAMAS = [
     annee: 2026,
     episodes: "12 ép.",
     genres: ["Comédie", "Fantastique", "Armée"],
-    noteFans: 8.4,
+    noteMdl: 8.4,
+    noteViki: 9.6,
+    votesViki: 15472,
     note: 2.5,
     periode: "2026",
     synopsis:
@@ -364,7 +390,7 @@ const DRAMAS = [
     annee: 2025,
     episodes: "10 ép.",
     genres: ["Romance", "Comédie", "Cinéma"],
-    noteFans: 8.1,
+    noteMdl: 8.1,
     note: 4,
     periode: "2026",
     critique: "critiques/melo-movie.html",
@@ -380,7 +406,7 @@ const DRAMAS = [
     annee: 2021,
     episodes: "16 ép.",
     genres: ["Romance", "Drame", "Jeunesse"],
-    noteFans: 8.6,
+    noteMdl: 8.6,
     note: 4.5,
     periode: "2026",
     synopsis:
