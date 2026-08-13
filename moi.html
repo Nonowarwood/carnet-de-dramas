@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ce que mes visionnages disent de moi — Carnet de dramas</title>
+<meta name="description" content="Le portrait chiffré de 30 dramas : heures passées, acteurs récurrents, années, diffuseurs, origines et genres de prédilection.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23000'/><rect x='7' y='7' width='18' height='18' fill='%23ff5c2b'/></svg>">
+<link rel="stylesheet" href="assets/style.css">
+<script>document.documentElement.classList.add("js");</script>
+</head>
+<body data-page="portrait">
+
+<div class="scroll-progress"><div class="scroll-progress__bar"></div></div>
+
+<header class="bar">
+  <a class="bar__logo" href="index.html">Dramas<sup>26</sup></a>
+  <a class="bar__link" href="carnet.html">Le carnet</a>
+  <a class="bar__link" href="visionnages.html">Les visionnages</a>
+  <a class="bar__link bar__link--optionnel" href="moi.html" aria-current="page">Portrait</a>
+  <span class="bar__spacer"></span>
+  <button class="bar__guide" type="button" data-guide><span>?</span> Guide</button>
+</header>
+
+<div class="wrap opening" style="padding-bottom:2rem">
+  <p class="opening__kicker reveal">
+    Trente séries laissent des traces. Voici ce qu'elles racontent quand on
+    les compte&nbsp;: le temps englouti, les visages qui reviennent, les
+    époques, les diffuseurs et les genres vers lesquels je penche.
+  </p>
+  <h1 class="opening__title display" data-split>Ce que mes<br>visionnages<br>disent de moi</h1>
+</div>
+
+<main>
+
+  <!-- ------------------------------ 1. Le temps ------------------------------ -->
+  <section class="wrap portrait-section viz viz--temps" id="section-temps">
+    <div class="portrait-head reveal">
+      <span class="mono" style="color:var(--orange)">01 — Le temps</span>
+      <h2>Ce que ça m'a coûté en heures</h2>
+      <p id="temps-phrase"></p>
+    </div>
+
+    <p class="hero-figure reveal"><span id="hero-heures" data-decimales="0">0</span><small>heures devant un écran</small></p>
+
+    <div class="figures reveal" id="temps-chiffres" style="margin:2.5rem 0 3rem"></div>
+
+    <div class="portrait-head reveal" style="margin-bottom:1.5rem">
+      <h2 style="font-size:clamp(1.25rem,2.5vw,1.6rem)">Les huit plus gourmandes</h2>
+      <p>En heures cumulées, épisodes et durée moyenne confondus.</p>
+    </div>
+    <div class="reveal" id="graph-temps"></div>
+  </section>
+
+  <!-- ------------------------------ 2. Les visages ------------------------------ -->
+  <section class="wrap portrait-section viz viz--acteurs" id="section-acteurs">
+    <div class="portrait-head reveal">
+      <span class="mono" style="color:var(--orange)">02 — Les visages</span>
+      <h2>Les acteurs que je croise partout</h2>
+      <p id="acteurs-phrase"></p>
+    </div>
+    <div class="reveal" id="graph-acteurs"></div>
+  </section>
+
+  <!-- ------------------------------ 3. Les années ------------------------------ -->
+  <section class="wrap portrait-section viz viz--annees" id="section-annees">
+    <div class="portrait-head reveal">
+      <span class="mono" style="color:var(--orange)">03 — Les années</span>
+      <h2>Les millésimes que je regarde</h2>
+      <p id="annees-phrase"></p>
+    </div>
+    <div class="reveal" id="graph-annees"></div>
+  </section>
+
+  <!-- ------------------------------ 4. Les diffuseurs ------------------------------ -->
+  <section class="wrap portrait-section viz viz--chaines" id="section-chaines">
+    <div class="portrait-head reveal">
+      <span class="mono" style="color:var(--orange)">04 — Les diffuseurs</span>
+      <h2>Qui produit ce que je regarde</h2>
+      <p id="chaines-phrase"></p>
+    </div>
+    <div class="reveal" id="graph-chaines"></div>
+  </section>
+
+  <!-- ------------------------------ 5. Les origines ------------------------------ -->
+  <section class="wrap portrait-section viz" id="section-pays">
+    <div class="portrait-head reveal">
+      <span class="mono" style="color:var(--orange)">05 — Les origines</span>
+      <h2>Une géographie très resserrée</h2>
+      <p id="pays-phrase"></p>
+    </div>
+    <div class="reveal" id="graph-pays"></div>
+  </section>
+
+  <!-- ------------------------------ 6. Les genres ------------------------------ -->
+  <section class="wrap portrait-section viz viz--genres" id="section-genres">
+    <div class="portrait-head reveal">
+      <span class="mono" style="color:var(--orange)">06 — Les genres</span>
+      <h2>Ce vers quoi je penche</h2>
+      <p id="genres-phrase"></p>
+    </div>
+    <div class="reveal" id="graph-genres"></div>
+
+    <div class="portrait-head reveal" style="margin:3.5rem 0 1.5rem">
+      <h2 style="font-size:clamp(1.25rem,2.5vw,1.6rem)">Ce que je note le mieux</h2>
+      <p>Ma note moyenne sur 5 par genre. Seuls les genres présents dans au
+      moins trois séries figurent ici — en dessous, la moyenne ne veut rien dire.</p>
+    </div>
+    <div class="reveal" id="graph-genres-notes"></div>
+  </section>
+
+</main>
+
+<footer class="wrap footer mono">
+  <span>Calculé à partir des 30 fiches du carnet</span>
+  <span>Durées, casting et diffuseurs&nbsp;: <a href="https://mydramalist.com">MyDramaList</a></span>
+</footer>
+
+<script src="assets/data.js"></script>
+<script src="assets/site.js"></script>
+<script src="assets/charts.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ---------------- Agrégats ---------------- */
+
+  function compter(cles) {
+    var m = {};
+    cles.forEach(function (c) { if (c) m[c] = (m[c] || 0) + 1; });
+    return Object.keys(m)
+      .map(function (k) { return { label: k, valeur: m[k] }; })
+      .sort(function (a, b) { return b.valeur - a.valeur; });
+  }
+
+  // « TVING tvN » désigne la même chaîne que « tvN », à un service de
+  // rattrapage près : on regroupe pour ne pas éclater le décompte.
+  var CHAINES = { "TVING tvN": "tvN" };
+
+  var minutes = DRAMAS.map(function (d) { return d.episodesNb * d.dureeEp; });
+  var totalMin = minutes.reduce(function (a, b) { return a + b; }, 0);
+  var totalEp = DRAMAS.reduce(function (a, d) { return a + d.episodesNb; }, 0);
+  var dureeMoy = Math.round(totalMin / totalEp);
+
+  // Le carnet démarre en mars 2025 : on rapporte le temps à cette durée.
+  var debut = new Date(2025, 2, 1);
+  var jours = Math.max(1, Math.round((Date.now() - debut) / 86400000));
+
+  /* ---------------- 1. Le temps ---------------- */
+
+  $("hero-heures").setAttribute("data-compte", Math.round(totalMin / 60));
+
+  $("temps-phrase").textContent =
+    "Trente séries, " + totalEp + " épisodes, " + Math.round(totalMin / 60) +
+    " heures cumulées. Étalé depuis mars 2025, cela fait environ " +
+    Math.round(totalMin / jours) + " minutes par jour, tous les jours, sans exception.";
+
+  $("temps-chiffres").innerHTML = [
+    [Math.round(totalMin / 60 / 24), 0, "jours pleins"],
+    [totalEp, 0, "épisodes"],
+    [dureeMoy, 0, "min par épisode"],
+    [Math.round(totalMin / jours), 0, "min par jour"]
+  ].map(function (f) {
+    return '<div class="figure"><span class="figure__value">' +
+      '<span data-compte="' + f[0] + '" data-decimales="' + f[1] + '">0</span></span>' +
+      '<span class="figure__label mono">' + f[2] + "</span></div>";
+  }).join("");
+
+  Viz.barres($("graph-temps"), DRAMAS
+    .map(function (d) {
+      return {
+        label: d.titre,
+        valeur: Math.round((d.episodesNb * d.dureeEp) / 60 * 10) / 10,
+        detail: d.titre + " — " + d.episodesNb + " ép. de " + d.dureeEp + " min"
+      };
+    })
+    .sort(function (a, b) { return b.valeur - a.valeur; })
+    .slice(0, 8),
+    { unite: "h", decimales: 1, colonne: "Série", mesure: "Heures" });
+
+  /* ---------------- 2. Les visages ---------------- */
+
+  var acteurs = {};
+  DRAMAS.forEach(function (d) {
+    d.acteurs.forEach(function (a) {
+      (acteurs[a] = acteurs[a] || []).push(d.titre);
+    });
+  });
+
+  var recurrents = Object.keys(acteurs)
+    .map(function (a) { return { label: a, valeur: acteurs[a].length, titres: acteurs[a] }; })
+    .filter(function (a) { return a.valeur >= 2; })
+    .sort(function (a, b) { return b.valeur - a.valeur; })
+    .slice(0, 10);
+
+  $("acteurs-phrase").textContent =
+    recurrents[0].label + " apparaît dans " + recurrents[0].valeur +
+    " des trente séries — soit une sur cinq. En tout, " + recurrents.length +
+    " acteurs reviennent au moins deux fois dans un rôle principal.";
+
+  Viz.barres($("graph-acteurs"), recurrents.map(function (a) {
+    return { label: a.label, valeur: a.valeur, detail: a.label + " — " + a.titres.join(", ") };
+  }), { unite: "séries", colonne: "Acteur", mesure: "Rôles principaux" });
+
+  /* ---------------- 3. Les années ---------------- */
+
+  var parAnnee = {};
+  DRAMAS.forEach(function (d) { parAnnee[d.annee] = (parAnnee[d.annee] || 0) + 1; });
+  var annees = Object.keys(parAnnee).sort();
+  var pointe = annees.slice().sort(function (a, b) { return parAnnee[b] - parAnnee[a]; })[0];
+
+  $("annees-phrase").textContent =
+    "De " + annees[0] + " à " + annees[annees.length - 1] + ", avec un pic en " + pointe +
+    " (" + parAnnee[pointe] + " titres). Je regarde surtout des séries récentes, " +
+    "mais je remonte volontiers de quelques années quand un titre a laissé une trace.";
+
+  Viz.colonnes($("graph-annees"), annees.map(function (a) {
+    return { label: a, valeur: parAnnee[a], detail: a + " — " + parAnnee[a] + " titres" };
+  }), { unite: "titres", colonne: "Année", mesure: "Titres" });
+
+  /* ---------------- 4. Les diffuseurs ---------------- */
+
+  var chaines = compter(DRAMAS.map(function (d) {
+    return CHAINES[d.chaine] || d.chaine;
+  }));
+
+  $("chaines-phrase").textContent =
+    chaines[0].label + " diffuse " + chaines[0].valeur + " des trente séries, " +
+    chaines[1].label + " en porte " + chaines[1].valeur + ". Le reste se disperse sur " +
+    (chaines.length - 2) + " autres chaînes et plateformes. À noter : MyDramaList " +
+    "ne recense que le diffuseur d'origine, pas le studio de production.";
+
+  Viz.barres($("graph-chaines"), chaines, {
+    unite: "séries", colonne: "Diffuseur", mesure: "Séries"
+  });
+
+  /* ---------------- 5. Les origines ---------------- */
+
+  var NOMS = { KR: "Corée du Sud", JP: "Japon", CN: "Chine" };
+  var pays = compter(DRAMAS.map(function (d) { return NOMS[d.pays]; }));
+
+  $("pays-phrase").textContent =
+    "Neuf séries sur dix viennent de Corée du Sud. Les deux titres chinois et " +
+    "l'unique japonais font figure d'exceptions — il y a clairement une porte " +
+    "d'entrée, et elle est coréenne.";
+
+  Viz.empilee($("graph-pays"), pays);
+
+  /* ---------------- 6. Les genres ---------------- */
+
+  var genres = {};
+  DRAMAS.forEach(function (d) {
+    d.genres.forEach(function (g) { (genres[g] = genres[g] || []).push(d); });
+  });
+
+  var parVolume = Object.keys(genres)
+    .map(function (g) { return { label: g, valeur: genres[g].length }; })
+    .sort(function (a, b) { return b.valeur - a.valeur; })
+    .slice(0, 10);
+
+  $("genres-phrase").textContent =
+    "La romance arrive en tête avec " + genres["Romance"].length + " séries, devant le drame (" +
+    genres["Drame"].length + ") et la comédie (" + genres["Comédie"].length +
+    "). Le cadre scolaire revient dans " + genres["Scolaire"].length +
+    " titres : l'adolescence est manifestement un décor qui me parle.";
+
+  Viz.barres($("graph-genres"), parVolume, {
+    unite: "séries", colonne: "Genre", mesure: "Séries"
+  });
+
+  // Moyenne par genre, restreinte aux genres assez représentés pour
+  // qu'une moyenne ait un sens.
+  var parNote = Object.keys(genres)
+    .map(function (g) {
+      var notes = genres[g].map(function (d) { return d.note; })
+                           .filter(function (n) { return n !== null; });
+      return {
+        label: g,
+        valeur: Math.round(notes.reduce(function (a, b) { return a + b; }, 0) / notes.length * 100) / 100,
+        n: notes.length
+      };
+    })
+    .filter(function (g) { return g.n >= 3; })
+    .sort(function (a, b) { return b.valeur - a.valeur; });
+
+  Viz.barres($("graph-genres-notes"), parNote.map(function (g) {
+    return {
+      label: g.label,
+      valeur: g.valeur,
+      detail: g.label + " — " + String(g.valeur).replace(".", ",") + "/5 sur " + g.n + " séries"
+    };
+  }), { unite: "", decimales: 2, colonne: "Genre", mesure: "Ma note moyenne / 5" });
+
+  if (window.Anim) window.Anim.rafraichir();
+})();
+</script>
+<script src="assets/anim.js"></script>
+<script src="assets/guide.js"></script>
+
+</body>
+</html>

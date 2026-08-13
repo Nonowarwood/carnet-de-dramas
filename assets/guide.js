@@ -5,14 +5,14 @@
    de l'élément commenté, une bulle explique à quoi il sert. Le
    parcours se poursuit de page en page.
 
-   Lancement : bouton « Guide » de l'en-tête, ou automatiquement à la
-   toute première visite.
+   Le guide ne s'ouvre jamais de lui-même : il faut cliquer sur le
+   bouton « Guide » de l'en-tête. Seul l'enchaînement d'une page à la
+   suivante, déjà demandé par le visiteur, est automatique.
    =============================================================== */
 
 (function () {
   "use strict";
 
-  var MEMOIRE = "carnet:guide-vu";
   var RELAIS = "carnet:guide-suite";
 
   /* ---------------- Étapes, par page ---------------- */
@@ -101,6 +101,32 @@
           "pas sur la même échelle, alors chacune est recentrée sur sa propre " +
           "moyenne avant d'être combinée — sinon Viki, qui note très haut, " +
           "écraserait tout.",
+      },
+    ],
+
+    portrait: [
+      {
+        cible: "#section-temps",
+        titre: "Le temps passé",
+        texte:
+          "Le nombre d'heures est calculé série par série : nombre d'épisodes " +
+          "multiplié par la durée moyenne d'un épisode, telle que la donne " +
+          "MyDramaList.",
+      },
+      {
+        cible: "#graph-acteurs",
+        titre: "Lire un graphique",
+        texte:
+          "Survole une barre pour voir le détail — ici, les séries dans " +
+          "lesquelles joue l'acteur. Sous chaque graphique, « Voir les données » " +
+          "déplie le tableau complet.",
+      },
+      {
+        cible: "#section-pays",
+        titre: "Des sections indépendantes",
+        texte:
+          "Chaque section a sa propre couleur et se lit séparément : le temps, " +
+          "les acteurs, les années, les diffuseurs, les origines et les genres.",
       },
     ],
 
@@ -270,7 +296,6 @@
     window.addEventListener("scroll", placer, { passive: true });
     document.addEventListener("keydown", auClavier);
 
-    try { localStorage.setItem(MEMOIRE, "1"); } catch (e) {}
   }
 
   function fermer() {
@@ -309,10 +334,6 @@
       return;
     }
 
-    // Première visite : on propose le guide sur la page d'entrée.
-    var dejaVu = null;
-    try { dejaVu = localStorage.getItem(MEMOIRE); } catch (e) {}
-    if (!dejaVu && page === "accueil") setTimeout(ouvrir, 1800);
   });
 
   window.Guide = { ouvrir: ouvrir, fermer: fermer };

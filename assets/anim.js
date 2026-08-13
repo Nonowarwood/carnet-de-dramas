@@ -207,37 +207,6 @@
     }, { passive: true });
   }
 
-  /* ---------------- Curseur d'indice sur le carrousel ---------------- */
-
-  function curseurCarrousel() {
-    var zone = document.querySelector(".ring");
-    var curseur = document.querySelector(".curseur");
-    if (!zone || !curseur || SOBRE) return;
-    if (!window.matchMedia("(pointer: fine)").matches) return;
-
-    var x = 0, y = 0, cx = 0, cy = 0, actif = false;
-
-    zone.addEventListener("pointerenter", function () {
-      actif = true;
-      curseur.classList.add("est-visible");
-    });
-    zone.addEventListener("pointerleave", function () {
-      actif = false;
-      curseur.classList.remove("est-visible");
-    });
-    zone.addEventListener("pointermove", function (e) { x = e.clientX; y = e.clientY; });
-    zone.addEventListener("pointerdown", function () { curseur.classList.add("est-pressee"); });
-    window.addEventListener("pointerup", function () { curseur.classList.remove("est-pressee"); });
-
-    (function suivre() {
-      // Poursuite amortie : le curseur traîne légèrement derrière la souris.
-      cx += (x - cx) * 0.18;
-      cy += (y - cy) * 0.18;
-      if (actif) curseur.style.transform = "translate3d(" + cx + "px," + cy + "px,0) translate(-50%,-50%)";
-      requestAnimationFrame(suivre);
-    })();
-  }
-
   /* ---------------- Mise en route ---------------- */
 
   entreeDePage();
@@ -250,7 +219,6 @@
     progressionLecture();
     barreEscamotable();
     parallaxeMosaique();
-    curseurCarrousel();
   });
 
   // Exposé pour les pages qui injectent leur contenu après coup.

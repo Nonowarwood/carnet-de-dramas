@@ -15,7 +15,7 @@
   <a class="bar__logo" href="index.html">Dramas<sup>26</sup></a>
   <a class="bar__link" href="carnet.html">Le carnet</a>
   <a class="bar__link" href="visionnages.html">Les visionnages</a>
-  <a class="bar__link bar__link--optionnel" href="critiques/melo-movie.html">Critiques</a>
+  <a class="bar__link bar__link--optionnel" href="moi.html">Portrait</a>
   <span class="bar__spacer"></span>
   <button class="bar__guide" type="button" data-guide><span>?</span> Guide</button>
 </header>
@@ -45,8 +45,6 @@
   </div>
 
 </div>
-
-<div class="curseur" aria-hidden="true">Glisser</div>
 
 <script src="assets/data.js"></script>
 <script src="assets/site.js"></script>
@@ -90,7 +88,7 @@
     rayon = (largeur / 2) / Math.tan(Math.PI / N) * 1.12;
 
     panneaux.forEach(function (el, i) {
-      el.style.transform = "rotateY(" + i * PAS + "deg) translateZ(" + rayon + "px)";
+      el.style.transform = "rotateY(" + (-i * PAS) + "deg) translateZ(" + rayon + "px)";
     });
   }
 
@@ -105,8 +103,8 @@
   var sobre = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   function indexDeFace() {
-    // Le panneau i est de face quand angle + i * PAS ≡ 0 (mod 360).
-    var i = Math.round(-angle / PAS) % N;
+    // Le panneau i est de face quand angle - i * PAS ≡ 0 (mod 360).
+    var i = Math.round(angle / PAS) % N;
     return (i + N) % N;
   }
 
@@ -183,13 +181,13 @@
   ring.addEventListener("wheel", function (e) {
     e.preventDefault();
     var delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-    vitesse -= delta * 0.012;
+    vitesse += delta * 0.012;
     reprise = 180;
   }, { passive: false });
 
   ring.addEventListener("keydown", function (e) {
-    if (e.key === "ArrowLeft") { vitesse += PAS * 0.35; reprise = 180; }
-    else if (e.key === "ArrowRight") { vitesse -= PAS * 0.35; reprise = 180; }
+    if (e.key === "ArrowRight") { vitesse += PAS * 0.35; reprise = 180; }
+    else if (e.key === "ArrowLeft") { vitesse -= PAS * 0.35; reprise = 180; }
     else return;
     e.preventDefault();
   });

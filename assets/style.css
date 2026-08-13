@@ -918,36 +918,6 @@ a.row:hover { padding-left: 0.6rem; }
 .bar__link:hover::before { transform: none; }
 .bar__link[aria-current="page"]::before { display: none; }
 
-/* ---------------- Curseur du carrousel ---------------- */
-
-.curseur {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 40;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 5.25rem;
-  height: 5.25rem;
-  border-radius: 50%;
-  background: var(--ink);
-  color: var(--paper);
-  font-family: var(--mono);
-  font-size: 0.6rem;
-  text-transform: uppercase;
-  letter-spacing: 0.11em;
-  pointer-events: none;
-  opacity: 0;
-  transform: scale(0.4);
-  transition: opacity 0.25s ease, scale 0.25s ease;
-}
-
-.curseur.est-visible { opacity: 1; }
-.curseur.est-pressee { background: var(--orange); }
-
-@media (pointer: coarse) { .curseur { display: none; } }
-
 /* ===============================================================
    GUIDE INTERACTIF
    =============================================================== */
@@ -1163,4 +1133,303 @@ body.guide-ouvert { overflow: hidden; }
 
 @media (prefers-reduced-motion: reduce) {
   .bascule > span { animation: none; }
+}
+
+/* ---------------- Affiche cliquable vers MyDramaList ---------------- */
+
+.fiche__affiche { position: relative; display: block; overflow: hidden; }
+
+.fiche__affiche-note {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0.5rem 0.6rem;
+  background: var(--ink);
+  color: var(--paper);
+  text-align: center;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.fiche__affiche:hover .fiche__affiche-note,
+.fiche__affiche:focus-visible .fiche__affiche-note { transform: none; }
+
+/* ===============================================================
+   GRAPHIQUES
+   Une teinte par graphique à série unique, posée par --viz-hue.
+   Palette validée pour les daltonismes sur surface blanche
+   (protanopie/deutéranopie/tritanopie, ΔE OKLab ≥ 8).
+   =============================================================== */
+
+.viz {
+  --viz-hue: #2a5fd6;
+  --viz-grid: #e6e3dd;
+  --serie-1: #2a5fd6;
+  --serie-2: #e2551f;
+  --serie-3: #0f8a6a;
+}
+
+.viz--temps    { --viz-hue: #e2551f; }
+.viz--acteurs  { --viz-hue: #2a5fd6; }
+.viz--annees   { --viz-hue: #6b4fd8; }
+.viz--chaines  { --viz-hue: #0f8a6a; }
+.viz--genres   { --viz-hue: #c9308a; }
+
+/* ---------------- Barres horizontales ---------------- */
+
+/* Gouttière à droite : la barre la plus longue atteint 100 % de la piste,
+   son étiquette de valeur doit rester dans le cadre. */
+.viz-plot { display: grid; gap: 0.5rem; padding-right: 3.25rem; }
+
+.viz-row {
+  display: grid;
+  grid-template-columns: minmax(6rem, 11rem) minmax(0, 1fr);
+  align-items: center;
+  gap: 1rem;
+}
+
+.viz-row__label {
+  font-size: 0.875rem;
+  line-height: 1.2;
+  text-align: right;
+  color: var(--grey-70);
+  overflow-wrap: anywhere;
+}
+
+.viz-row__track {
+  position: relative;
+  height: 22px;
+  /* Filets verticaux tous les quarts, un pas au-dessus de la surface. */
+  background-image: linear-gradient(to right, var(--viz-grid) 1px, transparent 1px);
+  background-size: 25% 100%;
+}
+
+.viz-row__bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: var(--pct);
+  background: var(--viz-hue);
+  /* Carrée sur la ligne de base, arrondie côté valeur. */
+  border-radius: 0 4px 4px 0;
+  transform-origin: 0 50%;
+  transition: filter 0.15s ease;
+}
+
+.viz-row__bar:hover { filter: brightness(1.12); }
+
+.viz-row__value {
+  position: absolute;
+  left: var(--pct);
+  top: 0;
+  margin-left: 0.5rem;
+  line-height: 22px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.viz-axis {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.75rem 3.25rem 0 0;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--viz-grid);
+  color: var(--grey-50);
+}
+
+/* ---------------- Colonnes ---------------- */
+
+.viz-cols {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 0.5rem;
+  align-items: end;
+}
+
+.viz-col { display: grid; justify-items: center; gap: 0.4rem; }
+
+/* Posée juste au-dessus du sommet de la colonne, quelle que soit sa hauteur. */
+.viz-col__value {
+  position: absolute;
+  left: 50%;
+  bottom: var(--pct);
+  transform: translateX(-50%);
+  margin-bottom: 6px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.viz-col__track {
+  position: relative;
+  width: 100%;
+  max-width: 24px;
+  height: 11rem;
+  /* Place pour l'étiquette au-dessus de la colonne la plus haute. */
+  margin-top: 1.5rem;
+  border-bottom: 1px solid var(--grey-20);
+}
+
+.viz-col__bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--pct);
+  background: var(--viz-hue);
+  border-radius: 4px 4px 0 0;
+  transition: filter 0.15s ease;
+}
+
+.viz-col__bar:hover { filter: brightness(1.12); }
+
+.viz-col__label { color: var(--grey-50); }
+
+/* ---------------- Barre empilée ---------------- */
+
+.viz-stack {
+  display: flex;
+  height: 3rem;
+  /* L'écart de 2 px en couleur de surface sépare les segments : aucun
+     contour n'est dessiné autour des marques. */
+  gap: 2px;
+}
+
+.viz-seg {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--seg);
+  transition: filter 0.15s ease;
+}
+
+.viz-seg:first-child { border-radius: 4px 0 0 4px; }
+.viz-seg:last-child { border-radius: 0 4px 4px 0; }
+.viz-seg:hover { filter: brightness(1.12); }
+
+/* Étiquette posée dans le remplissage : blanc, les trois teintes étant
+   toutes assez sombres pour le porter. */
+.viz-seg__in {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  color: #fff;
+}
+
+.viz-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin-top: 0.9rem;
+  color: var(--grey-70);
+}
+
+.viz-key { display: inline-flex; align-items: center; gap: 0.5rem; }
+.viz-key i { width: 10px; height: 10px; flex: none; }
+.viz-key b { color: var(--ink); }
+
+/* ---------------- Infobulle ---------------- */
+
+.viz-tip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 80;
+  padding: 0.45rem 0.7rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.viz-tip.est-visible { opacity: 1; }
+
+/* ---------------- Tableau de données ---------------- */
+
+.viz-table { margin-top: 1.25rem; border-top: 1px solid var(--line-hair); }
+
+.viz-table summary {
+  padding: 0.7rem 0;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  color: var(--grey-50);
+  cursor: pointer;
+}
+
+.viz-table summary:hover { color: var(--orange); }
+
+.viz-table table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+
+.viz-table th, .viz-table td {
+  padding: 0.45rem 0.6rem 0.45rem 0;
+  text-align: left;
+  border-bottom: 1px solid var(--line-hair);
+  font-weight: 400;
+}
+
+.viz-table thead th {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--grey-50);
+}
+
+.viz-table td { font-variant-numeric: tabular-nums; }
+
+/* ---------------- Sections de la page portrait ---------------- */
+
+.portrait-section { padding-top: 4rem; padding-bottom: 4rem; border-top: 1px solid var(--line); }
+
+.portrait-head { margin-bottom: 2.5rem; }
+
+.portrait-head h2 {
+  margin: 0.5rem 0 0.6rem;
+  font-size: clamp(1.75rem, 4.5vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.98;
+}
+
+.portrait-head p { margin: 0; max-width: 40rem; color: var(--grey-70); line-height: 1.5; }
+
+.hero-figure {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 1rem;
+  margin: 0 0 0.5rem;
+  font-size: clamp(4rem, 17vw, 12rem);
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 0.85;
+}
+
+.hero-figure small {
+  font-size: clamp(1rem, 2.5vw, 1.75rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--grey-50);
+}
+
+@media (max-width: 48rem) {
+  .viz-row { grid-template-columns: minmax(4.5rem, 7rem) minmax(0, 1fr); gap: 0.6rem; }
+  .viz-row__label { font-size: 0.75rem; }
+  .viz-col__track { height: 8rem; }
 }

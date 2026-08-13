@@ -18,12 +18,14 @@ et des icônes SVG. Un seul thème, clair, assumé comme tel.
 index.html              Porte d'entrée : le carrousel cylindrique des 30 affiches
 carnet.html             Chiffres clés, critiques, derniers visionnages, à voir
 visionnages.html        Les 30 fiches, avec recherche, tri et filtre par pays
+moi.html                « Ce que mes visionnages disent de moi » : le portrait chiffré
 critiques/              Une page par critique
 assets/data.js          Toutes les données (dramas + liste « à voir »)
 assets/site.js          Icônes, jauges, note de consensus, rendu des fiches
-assets/anim.js          Révélations, compteurs, transitions de page, curseur
+assets/charts.js        Graphiques (barres, colonnes, barre empilée)
+assets/anim.js          Révélations, compteurs, transitions de page
 assets/guide.js         Visite guidée interactive
-assets/style.css        Feuille de style unique, carrousel et guide compris
+assets/style.css        Feuille de style unique, carrousel, graphiques et guide
 assets/posters/         Affiches, nommées d'après le titre en minuscules-tirets
 ```
 
@@ -68,6 +70,12 @@ Tout se passe dans `assets/data.js`. Copier un bloc du tableau `DRAMAS` et compl
 | `noteMdl`    | Moyenne MyDramaList, sur 10                                    |
 | `noteViki`   | Moyenne Viki, sur 10 — facultatif                              |
 | `votesViki`  | Nombre de votes Viki, sert à pondérer le consensus             |
+| `episodesNb` | Nombre d'épisodes, en nombre (sert au calcul des heures)        |
+| `dureeEp`    | Durée d'un épisode en minutes                                  |
+| `chaine`     | Diffuseur d'origine                                            |
+| `realisateur`| Réalisateur                                                    |
+| `acteurs`    | Rôles principaux, dans l'ordre du générique                    |
+| `mdl`        | Chemin de la fiche MyDramaList, ex. `"/758615-melo-movie"`      |
 | `note`       | Ma note sur 5 (`null` si pas encore notée)                     |
 | `periode`    | `"2025"` ou `"2026"` — les deux blocs de ma note d'origine      |
 | `synopsis`   | Résumé en français                                             |
@@ -92,6 +100,35 @@ curl -s "https://api.viki.io/v4/containers/ID.json?app=100000a"     # -> review_
 
 Le carnet détecte automatiquement les dramas qui ont une critique.
 
+## La page portrait
+
+`moi.html` agrège les 30 fiches en six sections indépendantes : le temps passé,
+les acteurs récurrents, les années, les diffuseurs, les origines et les genres.
+Le temps est calculé série par série (`episodesNb × dureeEp`), pas estimé.
+
+Les graphiques sont en HTML et CSS, sans bibliothèque (`assets/charts.js`). Règles
+suivies : une seule teinte par graphique à série unique — la longueur porte déjà la
+magnitude ; marques de 24 px maximum, extrémité arrondie à 4 px côté valeur et
+carrée côté ligne de base ; grille en filet solide ; le texte ne porte jamais la
+couleur de la série ; infobulle au survol et tableau de données dépliable sous
+chaque graphique, pour que la couleur ne soit jamais le seul canal d'information.
+
+La palette des graphiques est validée pour les daltonismes sur fond blanc
+(protanopie, deutéranopie, tritanopie — ΔE OKLab ≥ 8 entre paires adjacentes,
+≥ 15 en vision normale, contraste ≥ 3:1) :
+
+| Section | Teinte |
+|---|---|
+| Le temps | `#e2551f` |
+| Les acteurs | `#2a5fd6` |
+| Les années | `#6b4fd8` |
+| Les diffuseurs | `#0f8a6a` |
+| Les genres | `#c9308a` |
+
+À noter : MyDramaList ne recense que le **diffuseur d'origine**, pas le studio de
+production. La section « diffuseurs » mesure donc qui a diffusé, pas qui a produit,
+et le dit explicitement.
+
 ## Carrousel
 
 Les panneaux sont répartis sur un cercle avec `rotateY(i × pas) translateZ(rayon)`,
@@ -100,9 +137,13 @@ le conteneur tournant en sens inverse. Le dos des panneaux lointains reste visib
 recalculé à chaque redimensionnement. Interactions : glisser, molette, flèches du
 clavier, plus une rotation continue quand on ne touche à rien.
 
+Les panneaux sont posés dans le sens antihoraire (`rotateY(-i × pas)`) : combiné à
+une rotation croissante, cela fait défiler les affiches **de gauche à droite** tout
+en parcourant la liste dans l'ordre, de 01 à 30.
+
 ## Guide interactif
 
-Bouton « Guide » de l'en-tête, ou ouverture automatique à la première visite. Le
+Le guide ne s'ouvre **que sur demande**, par le bouton « Guide » de l'en-tête. Le
 parcours est décrit dans `PARCOURS`, au début de `assets/guide.js` : une entrée par
 page, chaque étape désignant un sélecteur, un titre et un texte. Une étape peut
 porter une clé `suite` pour enchaîner sur une autre page — le relais passe par
