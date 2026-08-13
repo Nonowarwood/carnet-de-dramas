@@ -46,6 +46,8 @@ assets/anim.js          Révélations, compteurs, transitions de page
 assets/guide.js         Visite guidée interactive
 assets/style.css        Feuille de style unique, carrousel, graphiques et guide
 assets/fonts/           Archivo et JetBrains Mono, en variable, servies localement
+assets/i18n.js          Dictionnaire des trois langues et mécanique de traduction
+assets/prefs.js         Panneau de réglages : langue et thème
 assets/posters/         Affiches, nommées d'après le titre en minuscules-tirets
 assets/people/          Portraits du casting principal, nommés d'après le nom en minuscules-tirets
 ```
@@ -200,6 +202,45 @@ détail passe par l'infobulle et le tableau.
 L'échelle démarre à 4 plutôt qu'à 0, les deux bornes étant écrites sur l'axe : sur
 un graphique de points, c'est la position qui encode la valeur, pas une longueur
 partant de zéro, et aucune note ne descend sous 5.
+
+## Trois langues
+
+Français, anglais, coréen. Le français est la langue d'origine — celle dans laquelle
+j'écris ; les deux autres en sont des traductions. Le dictionnaire est dans
+`assets/i18n.js` : le balisage statique porte des attributs `data-i18n`, le contenu
+rendu en JavaScript passe par `t()`, et les chaînes à trous utilisent `{0}`, `{1}`…
+
+Les synopsis existent en trois versions dans `data.js`. Les genres et les mentions
+gardent leur libellé français comme **clé** et ne sont traduits qu'à l'affichage :
+les filtres et les liens `?genre=` restent donc stables quelle que soit la langue.
+
+La critique de Melo Movie, elle, reste dans sa langue d'écriture. La traduire à la
+machine trahirait la voix de son auteur ; une note le signale en anglais et en
+coréen. Les traductions coréennes gagneraient à être relues par un locuteur natif.
+
+## Thèmes
+
+Trois thèmes, choisis dans le panneau de réglages :
+
+| Thème | Papier | Encre | Accent |
+|---|---|---|---|
+| Papier | `#faf9f5` | `#14120f` | `#ff5c2b` |
+| No Labels | `#f1eee6` | `#1e2a4a` | `#8b2318` |
+| Nuit | `#121110` | `#f4f1ea` | `#ff6b3d` |
+
+Le thème **No Labels** reprend la charte de mes projets `portfolio` et `comebacks`,
+elle-même tirée de l'album *No Labels Part.02* de Yeonjun : crème, marine, brique,
+filets fins et ombres portées dures.
+
+Tout le site étant écrit contre des jetons, un thème ne fait que les redéfinir. Les
+teintes de graphique sont en revanche **choisies par thème**, jamais dérivées : une
+couleur qui tient sur du blanc ne tient pas forcément sur du crème ou sur du noir.
+Les trois palettes ont été validées séparément pour les daltonismes.
+
+Langue et thème se posent sur `<html>` avant le premier rendu, par un court script
+en tête de page, pour éviter que le site n'apparaisse dans le mauvais thème avant de
+basculer. Les deux sont aussi pilotables par l'URL — `?lang=ko&theme=nolabels` —
+ce qui permet de partager un lien dans une langue donnée.
 
 ## Carrousel
 

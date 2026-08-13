@@ -19,152 +19,36 @@
 
   var PARCOURS = {
     accueil: [
-      {
-        cible: ".ring",
-        titre: "Le mur d'affiches",
-        texte:
-          "Les trente séries que j'ai regardées, posées sur un cylindre. " +
-          "Fais glisser à la souris, utilise la molette ou les flèches du clavier " +
-          "pour le faire tourner.",
-      },
-      {
-        cible: ".ring-caption",
-        titre: "La série en façade",
-        texte:
-          "Le titre, le pays, l'année et ma note se mettent à jour selon " +
-          "l'affiche qui arrive de face.",
-      },
-      {
-        cible: ".ring-progress",
-        titre: "Ta position",
-        texte: "La barre orange indique où tu en es dans les trente titres.",
-      },
-      {
-        cible: ".bar",
-        titre: "La navigation",
-        texte:
-          "Le carnet rassemble les chiffres et les critiques, les visionnages " +
-          "détaillent chaque série.",
-        suite: { href: "carnet.html", page: "carnet", libelle: "Continuer sur Le carnet" },
-      },
+      { cible: ".ring", titre: "g.a1.t", texte: "g.a1.p" },
+      { cible: ".ring-caption", titre: "g.a2.t", texte: "g.a2.p" },
+      { cible: ".ring-progress", titre: "g.a3.t", texte: "g.a3.p" },
+      { cible: ".bar", titre: "g.a4.t", texte: "g.a4.p",
+        suite: { href: "carnet.html", page: "carnet", libelle: "g.a4.s" } },
     ],
-
     carnet: [
-      {
-        cible: "#figures",
-        titre: "Les chiffres clés",
-        texte:
-          "Ma moyenne personnelle sur 5, celle du public sur 10, et le nombre " +
-          "de notes maximales que j'ai données.",
-      },
-      {
-        cible: "#critiques",
-        titre: "Les critiques",
-        texte:
-          "Les séries sur lesquelles j'ai écrit un vrai texte. Clique pour " +
-          "lire la critique en entier.",
-      },
-      {
-        cible: "#derniers",
-        titre: "Les derniers visionnages",
-        texte:
-          "Les six dernières séries consignées. La jauge noire à droite, " +
-          "c'est ma note sur cinq.",
-        suite: {
-          href: "visionnages.html",
-          page: "visionnages",
-          libelle: "Continuer sur Les visionnages",
-        },
-      },
+      { cible: "#figures", titre: "g.b1.t", texte: "g.b1.p" },
+      { cible: "#critiques", titre: "g.b2.t", texte: "g.b2.p" },
+      { cible: "#derniers", titre: "g.b3.t", texte: "g.b3.p",
+        suite: { href: "visionnages.html", page: "visionnages", libelle: "g.b3.s" } },
     ],
-
     visionnages: [
-      {
-        cible: ".toolbar",
-        titre: "Chercher et trier",
-        texte:
-          "La recherche fouille aussi les genres et les synopsis. Tu peux " +
-          "trier par ma note, par celle du public, par année, ou filtrer par pays.",
-      },
-      {
-        cible: ".fiche",
-        titre: "Une fiche",
-        texte:
-          "Affiche, synopsis, ma note et la note du public. Le numéro à gauche " +
-          "correspond à l'ordre dans lequel j'ai regardé les séries.",
-      },
-      {
-        cible: ".fiche__stat--consensus",
-        titre: "La note du public",
-        texte:
-          "Une moyenne de MyDramaList et de Viki. Les deux plateformes ne notent " +
-          "pas sur la même échelle, alors chacune est recentrée sur sa propre " +
-          "moyenne avant d'être combinée — sinon Viki, qui note très haut, " +
-          "écraserait tout.",
-      },
+      { cible: ".toolbar", titre: "g.c1.t", texte: "g.c1.p" },
+      { cible: ".fiche", titre: "g.c2.t", texte: "g.c2.p" },
+      { cible: ".fiche__stat--consensus", titre: "g.c3.t", texte: "g.c3.p" },
     ],
-
     portrait: [
-      {
-        cible: "#section-temps",
-        titre: "Le temps passé",
-        texte:
-          "Le nombre d'heures est calculé série par série : nombre d'épisodes " +
-          "multiplié par la durée moyenne d'un épisode, telle que la donne " +
-          "MyDramaList.",
-      },
-      {
-        cible: "#graph-acteurs",
-        titre: "Lire un graphique",
-        texte:
-          "Survole une barre pour voir le détail — ici, les séries dans " +
-          "lesquelles joue l'acteur. Sous chaque graphique, « Voir les données » " +
-          "déplie le tableau complet.",
-      },
-      {
-        cible: "#section-pays",
-        titre: "Des sections indépendantes",
-        texte:
-          "Chaque section a sa propre couleur et se lit séparément : le temps, " +
-          "les acteurs, les années, les diffuseurs, les origines et les genres.",
-      },
+      { cible: "#section-temps", titre: "g.d1.t", texte: "g.d1.p" },
+      { cible: "#graph-acteurs", titre: "g.d2.t", texte: "g.d2.p" },
+      { cible: "#section-pays", titre: "g.d3.t", texte: "g.d3.p" },
     ],
-
     serie: [
-      {
-        cible: ".serie__notes",
-        titre: "Les deux notes",
-        texte:
-          "Ma note sur cinq à gauche, celle du public sur dix à droite, avec le " +
-          "détail des plateformes qui la composent.",
-      },
-      {
-        cible: ".casting",
-        titre: "Le casting",
-        texte: "Les rôles principaux, avec le nom du personnage sous chaque acteur.",
-      },
-      {
-        cible: ".proches",
-        titre: "Dans la même veine",
-        texte:
-          "Les séries du carnet qui partagent le plus de genres avec celle-ci. " +
-          "Le nombre de genres communs décide du classement.",
-      },
+      { cible: ".serie__notes", titre: "g.f1.t", texte: "g.f1.p" },
+      { cible: ".casting", titre: "g.f2.t", texte: "g.f2.p" },
+      { cible: ".proches", titre: "g.f3.t", texte: "g.f3.p" },
     ],
-
     critique: [
-      {
-        cible: ".article__meta",
-        titre: "La fiche en un coup d'œil",
-        texte: "Date d'écriture, origine, format, et les deux notes.",
-      },
-      {
-        cible: ".callout",
-        titre: "Les avertissements",
-        texte:
-          "Les blocs orange signalent les passages qui dévoilent l'intrigue. " +
-          "Tu peux t'arrêter là si tu comptes regarder la série.",
-      },
+      { cible: ".article__meta", titre: "g.e1.t", texte: "g.e1.p" },
+      { cible: ".callout", titre: "g.e2.t", texte: "g.e2.p" },
     ],
   };
 
@@ -184,7 +68,7 @@
     racine.className = "guide";
     racine.setAttribute("role", "dialog");
     racine.setAttribute("aria-modal", "true");
-    racine.setAttribute("aria-label", "Guide du site");
+    racine.setAttribute("aria-label", t("nav.guide"));
     racine.innerHTML =
       '<div class="guide__voile"></div>' +
       '<div class="guide__projecteur"></div>' +
@@ -195,11 +79,11 @@
       '  <div class="guide__pieds">' +
       '    <div class="guide__points"></div>' +
       '    <div class="guide__boutons">' +
-      '      <button type="button" class="guide__btn" data-act="prec">Précédent</button>' +
+      '      <button type="button" class="guide__btn" data-act="prec">' + t("g.precedent") + "</button>" +
       '      <button type="button" class="guide__btn guide__btn--plein" data-act="suiv"></button>' +
       "    </div>" +
       "  </div>" +
-      '  <button type="button" class="guide__fermer" aria-label="Fermer le guide">' +
+      '  <button type="button" class="guide__fermer" data-i18n-attr="aria-label:g.fermer">' +
       '    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6">' +
       '<path d="M2 2l8 8M10 2l-8 8"/></svg></button>' +
       "</div>";
@@ -267,12 +151,12 @@
 
     racine.querySelector(".guide__compteur").textContent =
       String(index + 1).padStart(2, "0") + " / " + String(etapes.length).padStart(2, "0");
-    racine.querySelector(".guide__titre").textContent = etape.titre;
-    racine.querySelector(".guide__texte").textContent = etape.texte;
+    racine.querySelector(".guide__titre").textContent = t(etape.titre);
+    racine.querySelector(".guide__texte").textContent = t(etape.texte);
 
     var suivantBtn = racine.querySelector('[data-act="suiv"]');
-    if (etape.suite) suivantBtn.textContent = etape.suite.libelle;
-    else suivantBtn.textContent = index === etapes.length - 1 ? "Terminer" : "Suivant";
+    if (etape.suite) suivantBtn.textContent = t(etape.suite.libelle);
+    else suivantBtn.textContent = index === etapes.length - 1 ? t("g.terminer") : t("g.suivant");
 
     racine.querySelector('[data-act="prec"]').disabled = index === 0;
 

@@ -7,7 +7,7 @@
 <meta name="description" content="Le portrait chiffré de 30 dramas : heures passées, acteurs récurrents, années, diffuseurs, origines et genres de prédilection.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23000'/><rect x='7' y='7' width='18' height='18' fill='%23ff5c2b'/></svg>">
 <link rel="stylesheet" href="assets/style.css">
-<script>document.documentElement.classList.add("js");</script>
+<script>(function(){var d=document.documentElement;d.classList.add("js");try{var p=JSON.parse(localStorage.getItem("carnet:prefs")||"{}"),q=new URLSearchParams(location.search);if(q.get("lang"))p.langue=q.get("lang");if(q.get("theme"))p.theme=q.get("theme");if(q.get("lang")||q.get("theme"))localStorage.setItem("carnet:prefs",JSON.stringify(p));if(p.theme&&p.theme!=="defaut")d.setAttribute("data-theme",p.theme);if(p.langue)d.setAttribute("lang",p.langue);}catch(e){}})();</script>
 </head>
 <body data-page="portrait">
 
@@ -15,20 +15,17 @@
 
 <header class="bar">
   <a class="bar__logo" href="index.html">Dramas<sup>26</sup></a>
-  <a class="bar__link" href="carnet.html">Le carnet</a>
-  <a class="bar__link" href="visionnages.html">Les visionnages</a>
-  <a class="bar__link bar__link--optionnel" href="moi.html" aria-current="page">Portrait</a>
+  <a class="bar__link" href="carnet.html" data-i18n="nav.carnet"></a>
+  <a class="bar__link" href="visionnages.html" data-i18n="nav.visionnages"></a>
+  <a class="bar__link bar__link--optionnel" href="moi.html" aria-current="page" data-i18n="nav.portrait"></a>
   <span class="bar__spacer"></span>
-  <button class="bar__guide" type="button" data-guide><span>?</span> Guide</button>
+  <button class="bar__guide" type="button" data-guide><span class="bar__guide__rond">?</span><span data-i18n="nav.guide"></span></button>
+  <button class="bar__reglages" type="button" data-reglages><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M1 4.5h9M13 4.5h2M1 11.5h3M7 11.5h8"/><circle cx="11.5" cy="4.5" r="1.7"/><circle cx="5.5" cy="11.5" r="1.7"/></svg><span data-i18n="nav.reglages"></span></button>
 </header>
 
 <div class="wrap opening" style="padding-bottom:2rem">
-  <p class="opening__kicker reveal">
-    Trente séries laissent des traces. Voici ce qu'elles racontent quand on
-    les compte&nbsp;: le temps englouti, les visages qui reviennent, les
-    époques, les diffuseurs et les genres vers lesquels je penche.
-  </p>
-  <h1 class="opening__title display" data-split>Ce que mes<br>visionnages<br>disent de moi</h1>
+  <p class="opening__kicker reveal" data-i18n="p.chapeau"></p>
+  <h1 class="opening__title display" data-split data-i18n="p.titre"></h1>
 </div>
 
 <main>
@@ -36,18 +33,18 @@
   <!-- ------------------------------ 1. Le temps ------------------------------ -->
   <section class="wrap portrait-section viz viz--temps" id="section-temps">
     <div class="portrait-head reveal">
-      <span class="section-num mono"><i></i>01 — Le temps</span>
-      <h2>Ce que ça m'a coûté en heures</h2>
+      <span class="section-num mono"><i></i><span data-i18n="p.1.num"></span></span>
+      <h2 data-i18n="p.1.h"></h2>
       <p id="temps-phrase"></p>
     </div>
 
-    <p class="hero-figure reveal"><span id="hero-heures" data-decimales="0">0</span><small>heures devant un écran</small></p>
+    <p class="hero-figure reveal"><span id="hero-heures" data-decimales="0">0</span><small data-i18n="p.1.hero"></small></p>
 
     <div class="figures reveal" id="temps-chiffres" style="margin:2.5rem 0 3rem"></div>
 
     <div class="portrait-head reveal" style="margin-bottom:1.5rem">
-      <h2 style="font-size:clamp(1.25rem,2.5vw,1.6rem)">Les huit plus gourmandes</h2>
-      <p>En heures cumulées, épisodes et durée moyenne confondus.</p>
+      <h2 style="font-size:clamp(1.25rem,2.5vw,1.6rem)" data-i18n="p.1.h2"></h2>
+      <p data-i18n="p.1.p2"></p>
     </div>
     <div class="reveal" id="graph-temps"></div>
   </section>
@@ -55,8 +52,8 @@
   <!-- ------------------------------ 2. Le rythme ------------------------------ -->
   <section class="wrap portrait-section viz viz--temps" id="section-rythme">
     <div class="portrait-head reveal">
-      <span class="section-num mono"><i></i>02 — Le rythme</span>
-      <h2>Quand je regarde</h2>
+      <span class="section-num mono"><i></i><span data-i18n="p.2.num"></span></span>
+      <h2 data-i18n="p.2.h"></h2>
       <p id="rythme-phrase"></p>
     </div>
 
@@ -68,8 +65,8 @@
   <!-- ------------------------------ 3. Les visages ------------------------------ -->
   <section class="wrap portrait-section viz viz--acteurs" id="section-acteurs">
     <div class="portrait-head reveal">
-      <span class="section-num mono"><i></i>03 — Les visages</span>
-      <h2>Les acteurs que je croise partout</h2>
+      <span class="section-num mono"><i></i><span data-i18n="p.3.num"></span></span>
+      <h2 data-i18n="p.3.h"></h2>
       <p id="acteurs-phrase"></p>
     </div>
     <div class="reveal" id="graph-acteurs"></div>
@@ -78,8 +75,8 @@
   <!-- ------------------------------ 3. Les années ------------------------------ -->
   <section class="wrap portrait-section viz viz--annees" id="section-annees">
     <div class="portrait-head reveal">
-      <span class="section-num mono"><i></i>04 — Les années</span>
-      <h2>Les millésimes que je regarde</h2>
+      <span class="section-num mono"><i></i><span data-i18n="p.4.num"></span></span>
+      <h2 data-i18n="p.4.h"></h2>
       <p id="annees-phrase"></p>
     </div>
     <div class="reveal" id="graph-annees"></div>
@@ -88,8 +85,8 @@
   <!-- ------------------------------ 4. Les diffuseurs ------------------------------ -->
   <section class="wrap portrait-section viz viz--chaines" id="section-chaines">
     <div class="portrait-head reveal">
-      <span class="section-num mono"><i></i>05 — Les diffuseurs</span>
-      <h2>Qui produit ce que je regarde</h2>
+      <span class="section-num mono"><i></i><span data-i18n="p.5.num"></span></span>
+      <h2 data-i18n="p.5.h"></h2>
       <p id="chaines-phrase"></p>
     </div>
     <div class="reveal" id="graph-chaines"></div>
@@ -98,8 +95,8 @@
   <!-- ------------------------------ 5. Les origines ------------------------------ -->
   <section class="wrap portrait-section viz" id="section-pays">
     <div class="portrait-head reveal">
-      <span class="section-num mono"><i></i>06 — Les origines</span>
-      <h2>Une géographie très resserrée</h2>
+      <span class="section-num mono"><i></i><span data-i18n="p.6.num"></span></span>
+      <h2 data-i18n="p.6.h"></h2>
       <p id="pays-phrase"></p>
     </div>
     <div class="reveal" id="graph-pays"></div>
@@ -108,23 +105,21 @@
   <!-- ------------------------------ 6. Les genres ------------------------------ -->
   <section class="wrap portrait-section viz viz--genres" id="section-genres">
     <div class="portrait-head reveal">
-      <span class="section-num mono"><i></i>07 — Les genres</span>
-      <h2>Ce vers quoi je penche</h2>
+      <span class="section-num mono"><i></i><span data-i18n="p.7.num"></span></span>
+      <h2 data-i18n="p.7.h"></h2>
       <p id="genres-phrase"></p>
     </div>
     <div class="reveal" id="graph-genres"></div>
 
     <div class="portrait-head reveal" style="margin:3.5rem 0 1.5rem">
-      <h2 style="font-size:clamp(1.25rem,2.5vw,1.6rem)">Quelle série dans quel genre</h2>
-      <p>Tous les genres relevés sur les trente séries. Cliquer sur un genre
-      ouvre la liste filtrée sur celui-ci.</p>
+      <h2 style="font-size:clamp(1.25rem,2.5vw,1.6rem)" data-i18n="p.7.h2"></h2>
+      <p data-i18n="p.7.p2"></p>
     </div>
     <div class="reveal" id="genres-detail"></div>
 
     <div class="portrait-head reveal" style="margin:3.5rem 0 1.5rem">
-      <h2 style="font-size:clamp(1.25rem,2.5vw,1.6rem)">Ce que je note le mieux</h2>
-      <p>Ma note moyenne sur 5 par genre. Seuls les genres présents dans au
-      moins trois séries figurent ici — en dessous, la moyenne ne veut rien dire.</p>
+      <h2 style="font-size:clamp(1.25rem,2.5vw,1.6rem)" data-i18n="p.7.h3"></h2>
+      <p data-i18n="p.7.p3"></p>
     </div>
     <div class="reveal" id="graph-genres-notes"></div>
   </section>
@@ -132,8 +127,8 @@
   <!-- ------------------------------ 8. L'écart ------------------------------ -->
   <section class="wrap portrait-section viz viz--ecart" id="section-ecart">
     <div class="portrait-head reveal">
-      <span class="section-num mono"><i></i>08 — L'écart</span>
-      <h2>Là où je ne suis pas d'accord</h2>
+      <span class="section-num mono"><i></i><span data-i18n="p.8.num"></span></span>
+      <h2 data-i18n="p.8.h"></h2>
       <p id="ecart-phrase"></p>
     </div>
 
@@ -147,6 +142,7 @@
 <footer class="wrap pied" id="pied"></footer>
 
 <script src="assets/data.js"></script>
+<script src="assets/i18n.js"></script>
 <script src="assets/site.js"></script>
 <script src="assets/charts.js"></script>
 <script>
@@ -183,16 +179,14 @@
 
   $("hero-heures").setAttribute("data-compte", Math.round(totalMin / 60));
 
-  $("temps-phrase").textContent =
-    "Trente séries, " + totalEp + " épisodes, " + Math.round(totalMin / 60) +
-    " heures cumulées. Étalé depuis " + moisEnClair(premierMois) + ", cela fait environ " +
-    Math.round(totalMin / jours) + " minutes par jour, tous les jours, sans exception.";
+  $("temps-phrase").textContent = t("p.1.p", totalEp, Math.round(totalMin / 60),
+    moisEnClair(premierMois), Math.round(totalMin / jours));
 
   $("temps-chiffres").innerHTML = [
-    [Math.round(totalMin / 60 / 24), 0, "jours pleins"],
-    [totalEp, 0, "épisodes"],
-    [dureeMoy, 0, "min par épisode"],
-    [Math.round(totalMin / jours), 0, "min par jour"]
+    [Math.round(totalMin / 60 / 24), 0, t("p.1.jours")],
+    [totalEp, 0, t("p.1.eps")],
+    [dureeMoy, 0, t("p.1.minEp")],
+    [Math.round(totalMin / jours), 0, t("p.1.minJour")]
   ].map(function (f) {
     return '<div class="figure"><span class="figure__value">' +
       '<span data-compte="' + f[0] + '" data-decimales="' + f[1] + '">0</span></span>' +
@@ -205,12 +199,12 @@
         label: d.titre,
         valeur: Math.round((d.episodesNb * d.dureeEp) / 60 * 10) / 10,
         image: affiche(d),
-        detail: d.titre + " — " + d.episodesNb + " ép. de " + d.dureeEp + " min"
+        detail: d.titre + " — " + t("viz.epDe", d.episodesNb, d.dureeEp)
       };
     })
     .sort(function (a, b) { return b.valeur - a.valeur; })
     .slice(0, 8),
-    { unite: "h", decimales: 1, colonne: "Série", mesure: "Heures" });
+    { unite: "h", decimales: 1, colonne: t("viz.serie"), mesure: t("viz.heures") });
 
 
   /* ---------------- 2. Le rythme ---------------- */
@@ -226,17 +220,14 @@
   var creux = calendrier.filter(function (m) { return m.n === 0; });
   var charge = calendrier.slice().sort(function (a, b) { return b.n - a.n; })[0];
 
-  $("rythme-phrase").textContent =
-    "Trente séries réparties sur " + calendrier.length + " mois, soit " +
-    (Math.round(DRAMAS.length / calendrier.length * 10) / 10).toString().replace(".", ",") +
-    " par mois en moyenne. Mais la moyenne ment : " + moisEnClair(charge.mois) +
-    " en a vu " + charge.n + " à lui seul, quand " + creux.length +
-    " mois n'en comptent aucune.";
+  $("rythme-phrase").textContent = t("p.2.p", calendrier.length,
+    (Math.round(DRAMAS.length / calendrier.length * 10) / 10).toString().replace(".", ","),
+    moisEnClair(charge.mois), charge.n, creux.length);
 
   $("rythme-chiffres").innerHTML = [
-    [charge.n, "au meilleur mois"],
-    [creux.length, "mois sans rien"],
-    [calendrier.length, "mois couverts"]
+    [charge.n, t("p.2.max")],
+    [creux.length, t("p.2.creux")],
+    [calendrier.length, t("p.2.mois")]
   ].map(function (f) {
     return '<div class="figure"><span class="figure__value">' +
       '<span data-compte="' + f[0] + '" data-decimales="0">0</span></span>' +
@@ -248,9 +239,9 @@
       label: m.mois.slice(5) + "/" + m.mois.slice(2, 4),
       valeur: m.n,
       detail: moisEnClair(m.mois) + " — " +
-        (m.n === 0 ? "aucune série" : m.n + (m.n > 1 ? " séries" : " série"))
+        (m.n === 0 ? t("viz.aucuneSerie") : t(m.n > 1 ? "viz.desSeries" : "viz.uneSerie", m.n))
     };
-  }), { unite: "séries", colonne: "Mois", mesure: "Séries terminées" });
+  }), { unite: t("viz.seriesU"), colonne: t("viz.mois"), mesure: t("viz.seriesTerminees") });
 
   /* ---------------- 3. Les visages ---------------- */
 
@@ -267,10 +258,8 @@
     .sort(function (a, b) { return b.valeur - a.valeur; })
     .slice(0, 10);
 
-  $("acteurs-phrase").textContent =
-    recurrents[0].label + " apparaît dans " + recurrents[0].valeur +
-    " des trente séries — soit une sur cinq. En tout, " + recurrents.length +
-    " acteurs reviennent au moins deux fois dans un rôle principal.";
+  $("acteurs-phrase").textContent = t("p.3.p", recurrents[0].label,
+    recurrents[0].valeur, recurrents.length);
 
   Viz.barres($("graph-acteurs"), recurrents.map(function (a) {
     return {
@@ -279,7 +268,7 @@
       image: "assets/people/" + slug(a.label) + ".jpg",
       detail: a.label + " — " + a.titres.join(", ")
     };
-  }), { unite: "séries", colonne: "Acteur", mesure: "Rôles principaux" });
+  }), { unite: t("viz.seriesU"), colonne: t("viz.acteur"), mesure: t("viz.rolesPrincipaux") });
 
   /* ---------------- 4. Les années ---------------- */
 
@@ -288,14 +277,12 @@
   var annees = Object.keys(parAnnee).sort();
   var pointe = annees.slice().sort(function (a, b) { return parAnnee[b] - parAnnee[a]; })[0];
 
-  $("annees-phrase").textContent =
-    "De " + annees[0] + " à " + annees[annees.length - 1] + ", avec un pic en " + pointe +
-    " (" + parAnnee[pointe] + " titres). Je regarde surtout des séries récentes, " +
-    "mais je remonte volontiers de quelques années quand un titre a laissé une trace.";
+  $("annees-phrase").textContent = t("p.4.p", annees[0], annees[annees.length - 1],
+    pointe, parAnnee[pointe]);
 
   Viz.colonnes($("graph-annees"), annees.map(function (a) {
     return { label: a, valeur: parAnnee[a], detail: a + " — " + parAnnee[a] + " titres" };
-  }), { unite: "titres", colonne: "Année", mesure: "Titres" });
+  }), { unite: t("viz.titresU"), colonne: t("viz.annee"), mesure: t("viz.titresU") });
 
   /* ---------------- 5. Les diffuseurs ---------------- */
 
@@ -303,25 +290,18 @@
     return CHAINES[d.chaine] || d.chaine;
   }));
 
-  $("chaines-phrase").textContent =
-    chaines[0].label + " diffuse " + chaines[0].valeur + " des trente séries, " +
-    chaines[1].label + " en porte " + chaines[1].valeur + ". Le reste se disperse sur " +
-    (chaines.length - 2) + " autres chaînes et plateformes. À noter : MyDramaList " +
-    "ne recense que le diffuseur d'origine, pas le studio de production.";
+  $("chaines-phrase").textContent = t("p.5.p", chaines[0].label, chaines[0].valeur,
+    chaines[1].label, chaines[1].valeur, chaines.length - 2);
 
   Viz.barres($("graph-chaines"), chaines, {
-    unite: "séries", colonne: "Diffuseur", mesure: "Séries"
+    unite: t("viz.seriesU"), colonne: t("viz.diffuseur"), mesure: t("viz.seriesU")
   });
 
   /* ---------------- 6. Les origines ---------------- */
 
-  var NOMS = { KR: "Corée du Sud", JP: "Japon", CN: "Chine" };
-  var pays = compter(DRAMAS.map(function (d) { return NOMS[d.pays]; }));
+  var pays = compter(DRAMAS.map(function (d) { return nomPays(d.pays); }));
 
-  $("pays-phrase").textContent =
-    "Neuf séries sur dix viennent de Corée du Sud. Les deux titres chinois et " +
-    "l'unique japonais font figure d'exceptions — il y a clairement une porte " +
-    "d'entrée, et elle est coréenne.";
+  $("pays-phrase").textContent = t("p.6.p");
 
   Viz.empilee($("graph-pays"), pays);
 
@@ -333,18 +313,15 @@
   });
 
   var parVolume = Object.keys(genres)
-    .map(function (g) { return { label: g, valeur: genres[g].length }; })
+    .map(function (g) { return { label: nomGenre(g), valeur: genres[g].length }; })
     .sort(function (a, b) { return b.valeur - a.valeur; })
     .slice(0, 10);
 
-  $("genres-phrase").textContent =
-    "La romance arrive en tête avec " + genres["Romance"].length + " séries, devant le drame (" +
-    genres["Drame"].length + ") et la comédie (" + genres["Comédie"].length +
-    "). Le cadre scolaire revient dans " + genres["Scolaire"].length +
-    " titres : l'adolescence est manifestement un décor qui me parle.";
+  $("genres-phrase").textContent = t("p.7.p", genres["Romance"].length,
+    genres["Drame"].length, genres["Comédie"].length, genres["Scolaire"].length);
 
   Viz.barres($("graph-genres"), parVolume, {
-    unite: "séries", colonne: "Genre", mesure: "Séries"
+    unite: t("viz.seriesU"), colonne: t("viz.genre"), mesure: t("viz.seriesU")
   });
 
   // Index des genres : les genres portés par au moins deux séries ont leur
@@ -360,7 +337,7 @@
       return (
         '<div class="genre">' +
         '<a class="genre__nom" href="visionnages.html?genre=' + encodeURIComponent(g) + '">' +
-        esc(g) + '<span class="mono">' + genres[g].length + "</span></a>" +
+        esc(nomGenre(g)) + '<span class="mono">' + genres[g].length + "</span></a>" +
         '<p class="genre__titres">' +
         genres[g].map(function (d) { return "<span>" + esc(d.titre) + "</span>"; }).join("") +
         "</p></div>"
@@ -370,10 +347,9 @@
     (function () {
       var uniques = classes.filter(function (g) { return genres[g].length === 1; });
       if (!uniques.length) return "";
-      return '<p class="genres__uniques">Et ' + uniques.length +
-        " genres croisés une seule fois&nbsp;: " +
+      return '<p class="genres__uniques">' + t("p.7.uniques", uniques.length) +
         uniques.map(function (g) {
-          return "<b>" + esc(g) + "</b> (" + esc(genres[g][0].titre) + ")";
+          return "<b>" + esc(nomGenre(g)) + "</b> (" + esc(genres[g][0].titre) + ")";
         }).join(", ") + ".</p>";
     })();
 
@@ -394,11 +370,11 @@
 
   Viz.barres($("graph-genres-notes"), parNote.map(function (g) {
     return {
-      label: g.label,
+      label: nomGenre(g.label),
       valeur: g.valeur,
-      detail: g.label + " — " + String(g.valeur).replace(".", ",") + "/5 sur " + g.n + " séries"
+      detail: nomGenre(g.label) + " — " + String(g.valeur).replace(".", ",") + "/5 · " + t("viz.desSeries", g.n)
     };
-  }), { unite: "", decimales: 2, colonne: "Genre", mesure: "Ma note moyenne / 5" });
+  }), { unite: "", decimales: 2, colonne: t("viz.genre"), mesure: t("viz.maMoyenne") });
 
 
   /* ---------------- 8. L'écart avec le public ---------------- */
@@ -419,18 +395,14 @@
 
   function pt(n) { return (Math.round(n * 10) / 10).toString().replace(".", ","); }
 
-  $("ecart-phrase").textContent =
-    "Ma note ramenée sur dix, face à celle du public. " + pt(moyen) +
-    " point d'écart en moyenne, mais réparti très inégalement\u00a0: je surcote " +
-    haut.label + " de " + pt(haut.ecart) + " point et je sous-cote " + bas.label +
-    " de " + pt(Math.abs(bas.ecart)) + ". Sur " + accords.length +
-    " titres en revanche, on tombe d'accord à moins d'un demi-point.";
+  $("ecart-phrase").textContent = t("p.8.p", pt(moyen), haut.label, pt(haut.ecart),
+    bas.label, pt(Math.abs(bas.ecart)), accords.length);
 
   $("ecart-chiffres").innerHTML = [
-    [pt(moyen).replace(",", "."), 1, "point d'écart moyen"],
-    [surcotes.length, 0, "titres surcotés"],
-    [ecarts.length - surcotes.length, 0, "titres sous-cotés"],
-    [accords.length, 0, "accords nets"]
+    [pt(moyen).replace(",", "."), 1, t("p.8.ecart")],
+    [surcotes.length, 0, t("p.8.sur")],
+    [ecarts.length - surcotes.length, 0, t("p.8.sous")],
+    [accords.length, 0, t("p.8.accords")]
   ].map(function (f) {
     return '<div class="figure"><span class="figure__value">' +
       '<span data-compte="' + f[0] + '" data-decimales="' + f[1] + '">0</span></span>' +
@@ -442,8 +414,8 @@
     // écarts soient lisibles, et les deux bornes figurent sur l'axe.
     min: 4,
     max: 10,
-    series: ["Ma note", "Le public"],
-    colonne: "Série"
+    series: [t("p.8.moi"), t("p.8.public")],
+    colonne: t("viz.serie")
   });
 
   document.getElementById("pied").innerHTML = piedDePage("");
@@ -453,6 +425,7 @@
 </script>
 <script src="assets/anim.js"></script>
 <script src="assets/guide.js"></script>
+<script src="assets/prefs.js"></script>
 
 </body>
 </html>

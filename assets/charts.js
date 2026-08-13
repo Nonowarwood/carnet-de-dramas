@@ -69,7 +69,7 @@
   function tableauDonnees(entetes, lignes) {
     return (
       '<details class="viz-table">' +
-      "<summary>Voir les données</summary>" +
+      "<summary>" + t("viz.voirDonnees") + "</summary>" +
       "<table><thead><tr>" +
       entetes.map(function (h) { return "<th>" + echapper(h) + "</th>"; }).join("") +
       "</tr></thead><tbody>" +
@@ -144,7 +144,7 @@
     el.innerHTML =
       '<div class="viz-plot' + (avecImage ? " viz-plot--images" : "") +
       '" style="--viz-max:' + max + '">' + corps + "</div>" + axe +
-      tableauDonnees([options.colonne || "Élément", options.mesure || "Valeur"],
+      tableauDonnees([options.colonne || t("viz.element"), options.mesure || t("viz.valeur")],
         donnees.map(function (d) { return [d.label, fr(d.valeur, dec) + " " + unite]; }));
 
     el.querySelectorAll(".viz-row__bar").forEach(function (b) {
@@ -175,7 +175,7 @@
 
     el.innerHTML =
       '<div class="viz-cols">' + corps + "</div>" +
-      tableauDonnees([options.colonne || "Année", options.mesure || "Titres"],
+      tableauDonnees([options.colonne || t("viz.annee"), options.mesure || t("viz.titresU")],
         donnees.map(function (d) { return [d.label, fr(d.valeur) + " " + unite]; }));
 
     el.querySelectorAll(".viz-col__bar").forEach(function (b) {
@@ -193,7 +193,7 @@
       var pct = (d.valeur / total) * 100;
       return (
         '<span class="viz-seg" style="width:' + pct + '%;--seg:var(--serie-' + (i + 1) + ')"' +
-        ' data-tip="' + echapper(d.label + " — " + d.valeur + " titres, " + fr(pct, 0) + " %") + '">' +
+        ' data-tip="' + echapper(d.label + " — " + t("viz.desSeries", d.valeur) + ", " + fr(pct, 0) + " %") + '">' +
         (pct > 12 ? '<span class="viz-seg__in">' + fr(pct, 0) + " %</span>" : "") +
         "</span>"
       );
@@ -209,7 +209,7 @@
     el.innerHTML =
       '<div class="viz-stack">' + segments + "</div>" +
       '<div class="viz-legend mono">' + legende + "</div>" +
-      tableauDonnees(["Pays", "Titres", "Part"],
+      tableauDonnees([t("viz.pays"), t("viz.titresU"), t("viz.part")],
         donnees.map(function (d) {
           return [d.label, String(d.valeur), fr((d.valeur / total) * 100, 0) + " %"];
         }));
@@ -268,7 +268,7 @@
       '<div class="viz-plot viz-plot--halt">' + corps + "</div>" +
       '<p class="viz-axis mono"><span>' + fr(min, 0) + " / " + max + "</span><span>" +
       fr(max, 0) + " / " + max + "</span></p>" +
-      tableauDonnees([options.colonne || "Titre", noms[0], noms[1], "Écart"],
+      tableauDonnees([options.colonne || t("viz.titre"), noms[0], noms[1], t("viz.ecart")],
         donnees.map(function (d) {
           return [d.label, fr(d.a, 1), fr(d.b, 1),
                   (d.a - d.b >= 0 ? "+" : "\u2212") + fr(Math.abs(d.a - d.b), 1)];

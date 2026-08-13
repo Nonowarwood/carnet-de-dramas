@@ -69,14 +69,21 @@ function numero(i) {
 
 /* ---------------- Mois de visionnage ---------------- */
 
-const MOIS_FR = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet",
-                 "août", "septembre", "octobre", "novembre", "décembre"];
+const MOIS = {
+  fr: ["janvier", "février", "mars", "avril", "mai", "juin", "juillet",
+       "août", "septembre", "octobre", "novembre", "décembre"],
+  en: ["January", "February", "March", "April", "May", "June", "July",
+       "August", "September", "October", "November", "December"],
+  ko: ["1월", "2월", "3월", "4월", "5월", "6월", "7월",
+       "8월", "9월", "10월", "11월", "12월"],
+};
 
-/* « 2025-09 » → « septembre 2025 » */
+/* « 2025-09 » → « septembre 2025 », « September 2025 », « 2025년 9월 » */
 function moisEnClair(m) {
   if (!m) return "";
   var p = m.split("-");
-  return MOIS_FR[parseInt(p[1], 10) - 1] + " " + p[0];
+  var nom = MOIS[langue()][parseInt(p[1], 10) - 1];
+  return langue() === "ko" ? p[0] + "년 " + nom : nom + " " + p[0];
 }
 
 function anneeDe(m) { return (m || "").slice(0, 4); }
@@ -190,15 +197,22 @@ function calculerStats(liste) {
 
 /* ---------------- Métadonnées ---------------- */
 
-const PAYS_COURT = { KR: "Corée du Sud", JP: "Japon", CN: "Chine" };
+function nomPays(code) { return t("pays." + code); }
+
+/* Le synopsis existe en trois langues ; le français sert de recours. */
+function texteSynopsis(d) {
+  if (!d.synopsis) return "";
+  if (typeof d.synopsis === "string") return d.synopsis;
+  return d.synopsis[langue()] || d.synopsis.fr || "";
+}
 
 function ligneMeta(d, avecMention) {
   const bouts = [];
-  if (avecMention && d.mention) bouts.push(d.mention);
-  if (PAYS_COURT[d.pays]) bouts.push(PAYS_COURT[d.pays]);
+  if (avecMention && d.mention) bouts.push(nomMention(d.mention));
+  if (d.pays) bouts.push(nomPays(d.pays));
   if (d.annee) bouts.push(String(d.annee));
-  if (d.episodes) bouts.push(d.episodes);
-  if (d.genres && d.genres.length) bouts.push(d.genres.join(" / "));
+  if (d.episodes) bouts.push(formatEpisodes(d.episodes));
+  if (d.genres && d.genres.length) bouts.push(d.genres.map(nomGenre).join(" / "));
   return bouts.map(esc).join(" — ");
 }
 
@@ -224,7 +238,7 @@ function rangee(d, i, base) {
 
   const score =
     d.note === null
-      ? '<span class="row__score mono">à noter</span>'
+      ? '<span class="row__score mono">' + t("fiche.aNoter") + "</span>"
       : '<span class="row__score">' + jauge(d.note) +
         "<span>" + formatNote(d.note) + "</span></span>";
 
@@ -232,12 +246,12 @@ function rangee(d, i, base) {
     '<span class="row__num mono">' + numero(i) + "</span>" +
     vignette +
     "<span><span class='row__title'>" + esc(d.titre) + "</span>" +
-    (d.mention ? '<span class="row__mention mono">' + esc(d.mention) + "</span>" : "") +
+    (d.mention ? '<span class="row__mention mono">' + esc(nomMention(d.mention)) + "</span>" : "") +
     "</span>" +
     '<span class="row__meta mono">' +
-    moisEnClair(d.mois) + " · " + (PAYS_COURT[d.pays] || "") + "</span>" +
+    moisEnClair(d.mois) + " · " + nomPays(d.pays) + "</span>" +
     '<span class="row__fans mono" title="' + esc(detailSources(d)) + '">' +
-    (d.consensus == null ? "—" : "Public " + arrondi(d.consensus, 1)) +
+    (d.consensus == null ? "—" : t("fiche.publicCourt") + " " + arrondi(d.consensus, 1)) +
     (d.nbSources > 1 ? '<span class="row__srcs">' + d.nbSources + "</span>" : "") +
     "</span>" +
     score;
@@ -253,15 +267,15 @@ function fiche(d, i, base) {
 
   const maNote =
     d.note === null
-      ? '<div class="fiche__stat"><span class="mono">Pas encore notée</span></div>'
-      : '<div class="fiche__stat"><span class="mono">Ma note</span>' +
+      ? '<div class="fiche__stat"><span class="mono">' + t("fiche.pasNotee") + "</span></div>"
+      : '<div class="fiche__stat"><span class="mono">' + t("fiche.maNote") + "</span>" +
         jauge(d.note) + "<b>" + formatNote(d.note) + "/5</b></div>";
 
   const consensus =
     d.consensus == null
       ? ""
       : '<div class="fiche__stat fiche__stat--consensus">' +
-        '<span class="mono">Public</span><b>' + arrondi(d.consensus, 1) + "/10</b>" +
+        '<span class="mono">' + t("fiche.publicCourt") + "</span><b>" + arrondi(d.consensus, 1) + "/10</b>" +
         '<span class="sources mono">' +
         (d.noteMdl != null ? "<span>MDL " + formatNote(d.noteMdl) + "</span>" : "") +
         (d.noteViki != null ? "<span>Viki " + formatNote(d.noteViki) + "</span>" : "") +
@@ -269,12 +283,12 @@ function fiche(d, i, base) {
 
   const lien = d.critique
     ? '<a class="fiche__link mono" href="' + base + esc(d.critique) + '">' +
-      "Lire la critique " + ICONES.fleche + "</a>"
+      t("fiche.lireCritique") + " " + ICONES.fleche + "</a>"
     : "";
 
-  const synopsis = d.synopsis
-    ? '<p class="fiche__synopsis">' + esc(d.synopsis) + "</p>"
-    : '<p class="fiche__synopsis fiche__synopsis--vide">Synopsis à compléter.</p>';
+  const synopsis = texteSynopsis(d)
+    ? '<p class="fiche__synopsis">' + esc(texteSynopsis(d)) + "</p>"
+    : '<p class="fiche__synopsis fiche__synopsis--vide">' + t("fiche.synopsisVide") + "</p>";
 
   return (
     '<article class="fiche reveal">' +
@@ -282,16 +296,16 @@ function fiche(d, i, base) {
     "<div>" +
     (img
       ? '<a class="fiche__affiche" href="' + pageSerie(d, base) + '"' +
-        ' title="Voir la fiche de ' + esc(d.titre) + '">' +
+        ' title="' + esc(d.titre) + '">' +
         '<img class="fiche__poster" src="' + img + '" alt="Affiche de ' + esc(d.titre) + '" loading="lazy">' +
-        '<span class="fiche__affiche-note mono">Voir la fiche</span></a>'
+        '<span class="fiche__affiche-note mono">' + t("fiche.voirFiche") + "</span></a>"
       : '<div class="fiche__poster"></div>') +
     "</div>" +
     "<div>" +
     '<h3 class="fiche__title"><a href="' + pageSerie(d, base) + '">' + esc(d.titre) + "</a>" +
-    (d.mention ? ' <span class="fiche__mention">' + esc(d.mention) + "</span>" : "") +
+    (d.mention ? ' <span class="fiche__mention">' + esc(nomMention(d.mention)) + "</span>" : "") +
     "</h3>" +
-    '<p class="fiche__vu mono">Vu en ' + moisEnClair(d.mois) + "</p>" +
+    '<p class="fiche__vu mono">' + t("fiche.vuEn", moisEnClair(d.mois)) + "</p>" +
     '<p class="fiche__meta mono">' + ligneMeta(d, false) + "</p>" +
     synopsis +
     '<div class="fiche__ratings">' + maNote + consensus + lien + "</div>" +
@@ -321,63 +335,61 @@ function piedDePage(base) {
   DRAMAS.forEach(function (d) { pays[d.pays] = true; });
 
   function ligne(cle, valeur) {
-    return "<li><b>" + valeur + "</b> " + cle + "</li>";
+    return "<li><b>" + valeur + "</b> " + t(cle) + "</li>";
   }
 
-  function lien(href, texte) {
-    return '<li><a href="' + base + href + '">' + texte + "</a></li>";
+  function lien(href, cle) {
+    return '<li><a href="' + base + href + '">' + t(cle) + "</a></li>";
   }
 
   return (
     '<div class="pied__grille">' +
 
     '<div class="pied__bloc">' +
-    '<p class="pied__titre mono">Le carnet</p>' +
-    '<p class="pied__texte">Journal de visionnage tenu depuis janvier 2025. ' +
-    "Chaque série y est notée sur cinq, résumée, et comparée à l'avis du public. " +
-    "Quelques-unes ont droit à une vraie critique.</p>" +
+    '<p class="pied__titre mono">' + t("pied.carnet") + "</p>" +
+    '<p class="pied__texte">' + t("pied.texte") + "</p>" +
     "</div>" +
 
     '<div class="pied__bloc">' +
-    '<p class="pied__titre mono">En chiffres</p>' +
+    '<p class="pied__titre mono">' + t("pied.chiffres") + "</p>" +
     '<ul class="pied__liste">' +
-    ligne("séries", DRAMAS.length) +
-    ligne("épisodes", episodes) +
-    ligne("heures de visionnage", Math.round(minutes / 60)) +
-    ligne("de moyenne sur 5", arrondi(stats.moyenne, 2)) +
-    ligne("pays d'origine", Object.keys(pays).length) +
+    ligne("pied.series", DRAMAS.length) +
+    ligne("pied.episodes", episodes) +
+    ligne("pied.heures", Math.round(minutes / 60)) +
+    ligne("pied.moyenne", arrondi(stats.moyenne, 2)) +
+    ligne("pied.paysNb", Object.keys(pays).length) +
     "</ul></div>" +
 
     '<div class="pied__bloc">' +
-    '<p class="pied__titre mono">Le dernier vu</p>' +
+    '<p class="pied__titre mono">' + t("pied.dernier") + "</p>" +
     '<p class="pied__vedette">' + esc(dernier.titre) + "</p>" +
     '<p class="pied__detail mono">' + (dernier.annee || "") +
     (dernier.note !== null ? " &middot; " + formatNote(dernier.note) + "/5" : "") + "</p>" +
-    '<p class="pied__titre mono" style="margin-top:1.25rem">Notées 5 sur 5</p>' +
+    '<p class="pied__titre mono" style="margin-top:1.25rem">' + t("pied.cinqSurCinq") + "</p>" +
     '<p class="pied__detail">' +
     preferees.map(function (d) { return esc(d.titre); }).join("<br>") + "</p>" +
     "</div>" +
 
     '<div class="pied__bloc">' +
-    '<p class="pied__titre mono">Parcourir</p>' +
+    '<p class="pied__titre mono">' + t("pied.parcourir") + "</p>" +
     '<ul class="pied__liste pied__liste--liens">' +
-    lien("index.html", "Le carrousel") +
-    lien("carnet.html", "Le carnet") +
-    lien("visionnages.html", "Les visionnages") +
-    lien("moi.html", "Le portrait chiffré") +
-    lien("critiques/melo-movie.html", "La critique de Melo Movie") +
+    lien("index.html", "pied.lienCarrousel") +
+    lien("carnet.html", "pied.lienCarnet") +
+    lien("visionnages.html", "pied.lienVisionnages") +
+    lien("moi.html", "pied.lienPortrait") +
+    lien("critiques/melo-movie.html", "pied.lienCritique") +
     "</ul>" +
-    '<p class="pied__titre mono" style="margin-top:1.25rem">Période couverte</p>' +
+    '<p class="pied__titre mono" style="margin-top:1.25rem">' + t("pied.periode") + "</p>" +
     '<p class="pied__detail">' + moisEnClair(premier.mois) + " &rarr; " +
-    moisEnClair(dernier.mois) + "<br>" + mois.length + " mois</p>" +
+    moisEnClair(dernier.mois) + "<br>" + t("pied.moisNb", mois.length) + "</p>" +
     "</div>" +
 
     "</div>" +
 
     '<div class="pied__bas mono">' +
-    "<span>Carnet personnel &mdash; Noah Guerbois</span>" +
-    "<span>Notes du public&nbsp;: MyDramaList et Viki, recentrées avant moyenne</span>" +
-    '<span>Affiches, durées et casting&nbsp;: <a href="https://mydramalist.com">MyDramaList</a></span>' +
+    "<span>" + t("pied.signature") + "</span>" +
+    "<span>" + t("pied.sources") + "</span>" +
+    "<span>" + t("pied.credits") + "</span>" +
     "</div>"
   );
 }

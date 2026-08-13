@@ -33,7 +33,10 @@ function esc(s) {
 
 /* Description de partage : synopsis tronqué proprement sur un mot. */
 function resume(d) {
-  const base = d.synopsis || `${d.titre}, ${d.annee}.`;
+  // Le synopsis est désormais multilingue ; la description de partage est
+  // figée à la génération, donc en français, langue d'origine du carnet.
+  const fr = d.synopsis && (typeof d.synopsis === "string" ? d.synopsis : d.synopsis.fr);
+  const base = fr || `${d.titre}, ${d.annee}.`;
   if (base.length <= 155) return base;
   const coupe = base.slice(0, 155);
   return coupe.slice(0, coupe.lastIndexOf(" ")) + "…";
@@ -52,7 +55,7 @@ const gabarit = (d, i) => `<!doctype html>
 <meta property="og:type" content="video.tv_show">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23000'/><rect x='7' y='7' width='18' height='18' fill='%23ff5c2b'/></svg>">
 <link rel="stylesheet" href="../assets/style.css">
-<script>document.documentElement.classList.add("js");</script>
+<script>(function(){var d=document.documentElement;d.classList.add("js");try{var p=JSON.parse(localStorage.getItem("carnet:prefs")||"{}"),q=new URLSearchParams(location.search);if(q.get("lang"))p.langue=q.get("lang");if(q.get("theme"))p.theme=q.get("theme");if(q.get("lang")||q.get("theme"))localStorage.setItem("carnet:prefs",JSON.stringify(p));if(p.theme&&p.theme!=="defaut")d.setAttribute("data-theme",p.theme);if(p.langue)d.setAttribute("lang",p.langue);}catch(e){}})();</script>
 </head>
 <body data-page="serie" data-serie="${slug(d.titre)}">
 
@@ -60,11 +63,12 @@ const gabarit = (d, i) => `<!doctype html>
 
 <header class="bar">
   <a class="bar__logo" href="../index.html">Dramas<sup>26</sup></a>
-  <a class="bar__link" href="../carnet.html">Le carnet</a>
-  <a class="bar__link" href="../visionnages.html">Les visionnages</a>
-  <a class="bar__link bar__link--optionnel" href="../moi.html">Portrait</a>
+  <a class="bar__link" href="../carnet.html" data-i18n="nav.carnet"></a>
+  <a class="bar__link" href="../visionnages.html" data-i18n="nav.visionnages"></a>
+  <a class="bar__link bar__link--optionnel" href="../moi.html" data-i18n="nav.portrait"></a>
   <span class="bar__spacer"></span>
-  <button class="bar__guide" type="button" data-guide><span>?</span> Guide</button>
+  <button class="bar__guide" type="button" data-guide><span class="bar__guide__rond">?</span><span data-i18n="nav.guide"></span></button>
+  <button class="bar__reglages" type="button" data-reglages><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M1 4.5h9M13 4.5h2M1 11.5h3M7 11.5h8"/><circle cx="11.5" cy="4.5" r="1.7"/><circle cx="5.5" cy="11.5" r="1.7"/></svg><span data-i18n="nav.reglages"></span></button>
 </header>
 
 <main class="wrap" id="serie"></main>
@@ -72,11 +76,13 @@ const gabarit = (d, i) => `<!doctype html>
 <footer class="wrap pied" id="pied"></footer>
 
 <script src="../assets/data.js"></script>
+<script src="../assets/i18n.js"></script>
 <script src="../assets/site.js"></script>
 <script src="../assets/serie.js"></script>
 <script>document.getElementById("pied").innerHTML = piedDePage("../");</script>
 <script src="../assets/anim.js"></script>
 <script src="../assets/guide.js"></script>
+<script src="../assets/prefs.js"></script>
 
 </body>
 </html>

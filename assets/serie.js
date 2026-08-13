@@ -20,7 +20,7 @@
   DRAMAS.forEach(function (d, i) { if (slug(d.titre) === cible) index = i; });
 
   if (index === -1) {
-    hote.innerHTML = '<p class="empty mono">Série introuvable</p>';
+    hote.innerHTML = '<p class="empty mono">' + t("fiche.introuvable") + "</p>";
     return;
   }
 
@@ -31,13 +31,13 @@
 
   function infos() {
     var lignes = [
-      ["Vu en", moisEnClair(d.mois)],
-      ["Origine", PAYS_COURT[d.pays]],
-      ["Diffusion", d.annee + (d.chaine ? " &middot; " + esc(d.chaine) : "")],
-      ["Format", d.episodes],
-      ["Genres", (d.genres || []).join(", ")],
+      [t("serie.vuEn"), moisEnClair(d.mois)],
+      [t("serie.origine"), nomPays(d.pays)],
+      [t("serie.diffusion"), d.annee + (d.chaine ? " &middot; " + esc(d.chaine) : "")],
+      [t("serie.format"), formatEpisodes(d.episodes)],
+      [t("serie.genres"), (d.genres || []).map(nomGenre).join(", ")],
     ];
-    if (d.realisateur) lignes.push(["Réalisation", d.realisateur]);
+    if (d.realisateur) lignes.push([t("serie.realisation"), d.realisateur]);
 
     return (
       '<dl class="serie__infos">' +
@@ -51,34 +51,33 @@
   function notes() {
     var mienne =
       d.note === null
-        ? '<div class="serie__note"><span class="mono">Ma note</span>' +
-          '<b class="serie__note-vide">Pas encore notée</b></div>'
-        : '<div class="serie__note"><span class="mono">Ma note</span>' +
+        ? '<div class="serie__note"><span class="mono">' + t("fiche.maNote") + "</span>" +
+          '<b class="serie__note-vide">' + t("fiche.pasNotee") + "</b></div>"
+        : '<div class="serie__note"><span class="mono">' + t("fiche.maNote") + "</span>" +
           '<b>' + formatNote(d.note) + '<small>/5</small></b>' + jauge(d.note) + "</div>";
 
     var publique =
       d.consensus == null
         ? ""
-        : '<div class="serie__note"><span class="mono">Le public</span>' +
+        : '<div class="serie__note"><span class="mono">' + t("fiche.public") + "</span>" +
           "<b>" + arrondi(d.consensus, 1) + '<small>/10</small></b>' +
           '<span class="serie__sources mono">' +
           (d.noteMdl != null ? "<span>MDL " + formatNote(d.noteMdl) + "</span>" : "") +
           (d.noteViki != null
             ? "<span>Viki " + formatNote(d.noteViki) + " · " +
-              d.votesViki.toLocaleString("fr-FR") + " votes</span>"
+              t("serie.votes", d.votesViki.toLocaleString(langue())) + "</span>"
             : "") +
           "</span></div>";
 
     var ecart = "";
     if (d.note !== null && d.consensus != null) {
       var e = d.note * 2 - d.consensus;
-      var sens = e >= 0 ? "au-dessus" : "en dessous";
+      var valeur = (Math.round(Math.abs(e) * 10) / 10).toString().replace(".", ",");
       ecart =
         '<p class="serie__ecart mono">' +
         (Math.abs(e) < 0.25
-          ? "Pile dans le consensus"
-          : (Math.round(Math.abs(e) * 10) / 10).toString().replace(".", ",") +
-            " point " + sens + " du public") +
+          ? t("serie.consensus")
+          : t(e >= 0 ? "serie.dessus" : "serie.dessous", valeur)) +
         "</p>";
     }
 
@@ -89,7 +88,7 @@
     if (!d.roles || !d.roles.length) return "";
     return (
       '<section class="serie__section">' +
-      '<h2 class="serie__titre-section mono">Rôles principaux</h2>' +
+      '<h2 class="serie__titre-section mono">' + t("serie.roles") + "</h2>" +
       '<div class="casting">' +
       d.roles.map(function (r) {
         return (
@@ -122,14 +121,14 @@
 
     return (
       '<section class="serie__section">' +
-      '<h2 class="serie__titre-section mono">Dans la même veine</h2>' +
+      '<h2 class="serie__titre-section mono">' + t("serie.proches") + "</h2>" +
       '<div class="proches">' +
       voisines.map(function (v) {
         return (
           '<a class="proche" href="' + slug(v.d.titre) + '.html">' +
           '<img src="' + affiche(v.d, B) + '" alt="" loading="lazy">' +
           '<p class="proche__titre">' + esc(v.d.titre) + "</p>" +
-          '<p class="proche__meta mono">' + esc(v.communs.join(", ")) + "</p>" +
+          '<p class="proche__meta mono">' + esc(v.communs.map(nomGenre).join(", ")) + "</p>" +
           "</a>"
         );
       }).join("") +
@@ -152,8 +151,8 @@
 
     return (
       '<nav class="serie-nav">' +
-      cote(avant, "prec", "Vu juste avant") +
-      cote(apres, "suiv", "Vu juste après") +
+      cote(avant, "prec", t("serie.avant")) +
+      cote(apres, "suiv", t("serie.apres")) +
       "</nav>"
     );
   }
@@ -162,20 +161,20 @@
 
   var liens =
     '<a class="serie__lien mono" href="https://mydramalist.com' + esc(d.mdl) + '"' +
-    ' target="_blank" rel="noopener">Fiche MyDramaList &#8599;</a>' +
+    ' target="_blank" rel="noopener">' + t("serie.fiche") + ' &#8599;</a>' +
     (d.critique
       ? '<a class="serie__lien serie__lien--fort mono" href="' + B + esc(d.critique) +
-        '">Lire ma critique ' + ICONES.fleche + "</a>"
+        '">' + t("fiche.maCritique") + " " + ICONES.fleche + "</a>"
       : "");
 
   hote.innerHTML =
     '<a class="backlink mono" href="' + B + 'visionnages.html">' + ICONES.flecheGauche +
-    " Tous les visionnages</a>" +
+    " " + t("nav.tousVisionnages") + "</a>" +
 
     '<header class="serie__entete">' +
     '<span class="serie__num mono">' + numero(index) + " / " + DRAMAS.length + "</span>" +
     '<h1 class="serie__titre">' + esc(d.titre) + "</h1>" +
-    (d.mention ? '<p class="serie__mention mono">' + esc(d.mention) + "</p>" : "") +
+    (d.mention ? '<p class="serie__mention mono">' + esc(nomMention(d.mention)) + "</p>" : "") +
     "</header>" +
 
     '<div class="serie">' +
@@ -188,7 +187,7 @@
     '<div class="serie__corps">' +
     infos() +
     notes() +
-    (d.synopsis ? '<p class="serie__synopsis">' + esc(d.synopsis) + "</p>" : "") +
+    (texteSynopsis(d) ? '<p class="serie__synopsis">' + esc(texteSynopsis(d)) + "</p>" : "") +
     "</div>" +
     "</div>" +
 

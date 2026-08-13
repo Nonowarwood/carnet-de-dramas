@@ -7,7 +7,7 @@
 <meta name="description" content="Chiffres clés, critiques et derniers visionnages du carnet de dramas.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23000'/><rect x='7' y='7' width='18' height='18' fill='%23ff5c2b'/></svg>">
 <link rel="stylesheet" href="assets/style.css">
-<script>document.documentElement.classList.add("js");</script>
+<script>(function(){var d=document.documentElement;d.classList.add("js");try{var p=JSON.parse(localStorage.getItem("carnet:prefs")||"{}"),q=new URLSearchParams(location.search);if(q.get("lang"))p.langue=q.get("lang");if(q.get("theme"))p.theme=q.get("theme");if(q.get("lang")||q.get("theme"))localStorage.setItem("carnet:prefs",JSON.stringify(p));if(p.theme&&p.theme!=="defaut")d.setAttribute("data-theme",p.theme);if(p.langue)d.setAttribute("lang",p.langue);}catch(e){}})();</script>
 </head>
 <body data-page="carnet">
 
@@ -16,24 +16,22 @@
 <header class="bar">
   <a class="bar__logo" href="index.html">Dramas<sup>26</sup></a>
   <a class="bar__link" href="carnet.html" aria-current="page">Le carnet</a>
-  <a class="bar__link" href="visionnages.html">Les visionnages</a>
-  <a class="bar__link bar__link--optionnel" href="moi.html">Portrait</a>
+  <a class="bar__link" href="visionnages.html" data-i18n="nav.visionnages"></a>
+  <a class="bar__link bar__link--optionnel" href="moi.html" data-i18n="nav.portrait"></a>
   <span class="bar__spacer"></span>
-  <button class="bar__guide" type="button" data-guide><span>?</span> Guide</button>
+  <button class="bar__guide" type="button" data-guide><span class="bar__guide__rond">?</span><span data-i18n="nav.guide"></span></button>
+  <button class="bar__reglages" type="button" data-reglages><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M1 4.5h9M13 4.5h2M1 11.5h3M7 11.5h8"/><circle cx="11.5" cy="4.5" r="1.7"/><circle cx="5.5" cy="11.5" r="1.7"/></svg><span data-i18n="nav.reglages"></span></button>
 </header>
 
 <div class="mosaic" id="mosaic" aria-hidden="true"></div>
 
 <div class="wrap opening">
-  <p class="opening__kicker reveal">
-    Trente titres consignés au fil des visionnages&nbsp;: mes notes sur cinq,
-    celles du public, et de temps en temps une vraie critique.
-  </p>
-  <h1 class="opening__title display" data-split>Carnet<br>de dramas</h1>
+  <p class="opening__kicker reveal" data-i18n="carnet.chapeau"></p>
+  <h1 class="opening__title display" data-split data-i18n="carnet.titre"></h1>
   <div class="opening__foot mono reveal">
-    <span>Par Noah Guerbois<br>Sources MyDramaList &amp; Viki</span>
-    <span>Depuis janvier 2025</span>
-    <a href="index.html" style="color:inherit">Revenir au carrousel</a>
+    <span data-i18n="carnet.auteur"></span>
+    <span data-i18n="carnet.depuis"></span>
+    <a href="index.html" style="color:inherit" data-i18n="carnet.retourCarrousel"></a>
   </div>
 </div>
 
@@ -43,7 +41,7 @@
 
   <section class="wrap section">
     <div class="section__head reveal">
-      <h2 class="section__title mono">Critiques</h2>
+      <h2 class="section__title mono" data-i18n="carnet.critiques"></h2>
       <span class="section__count mono" id="compte-critiques"></span>
     </div>
     <div id="critiques"></div>
@@ -51,9 +49,9 @@
 
   <section class="wrap section">
     <div class="section__head reveal">
-      <h2 class="section__title mono">Derniers visionnages</h2>
+      <h2 class="section__title mono" data-i18n="carnet.derniers"></h2>
       <a class="section__count mono" href="visionnages.html" style="text-decoration:none">
-        Voir les <span id="compte-total"></span> &rarr;
+        <span id="compte-total"></span> &rarr;
       </a>
     </div>
     <div class="index" id="derniers"></div>
@@ -64,6 +62,7 @@
 <footer class="wrap pied" id="pied"></footer>
 
 <script src="assets/data.js"></script>
+<script src="assets/i18n.js"></script>
 <script src="assets/site.js"></script>
 <script>
 (function () {
@@ -94,7 +93,7 @@
            '</span><span class="figure__label mono">' + f[3] + "</span></div>";
   }).join("");
 
-  document.getElementById("compte-total").textContent = stats.total;
+  document.getElementById("compte-total").textContent = t("carnet.voirTout", stats.total);
 
   var avecCritique = DRAMAS.filter(function (d) { return d.critique; });
   document.getElementById("compte-critiques").textContent =
@@ -105,9 +104,9 @@
       '<div class="feature__media"><img src="' + affiche(d) + '" alt="Affiche de ' + esc(d.titre) + '"></div>' +
       "<div>" +
       '<span class="mono">' + esc(d.critiqueDate) + " &middot; " + esc(d.titre) + "</span>" +
-      '<h3 class="feature__title">Avis critique sur «&nbsp;' + esc(d.titre) + '&nbsp;»</h3>' +
+      '<h3 class="feature__title">' + t("critique.titre", esc(d.titre)) + "</h3>" +
       '<p class="feature__excerpt">' + esc(d.critiqueExtrait) + "</p>" +
-      '<span class="feature__cta mono">Lire la critique ' + ICONES.fleche + "</span>" +
+      '<span class="feature__cta mono">' + t("fiche.lireCritique") + " " + ICONES.fleche + "</span>" +
       "</div></a>";
   }).join("");
 
@@ -126,6 +125,7 @@
 </script>
 <script src="assets/anim.js"></script>
 <script src="assets/guide.js"></script>
+<script src="assets/prefs.js"></script>
 
 </body>
 </html>

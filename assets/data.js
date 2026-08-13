@@ -35,8 +35,11 @@ const DRAMAS = [
     noteMdl: 8.4,
     note: 2.5,
     mois: "2025-01",
-    synopsis:
-      "Criblé de dettes, Seong Gi-hun accepte de participer à un jeu mystérieux où 456 joueurs désargentés s'affrontent dans des jeux d'enfants. Le vainqueur repartira avec une fortune ; les perdants, eux, ne repartiront pas.",
+    synopsis: {
+      fr: "Criblé de dettes, Seong Gi-hun accepte de participer à un jeu mystérieux où 456 joueurs désargentés s'affrontent dans des jeux d'enfants. Le vainqueur repartira avec une fortune ; les perdants, eux, ne repartiront pas.",
+      en: "Crippled by debt, Seong Gi-hun agrees to join a mysterious contest where 456 penniless players compete in children's games. The winner walks away with a fortune; the losers do not walk away at all.",
+      ko: "빚에 짓눌린 성기훈은 빈털터리 456명이 어린이 놀이로 겨루는 의문의 게임에 참가한다. 승자는 거액을 손에 쥐지만, 패자는 살아 나가지 못한다.",
+    },
   },
   {
     titre: "Alice in Borderland",
@@ -56,8 +59,11 @@ const DRAMAS = [
     noteMdl: 8.9,
     note: 4,
     mois: "2025-01",
-    synopsis:
-      "Arisu, jeune homme désœuvré et accro aux jeux vidéo, se retrouve brutalement projeté dans un Tokyo vidé de ses habitants. Pour survivre, lui et ses amis doivent remporter des épreuves mortelles dont les règles leur échappent.",
+    synopsis: {
+      fr: "Arisu, jeune homme désœuvré et accro aux jeux vidéo, se retrouve brutalement projeté dans un Tokyo vidé de ses habitants. Pour survivre, lui et ses amis doivent remporter des épreuves mortelles dont les règles leur échappent.",
+      en: "Arisu, an aimless young man hooked on video games, is abruptly thrown into a Tokyo emptied of its inhabitants. To survive, he and his friends must win deadly trials whose rules escape them.",
+      ko: "무기력하게 게임에만 빠져 살던 아리스는 어느 날 사람이 사라진 도쿄에 던져진다. 살아남기 위해 그와 친구들은 규칙조차 알 수 없는 목숨 건 게임을 이겨내야 한다.",
+    },
   },
   {
     titre: "Weak Hero Class",
@@ -82,8 +88,11 @@ const DRAMAS = [
     votesViki: 98101,
     note: 4.5,
     mois: "2025-05",
-    synopsis:
-      "Yeon Si-eun est le premier de sa classe. Physiquement frêle, il compense par une intelligence redoutable qu'il transforme en arme face à la violence qui règne dans son lycée.",
+    synopsis: {
+      fr: "Yeon Si-eun est le premier de sa classe. Physiquement frêle, il compense par une intelligence redoutable qu'il transforme en arme face à la violence qui règne dans son lycée.",
+      en: "Yeon Si-eun ranks first in his class. Physically frail, he makes up for it with a formidable intelligence that he turns into a weapon against the violence ruling his school.",
+      ko: "전교 1등 연시은은 체격은 왜소하지만, 명석한 머리를 무기 삼아 학교를 지배하는 폭력에 맞선다.",
+    },
   },
   {
     titre: "All of Us Are Dead",
@@ -105,8 +114,11 @@ const DRAMAS = [
     noteMdl: 8.6,
     note: 3.5,
     mois: "2025-05",
-    synopsis:
-      "Un lycée devient l'épicentre d'une épidémie zombie. Piégés dans les bâtiments, les élèves doivent se frayer un chemin vers la sortie avant d'être rattrapés — ou contaminés.",
+    synopsis: {
+      fr: "Un lycée devient l'épicentre d'une épidémie zombie. Piégés dans les bâtiments, les élèves doivent se frayer un chemin vers la sortie avant d'être rattrapés — ou contaminés.",
+      en: "A high school becomes ground zero for a zombie outbreak. Trapped inside, the students must fight their way out before they are caught — or infected.",
+      ko: "한 고등학교가 좀비 사태의 진원지가 된다. 건물에 갇힌 학생들은 잡히거나 감염되기 전에 탈출구를 찾아야 한다.",
+    },
   },
   {
     titre: "Twenty Five Twenty One",
@@ -129,8 +141,11 @@ const DRAMAS = [
     noteMdl: 8.8,
     note: 5,
     mois: "2025-06",
-    synopsis:
-      "En pleine crise financière sud-coréenne, l'équipe d'escrime de la lycéenne Na Hee-do est dissoute. Elle s'accroche pourtant à son rêve d'intégrer l'équipe nationale, pendant que la vie de Baek Yi-jin bascule avec la ruine de sa famille.",
+    synopsis: {
+      fr: "En pleine crise financière sud-coréenne, l'équipe d'escrime de la lycéenne Na Hee-do est dissoute. Elle s'accroche pourtant à son rêve d'intégrer l'équipe nationale, pendant que la vie de Baek Yi-jin bascule avec la ruine de sa famille.",
+      en: "As South Korea's financial crisis bites, high schooler Na Hee-do's fencing team is disbanded. She clings to her dream of the national squad, while Baek Yi-jin's life collapses with his family's fortune.",
+      ko: "외환위기로 고등학생 나희도의 펜싱부가 해체된다. 그럼에도 국가대표의 꿈을 놓지 않는 그녀 곁에서, 백이진은 집안의 몰락과 함께 삶이 흔들린다.",
+    },
   },
   {
     titre: "Mr. Plankton",
@@ -152,8 +167,11 @@ const DRAMAS = [
     noteMdl: 8.6,
     note: 3,
     mois: "2025-06",
-    synopsis:
-      "Hae-jo, mis au ban à cause de ses origines inconnues, part sur les routes à la recherche de son véritable père. Jae-mi, qui rêve d'une famille, décide de l'accompagner malgré ses fiançailles.",
+    synopsis: {
+      fr: "Hae-jo, mis au ban à cause de ses origines inconnues, part sur les routes à la recherche de son véritable père. Jae-mi, qui rêve d'une famille, décide de l'accompagner malgré ses fiançailles.",
+      en: "Cast out over his unknown parentage, Hae-jo takes to the road in search of his real father. Jae-mi, who longs for a family, decides to come along despite her engagement.",
+      ko: "출생의 비밀 탓에 겉돌던 해조는 친아버지를 찾아 길을 나선다. 가족을 갈망하던 재미는 약혼 중임에도 그와 동행하기로 한다.",
+    },
   },
   {
     titre: "Bloodhounds",
@@ -175,8 +193,11 @@ const DRAMAS = [
     noteMdl: 8.7,
     note: 4,
     mois: "2025-07",
-    synopsis:
-      "Deux jeunes boxeurs et anciens marines, que tout oppose sur le ring, deviennent inséparables. Leur amitié les entraîne dans l'univers brutal des prêteurs sur gages illégaux.",
+    synopsis: {
+      fr: "Deux jeunes boxeurs et anciens marines, que tout oppose sur le ring, deviennent inséparables. Leur amitié les entraîne dans l'univers brutal des prêteurs sur gages illégaux.",
+      en: "Two young boxers and former marines, opposites in the ring, become inseparable. Their friendship drags them into the brutal world of illegal moneylending.",
+      ko: "링 위에서는 정반대인 두 복서이자 전직 해병은 둘도 없는 친구가 된다. 그 우정은 그들을 불법 사채의 잔혹한 세계로 끌어들인다.",
+    },
   },
   {
     titre: "Twinkling Watermelon",
@@ -200,8 +221,11 @@ const DRAMAS = [
     votesViki: 149435,
     note: 5,
     mois: "2025-07",
-    synopsis:
-      "Eun-gyeol, lycéen né de parents sourds, mène une double vie : élève modèle le jour, guitariste la nuit. Un magasin de musique mystérieux le projette en 1995, où il rencontre son père adolescent — et entendant.",
+    synopsis: {
+      fr: "Eun-gyeol, lycéen né de parents sourds, mène une double vie : élève modèle le jour, guitariste la nuit. Un magasin de musique mystérieux le projette en 1995, où il rencontre son père adolescent — et entendant.",
+      en: "Eun-gyeol, a high schooler born to deaf parents, leads a double life: model student by day, guitarist by night. A mysterious music shop sends him back to 1995, where he meets his father as a teenager — and hearing.",
+      ko: "농인 부모 사이에서 태어난 고등학생 은결은 낮에는 모범생, 밤에는 기타리스트로 산다. 수상한 악기점을 통해 1995년으로 간 그는 소리를 듣던 시절의 아버지를 만난다.",
+    },
   },
   {
     titre: "Friendly Rivalry",
@@ -224,8 +248,11 @@ const DRAMAS = [
     votesViki: 6168,
     note: 3.5,
     mois: "2025-08",
-    synopsis:
-      "Woo Seul-gi, orpheline venue de province, intègre un lycée d'élite réservé au 1 % des meilleurs élèves. Isolée, elle finit par se lier à Yoo Je-i, la première de l'établissement — une amitié vite trouble.",
+    synopsis: {
+      fr: "Woo Seul-gi, orpheline venue de province, intègre un lycée d'élite réservé au 1 % des meilleurs élèves. Isolée, elle finit par se lier à Yoo Je-i, la première de l'établissement — une amitié vite trouble.",
+      en: "Woo Seul-gi, an orphan from the provinces, enters an elite school reserved for the top one percent. Isolated, she grows close to Yoo Je-i, the school's brightest — a friendship that quickly turns murky.",
+      ko: "지방 출신 고아 우슬기는 상위 1%만 다니는 명문고에 들어간다. 겉돌던 그녀는 전교 1등 유제이와 가까워지지만, 그 우정은 곧 불온해진다.",
+    },
   },
   {
     titre: "Lovely Runner",
@@ -249,8 +276,11 @@ const DRAMAS = [
     votesViki: 287996,
     note: 5,
     mois: "2025-09",
-    synopsis:
-      "Ryu Sun-jae est une star adulée dont la vie parfaite n'est qu'une façade. Quand le pire survient, une fan remonte le temps pour tenter de le sauver — quitte à réécrire sa propre jeunesse.",
+    synopsis: {
+      fr: "Ryu Sun-jae est une star adulée dont la vie parfaite n'est qu'une façade. Quand le pire survient, une fan remonte le temps pour tenter de le sauver — quitte à réécrire sa propre jeunesse.",
+      en: "Ryu Sun-jae is an adored star whose perfect life is only a façade. When the worst happens, a fan travels back in time to save him — even if it means rewriting her own youth.",
+      ko: "모두의 사랑을 받는 스타 류선재의 완벽한 삶은 껍데기일 뿐이다. 최악의 일이 벌어지자 한 팬이 과거로 돌아가 그를 구하려 한다. 자신의 청춘을 다시 쓰는 대가를 치르더라도.",
+    },
   },
   {
     titre: "A Love So Beautiful",
@@ -273,8 +303,11 @@ const DRAMAS = [
     votesViki: 85410,
     note: 2.5,
     mois: "2025-09",
-    synopsis:
-      "Cha Heon, brillant et distant, cache un cœur qu'il ne sait pas exprimer. Sin Sol-i, sa voisine de toujours, lui déclare sa flamme sans détour depuis des années.",
+    synopsis: {
+      fr: "Cha Heon, brillant et distant, cache un cœur qu'il ne sait pas exprimer. Sin Sol-i, sa voisine de toujours, lui déclare sa flamme sans détour depuis des années.",
+      en: "Cha Heon is brilliant and distant, hiding a heart he cannot express. Sin Sol-i, his lifelong neighbour, has been declaring her feelings without restraint for years.",
+      ko: "명석하지만 무뚝뚝한 차헌은 마음을 드러낼 줄 모른다. 오랜 이웃 신솔이는 몇 해째 거리낌 없이 그에게 마음을 고백해 왔다.",
+    },
   },
   {
     titre: "True Beauty",
@@ -298,8 +331,11 @@ const DRAMAS = [
     votesViki: 448098,
     note: 4.5,
     mois: "2025-09",
-    synopsis:
-      "Harcelée pour son physique, Lim Ju-gyeong apprend le maquillage sur YouTube et devient du jour au lendemain la beauté du lycée. Reste à savoir combien de temps elle pourra garder son visage démaquillé secret.",
+    synopsis: {
+      fr: "Harcelée pour son physique, Lim Ju-gyeong apprend le maquillage sur YouTube et devient du jour au lendemain la beauté du lycée. Reste à savoir combien de temps elle pourra garder son visage démaquillé secret.",
+      en: "Bullied for her looks, Lim Ju-gyeong learns make-up from YouTube and becomes the school beauty overnight. The question is how long she can keep her bare face a secret.",
+      ko: "외모로 괴롭힘을 당하던 임주경은 유튜브로 화장을 익혀 하루아침에 학교의 미인이 된다. 문제는 민낯을 언제까지 숨길 수 있느냐다.",
+    },
   },
   {
     titre: "Good Boy",
@@ -323,8 +359,11 @@ const DRAMAS = [
     noteMdl: 8.4,
     note: 3.5,
     mois: "2025-10",
-    synopsis:
-      "D'anciens médaillés olympiques rejoignent la police par la voie du recrutement spécial. Leurs disciplines respectives deviennent des armes inattendues face au crime organisé.",
+    synopsis: {
+      fr: "D'anciens médaillés olympiques rejoignent la police par la voie du recrutement spécial. Leurs disciplines respectives deviennent des armes inattendues face au crime organisé.",
+      en: "Former Olympic medallists join the police through a special recruitment scheme. Their respective disciplines become unexpected weapons against organised crime.",
+      ko: "올림픽 메달리스트들이 특별 채용으로 경찰이 된다. 각자의 종목이 조직범죄에 맞서는 뜻밖의 무기가 된다.",
+    },
   },
   {
     titre: "Untangled Love",
@@ -348,8 +387,11 @@ const DRAMAS = [
     noteMdl: 8.4,
     note: 2.5,
     mois: "2025-10",
-    synopsis:
-      "1998. Park Se-ri, 19 ans, veut à tout prix discipliner ses cheveux frisés avant de faire une déclaration qui changera sa vie. C'est le moment que choisit un nouveau venu, Han Yun-seok, pour tout compliquer.",
+    synopsis: {
+      fr: "1998. Park Se-ri, 19 ans, veut à tout prix discipliner ses cheveux frisés avant de faire une déclaration qui changera sa vie. C'est le moment que choisit un nouveau venu, Han Yun-seok, pour tout compliquer.",
+      en: "1998. Nineteen-year-old Park Se-ri is determined to tame her frizzy hair before making a life-changing confession. That is exactly when a transfer student, Han Yun-seok, complicates everything.",
+      ko: "1998년, 열아홉 박세리는 인생을 건 고백에 앞서 곱슬머리를 펴려 애쓴다. 하필 그때 전학생 한윤석이 나타나 모든 것을 헝클어뜨린다.",
+    },
   },
   {
     titre: "My Dearest Nemesis",
@@ -373,8 +415,11 @@ const DRAMAS = [
     votesViki: 126224,
     note: 4,
     mois: "2025-11",
-    synopsis:
-      "Son grand amour de lycée, un joueur en ligne surnommé « Dragon Noir », s'était révélé n'être qu'un collégien maladroit. Seize ans plus tard, elle le retrouve — devenu son supérieur hiérarchique.",
+    synopsis: {
+      fr: "Son grand amour de lycée, un joueur en ligne surnommé « Dragon Noir », s'était révélé n'être qu'un collégien maladroit. Seize ans plus tard, elle le retrouve — devenu son supérieur hiérarchique.",
+      en: "Her great high-school love, an online gamer nicknamed « Black Dragon », turned out to be an awkward middle schooler. Sixteen years later she meets him again — as her boss.",
+      ko: "고등학생 시절 첫사랑이었던 온라인 게이머 '흑염룡'은 알고 보니 어설픈 중학생이었다. 열여섯 해가 지나 그를 다시 만난다. 이번엔 직장 상사로.",
+    },
   },
   {
     titre: "My Girlfriend Is the Man!",
@@ -398,8 +443,11 @@ const DRAMAS = [
     votesViki: 9754,
     note: 3.5,
     mois: "2025-11",
-    synopsis:
-      "Étudiant en astronomie, Park Yun-jae voit sa petite amie se réveiller un matin dans le corps d'un homme. Le couple choisit de rester ensemble et de chercher comment inverser la métamorphose, entre un rival encombrant et des familles qui s'en mêlent.",
+    synopsis: {
+      fr: "Étudiant en astronomie, Park Yun-jae voit sa petite amie se réveiller un matin dans le corps d'un homme. Le couple choisit de rester ensemble et de chercher comment inverser la métamorphose, entre un rival encombrant et des familles qui s'en mêlent.",
+      en: "Astronomy student Park Yun-jae wakes one morning to find his girlfriend in a man's body. The couple choose to stay together and look for a way to undo it, between a meddling rival and their families.",
+      ko: "천문학과 학생 박윤재는 어느 날 여자친구가 남자의 몸으로 깨어난 것을 발견한다. 두 사람은 헤어지지 않고 되돌릴 방법을 찾기로 한다. 성가신 연적과 양가의 참견 속에서.",
+    },
   },
   {
     titre: "Itaewon Class",
@@ -421,8 +469,11 @@ const DRAMAS = [
     noteMdl: 8.4,
     note: 4,
     mois: "2025-12",
-    synopsis:
-      "Exclu du lycée pour avoir frappé un harceleur, puis privé de son père dans un accident, Park Sae-ro-yi ouvre un bar à Itaewon. Son objectif : faire tomber le géant de la restauration responsable de son malheur.",
+    synopsis: {
+      fr: "Exclu du lycée pour avoir frappé un harceleur, puis privé de son père dans un accident, Park Sae-ro-yi ouvre un bar à Itaewon. Son objectif : faire tomber le géant de la restauration responsable de son malheur.",
+      en: "Expelled for punching a bully, then robbed of his father in an accident, Park Sae-ro-yi opens a bar in Itaewon. His goal: to bring down the restaurant giant behind his misfortune.",
+      ko: "일진을 때려 퇴학당하고 사고로 아버지까지 잃은 박새로이는 이태원에 술집을 연다. 목표는 자신의 불행을 만든 요식업 대기업을 무너뜨리는 것.",
+    },
   },
   // ------------------------- 2026 -------------------------
   {
@@ -445,8 +496,11 @@ const DRAMAS = [
     votesViki: 110773,
     note: 4.5,
     mois: "2026-02",
-    synopsis:
-      "Su Zai-zai débarque au lycée Yucai et tombe immédiatement sous le charme du distant Zhang Lu-rang. Derrière ses résultats brillants et son milieu privilégié, celui-ci dissimule pourtant un profond manque de confiance.",
+    synopsis: {
+      fr: "Su Zai-zai débarque au lycée Yucai et tombe immédiatement sous le charme du distant Zhang Lu-rang. Derrière ses résultats brillants et son milieu privilégié, celui-ci dissimule pourtant un profond manque de confiance.",
+      en: "Su Zai-zai transfers to Yucai High School and falls at once for the aloof Zhang Lu-rang. Behind his brilliant grades and privileged background, he hides a deep lack of confidence.",
+      ko: "苏在在는 위차이 고등학교로 전학해 무심한 장루랑에게 첫눈에 빠진다. 빼어난 성적과 넉넉한 집안 뒤에, 그는 깊은 자신감 결핍을 감추고 있다.",
+    },
   },
   {
     titre: "If Wishes Could Kill",
@@ -468,8 +522,11 @@ const DRAMAS = [
     noteMdl: 8.2,
     note: 3.5,
     mois: "2026-04",
-    synopsis:
-      "Au lycée Seorin, cinq amis découvrent Girigo, une application qui exauce les vœux — au prix de la vie de celui qui les formule. Quand le compte à rebours atteint zéro, la mort est inévitable.",
+    synopsis: {
+      fr: "Au lycée Seorin, cinq amis découvrent Girigo, une application qui exauce les vœux — au prix de la vie de celui qui les formule. Quand le compte à rebours atteint zéro, la mort est inévitable.",
+      en: "At Seorin High School, five friends discover Girigo, an app that grants wishes at the cost of the wisher's life. When the countdown reaches zero, death is certain.",
+      ko: "서린고등학교의 다섯 친구는 소원을 들어주는 앱 '기리고'를 발견한다. 대가는 소원을 빈 사람의 목숨. 카운트다운이 0이 되면 죽음은 피할 수 없다.",
+    },
   },
   {
     titre: "Racket Boys",
@@ -493,8 +550,11 @@ const DRAMAS = [
     noteMdl: 8.7,
     note: 3.5,
     mois: "2026-04",
-    synopsis:
-      "Ancien champion de badminton en difficulté, Yoon Hyun-jong accepte d'entraîner l'équipe d'un collège de campagne au bord de la dissolution — trois joueurs en tout et pour tout.",
+    synopsis: {
+      fr: "Ancien champion de badminton en difficulté, Yoon Hyun-jong accepte d'entraîner l'équipe d'un collège de campagne au bord de la dissolution — trois joueurs en tout et pour tout.",
+      en: "A former badminton champion now struggling, Yoon Hyun-jong agrees to coach a rural middle-school team on the brink of dissolution — three players, all told.",
+      ko: "한때 배드민턴 정상에 섰던 윤현종은 해체 직전의 시골 중학교 팀을 맡는다. 선수라고는 단 세 명뿐.",
+    },
   },
   {
     titre: "My Name",
@@ -515,8 +575,11 @@ const DRAMAS = [
     noteMdl: 8.7,
     note: null,
     mois: "2026-04",
-    synopsis:
-      "Après le meurtre de son père, Yoon Ji-woo infiltre la police pour se venger, téléguidée par le chef d'un puissant réseau de trafic de drogue.",
+    synopsis: {
+      fr: "Après le meurtre de son père, Yoon Ji-woo infiltre la police pour se venger, téléguidée par le chef d'un puissant réseau de trafic de drogue.",
+      en: "After her father's murder, Yoon Ji-woo infiltrates the police to take revenge, guided by the head of a powerful drug ring.",
+      ko: "아버지가 살해당한 뒤, 윤지우는 복수를 위해 거대 마약 조직 보스의 지시를 받아 경찰에 잠입한다.",
+    },
   },
   {
     titre: "Head Over Heels",
@@ -538,8 +601,11 @@ const DRAMAS = [
     noteMdl: 8.4,
     note: 4.5,
     mois: "2026-05",
-    synopsis:
-      "Le jour, Park Seong-a est une lycéenne ordinaire. La nuit, elle exerce comme chamane sous le nom de Fée Cheon-ji, le visage à demi masqué pour préserver son identité.",
+    synopsis: {
+      fr: "Le jour, Park Seong-a est une lycéenne ordinaire. La nuit, elle exerce comme chamane sous le nom de Fée Cheon-ji, le visage à demi masqué pour préserver son identité.",
+      en: "By day Park Seong-a is an ordinary high schooler. By night she works as a shaman under the name Fairy Cheon-ji, her face half hidden to protect her identity.",
+      ko: "낮에는 평범한 고등학생인 박성아는 밤이면 얼굴을 반쯤 가린 채 '천지 선녀'라는 이름의 무당으로 일한다.",
+    },
   },
   {
     titre: "Wonderfools",
@@ -563,8 +629,11 @@ const DRAMAS = [
     noteMdl: 8.5,
     note: 3,
     mois: "2026-05",
-    synopsis:
-      "1999, dans une ville gagnée par la peur de la fin du monde. C'est là qu'émergent des héros aussi improbables qu'inattendus, menés par la fantasque Eun Chae-ni.",
+    synopsis: {
+      fr: "1999, dans une ville gagnée par la peur de la fin du monde. C'est là qu'émergent des héros aussi improbables qu'inattendus, menés par la fantasque Eun Chae-ni.",
+      en: "1999, in a city gripped by fear of the end of the world. That is where the most improbable of heroes emerge, led by the unpredictable Eun Chae-ni.",
+      ko: "종말의 공포가 감돌던 1999년의 한 도시. 그곳에서 종잡을 수 없는 은채니를 필두로 가장 뜻밖의 영웅들이 나타난다.",
+    },
   },
   {
     titre: "Exclusive Fairytale",
@@ -586,8 +655,11 @@ const DRAMAS = [
     votesViki: 64086,
     note: 4.5,
     mois: "2026-06",
-    synopsis:
-      "L'histoire de Ling Chao et Xiao Tu, amis d'enfance devenus inséparables, qui traversent ensemble les joies et les peines de l'adolescence puis de l'âge adulte.",
+    synopsis: {
+      fr: "L'histoire de Ling Chao et Xiao Tu, amis d'enfance devenus inséparables, qui traversent ensemble les joies et les peines de l'adolescence puis de l'âge adulte.",
+      en: "The story of Ling Chao and Xiao Tu, childhood friends turned inseparable, who go through the joys and sorrows of adolescence and adulthood side by side.",
+      ko: "어릴 적부터 붙어 다닌 링차오와 샤오투의 이야기. 두 사람은 청소년기와 어른의 문턱을 함께 지나며 기쁨과 아픔을 나눈다.",
+    },
   },
   {
     titre: "The Boy of the Last Row",
@@ -611,8 +683,11 @@ const DRAMAS = [
     noteMdl: 8.0,
     note: 4,
     mois: "2026-07",
-    synopsis:
-      "Heo Mun-o, écrivain raté devenu professeur de lettres, découvre le talent hors norme de Lee Gang, un élève taciturne assis au dernier rang de sa classe.",
+    synopsis: {
+      fr: "Heo Mun-o, écrivain raté devenu professeur de lettres, découvre le talent hors norme de Lee Gang, un élève taciturne assis au dernier rang de sa classe.",
+      en: "Heo Mun-o, a failed writer turned literature teacher, discovers the extraordinary talent of Lee Gang, a silent student sitting in the back row of his class.",
+      ko: "실패한 작가에서 국어 교사가 된 허문오는 교실 맨 뒷줄에 앉은 과묵한 학생 이강의 비범한 재능을 알아본다.",
+    },
   },
   {
     titre: "Teach You a Lesson !",
@@ -634,8 +709,11 @@ const DRAMAS = [
     noteMdl: 9.0,
     note: 3.5,
     mois: "2026-08",
-    synopsis:
-      "Les enseignants ne parviennent plus à faire respecter la discipline, et beaucoup ont renoncé à essayer. L'effondrement de leur autorité en classe devient un véritable problème de société.",
+    synopsis: {
+      fr: "Les enseignants ne parviennent plus à faire respecter la discipline, et beaucoup ont renoncé à essayer. L'effondrement de leur autorité en classe devient un véritable problème de société.",
+      en: "Teachers can no longer keep order, and many have given up trying. The collapse of their authority in the classroom becomes a genuine social problem.",
+      ko: "교사들은 더 이상 질서를 세우지 못하고, 많은 이가 시도조차 포기했다. 교실에서 무너진 권위는 사회 문제가 된다.",
+    },
   },
   {
     titre: "My ID is Gangnam Beauty",
@@ -659,8 +737,11 @@ const DRAMAS = [
     votesViki: 169118,
     note: 3,
     mois: "2026-08",
-    synopsis:
-      "Longtemps harcelée pour son apparence, Kang Mi-rae a grandi dans la méfiance et le repli. Décidée à repartir de zéro, elle a recours à la chirurgie esthétique — et découvre que le regard des autres ne change pas pour autant.",
+    synopsis: {
+      fr: "Longtemps harcelée pour son apparence, Kang Mi-rae a grandi dans la méfiance et le repli. Décidée à repartir de zéro, elle a recours à la chirurgie esthétique — et découvre que le regard des autres ne change pas pour autant.",
+      en: "Long bullied over her appearance, Kang Mi-rae grew up wary and withdrawn. Determined to start over, she turns to plastic surgery — and finds that other people's eyes have not changed.",
+      ko: "외모로 오래 괴롭힘을 당한 강미래는 사람을 경계하며 자랐다. 새 출발을 위해 성형을 택하지만, 남들의 시선은 그대로였다.",
+    },
   },
   {
     titre: "The Legend of the Kitchen Soldier",
@@ -685,8 +766,11 @@ const DRAMAS = [
     votesViki: 15472,
     note: 2.5,
     mois: "2026-08",
-    synopsis:
-      "Engagé à l'armée pour fuir une réalité trop rude, Kang Seong-jae voit apparaître devant lui un écran de « quêtes » virtuel qui le pousse à devenir cuisinier militaire.",
+    synopsis: {
+      fr: "Engagé à l'armée pour fuir une réalité trop rude, Kang Seong-jae voit apparaître devant lui un écran de « quêtes » virtuel qui le pousse à devenir cuisinier militaire.",
+      en: "Enlisted to escape a life too hard, Kang Seong-jae sees a virtual « quest » screen appear before him, pushing him to become an army cook.",
+      ko: "고단한 현실을 피해 입대한 강성재 앞에 가상의 '퀘스트' 창이 떠오르고, 그를 취사병의 길로 이끈다.",
+    },
   },
   {
     titre: "Melo Movie",
@@ -712,8 +796,11 @@ const DRAMAS = [
     critiqueDate: "8 août 2026",
     critiqueExtrait:
       "Pour le contexte, à l'origine je ne cherchais qu'à regarder une œuvre qui présentait l'actrice Jeon So-young, récemment récompensée pour son rôle principal de Yoo Se-ah dans « If Wishes Could Kill »…",
-    synopsis:
-      "Kim Mu-bee, réalisatrice en devenir, travaille dans l'ombre pour suivre les traces de son père. Ko Gyeom, critique passionné, s'est donné pour mission de voir tous les films jamais réalisés. Cinq ans après s'être perdus de vue, ils redeviennent voisins.",
+    synopsis: {
+      fr: "Kim Mu-bee, réalisatrice en devenir, travaille dans l'ombre pour suivre les traces de son père. Ko Gyeom, critique passionné, s'est donné pour mission de voir tous les films jamais réalisés. Cinq ans après s'être perdus de vue, ils redeviennent voisins.",
+      en: "Kim Mu-bee, a director in the making, works in the shadows to follow in her father's footsteps. Ko Gyeom, a passionate critic, has set himself the task of seeing every film ever made. Five years after losing touch, they become neighbours again.",
+      ko: "감독을 꿈꾸는 김무비는 아버지의 뒤를 따르려 묵묵히 현장을 지킨다. 열정적인 평론가 고겸은 세상의 모든 영화를 보겠다고 마음먹었다. 서로를 잃은 지 다섯 해 만에 두 사람은 다시 이웃이 된다.",
+    },
   },
   {
     titre: "Our Beloved Summer",
@@ -735,8 +822,11 @@ const DRAMAS = [
     noteMdl: 8.6,
     note: 4.5,
     mois: "2026-08",
-    synopsis:
-      "Des années après un documentaire scolaire devenu viral, deux anciens amants que tout oppose sont rappelés devant la caméra — et forcés de se réinviter dans la vie l'un de l'autre.",
+    synopsis: {
+      fr: "Des années après un documentaire scolaire devenu viral, deux anciens amants que tout oppose sont rappelés devant la caméra — et forcés de se réinviter dans la vie l'un de l'autre.",
+      en: "Years after a school documentary went viral, two former lovers who agree on nothing are called back in front of the camera — and forced back into each other's lives.",
+      ko: "학창 시절 찍은 다큐멘터리가 뒤늦게 화제가 되면서, 사사건건 부딪히던 옛 연인은 다시 카메라 앞에 선다. 그리고 서로의 삶으로 되돌아온다.",
+    },
   },
 ];
 

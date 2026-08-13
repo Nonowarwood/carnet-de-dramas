@@ -1141,12 +1141,13 @@ body.guide-ouvert { overflow: hidden; }
 
 .bar__guide:hover { background: var(--orange); color: var(--paper); }
 
-.bar__guide span {
+.bar__guide__rond {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 1.15rem;
   height: 1.15rem;
+  flex: none;
   border: 1px solid currentColor;
   border-radius: 50%;
   font-size: 0.65rem;
@@ -2035,3 +2036,255 @@ input:focus-visible, select:focus-visible {
 /* ---------------- Sélection ---------------- */
 
 ::selection { background: var(--ink); color: var(--paper); }
+
+/* ===============================================================
+   THÈMES
+
+   Tout le site est écrit contre des jetons : un thème ne fait que les
+   redéfinir. Les teintes de graphique sont choisies par thème, jamais
+   dérivées automatiquement — une couleur qui tient sur du blanc ne
+   tient pas forcément sur du crème ou sur du noir.
+   =============================================================== */
+
+/* ---------------- No Labels ----------------
+   Reprise de la charte des projets « portfolio » et « comebacks » :
+   crème, marine, brique, filets fins et ombres portées dures. */
+
+:root[data-theme="nolabels"] {
+  --paper:      #f1eee6;
+  --paper-haut: #eae6db;
+  --ink:        #1e2a4a;
+
+  --orange:     #8b2318;
+  --orange-ink: #8b2318;
+  --lilas:      #7b88a8;
+  --lilas-ink:  #3c4a72;
+  --menthe:     #b0a793;
+  --menthe-ink: #5d6b52;
+
+  --grey-05: #eae6db;
+  --grey-20: #d6d0c1;
+  --grey-50: #7b8298;
+  --grey-70: #414c69;
+
+  --line:      #1e2a4a;
+  --line-hair: rgba(30, 42, 74, 0.28);
+
+  --ombre: 6px 6px 0 rgba(30, 42, 74, 0.12);
+}
+
+/* Les ombres portées dures sont la signature de cette charte. */
+:root[data-theme="nolabels"] .feature,
+:root[data-theme="nolabels"] .toolbar,
+:root[data-theme="nolabels"] .serie__lien,
+:root[data-theme="nolabels"] .guide__bulle,
+:root[data-theme="nolabels"] .reglages__panneau { box-shadow: var(--ombre); }
+
+:root[data-theme="nolabels"] .viz { --viz-grid: #dcd6c8; }
+
+/* ---------------- Sombre ----------------
+   Steps choisis pour le fond sombre, pas une inversion du thème clair. */
+
+:root[data-theme="sombre"] {
+  --paper:      #121110;
+  --paper-haut: #1b1917;
+  --ink:        #f4f1ea;
+
+  --orange:     #ff6b3d;
+  --orange-ink: #ff8f6a;
+  --lilas:      #9085e9;
+  --lilas-ink:  #a79ef0;
+  --menthe:     #199e70;
+  --menthe-ink: #35b98a;
+
+  --grey-05: #1f1d1a;
+  --grey-20: #35312c;
+  --grey-50: #8e877e;
+  --grey-70: #b9b2a8;
+
+  --line:      #423c35;
+  --line-hair: rgba(244, 241, 234, 0.13);
+}
+
+:root[data-theme="sombre"] .viz {
+  --viz-grid: #2b2823;
+  --serie-1: #3987e5;
+  --serie-2: #d95926;
+  --serie-3: #199e70;
+}
+
+:root[data-theme="sombre"] .viz--temps   { --viz-hue: #d95926; }
+:root[data-theme="sombre"] .viz--acteurs { --viz-hue: #3987e5; }
+:root[data-theme="sombre"] .viz--annees  { --viz-hue: #9085e9; }
+:root[data-theme="sombre"] .viz--chaines { --viz-hue: #199e70; }
+:root[data-theme="sombre"] .viz--genres  { --viz-hue: #d55181; }
+:root[data-theme="sombre"] .viz--ecart   { --viz-hue: #d95926; --serie-moi: #d95926; --serie-pub: #3987e5; }
+
+/* Le grain, calibré pour le blanc, écraserait le noir. */
+:root[data-theme="sombre"] body::after { opacity: 0.055; mix-blend-mode: screen; }
+
+/* Les affiches sont éclatantes sur fond noir : on les pose légèrement. */
+:root[data-theme="sombre"] .fiche__poster,
+:root[data-theme="sombre"] .serie__affiche,
+:root[data-theme="sombre"] .row__thumb { opacity: 0.92; }
+
+:root[data-theme="sombre"] .fiche:hover .fiche__poster,
+:root[data-theme="sombre"] .row:hover .row__thumb { opacity: 1; }
+
+/* ===============================================================
+   PANNEAU DE RÉGLAGES
+   =============================================================== */
+
+.reglages {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--moyen) ease, visibility var(--moyen);
+}
+
+.reglages.est-ouvert { opacity: 1; visibility: visible; }
+
+.reglages__voile { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.45); }
+
+.reglages__panneau {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(26rem, 100vw);
+  overflow-y: auto;
+  padding: var(--e5) var(--e5) var(--e7);
+  background: var(--paper);
+  border-left: 1px solid var(--line);
+  transform: translateX(100%);
+  transition: transform var(--long) var(--sortie);
+}
+
+.reglages.est-ouvert .reglages__panneau { transform: none; }
+
+.reglages__entete {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--e4);
+  padding-bottom: var(--e4);
+  margin-bottom: var(--e5);
+  border-bottom: 2px solid var(--line);
+}
+
+.reglages__titre {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+}
+
+.reglages__fermer {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--line-hair);
+  color: var(--grey-50);
+  cursor: pointer;
+  transition: color var(--court) ease, border-color var(--court) ease;
+}
+
+.reglages__fermer:hover { color: var(--orange-ink); border-color: var(--orange-ink); }
+.reglages__fermer svg { width: 0.7rem; height: 0.7rem; }
+
+.reglages__groupe { margin-bottom: var(--e6); }
+.reglages__legende { margin: 0 0 var(--e3); color: var(--grey-50); }
+.reglages__choix { display: grid; gap: 1px; background: var(--line-hair); border: 1px solid var(--line-hair); }
+
+.reglages__option {
+  display: flex;
+  align-items: center;
+  gap: var(--e3);
+  width: 100%;
+  padding: var(--e3) var(--e4);
+  background: var(--paper);
+  border: 0;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background var(--court) linear;
+}
+
+.reglages__option:hover { background: var(--grey-05); }
+.reglages__option.est-actif { background: var(--grey-05); }
+
+.reglages__option b { display: block; font-size: 0.9375rem; font-weight: 600; letter-spacing: -0.01em; }
+
+.reglages__option small {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: var(--grey-50);
+}
+
+.reglages__code {
+  flex: none;
+  width: 2.25rem;
+  font-family: var(--mono);
+  font-size: var(--t-xs);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--grey-50);
+}
+
+.reglages__pastilles { flex: none; display: flex; gap: 2px; }
+.reglages__pastilles i { width: 12px; height: 20px; border: 1px solid var(--line-hair); }
+
+.reglages__coche { width: 0.85rem; height: 0.85rem; flex: none; margin-left: auto; color: var(--orange-ink); }
+
+.reglages__note {
+  margin: 0;
+  padding-top: var(--e4);
+  border-top: 1px solid var(--line-hair);
+  font-size: 0.6875rem;
+  line-height: 1.7;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  color: var(--grey-50);
+}
+
+body.reglages-ouvert { overflow: hidden; }
+
+/* Bouton d'appel, jumeau de celui du guide. */
+.bar__reglages {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 clamp(0.7rem, 1.8vw, 1.2rem);
+  background: transparent;
+  border: 0;
+  border-left: 1px solid var(--line);
+  color: var(--ink);
+  cursor: pointer;
+  transition: background var(--court) linear, color var(--court) linear;
+}
+
+.bar__reglages:hover { background: var(--orange); color: var(--paper); }
+.bar__reglages svg { width: 1rem; height: 1rem; }
+.bar__reglages span { font-family: var(--mono); font-size: var(--t-xs); font-weight: 500; letter-spacing: 0.12em; }
+
+@media (max-width: 40rem) { .bar__reglages span { display: none; } }
+
+/* La critique reste dans sa langue d'écriture ; la note le dit. */
+.article__vo {
+  margin: var(--e4) 0 0;
+  padding: var(--e3) var(--e4);
+  border-left: 2px solid var(--orange);
+  background: var(--grey-05);
+  color: var(--grey-70);
+  text-transform: none;
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+}
