@@ -149,6 +149,9 @@
   var xDepart = 0, angleDepart = 0, dernierX = 0;
 
   ring.addEventListener("pointerdown", function (e) {
+    // Un clic sur un lien ou un bouton posé au-dessus du cylindre ne doit pas
+    // déclencher la prise : sinon la capture du pointeur avale le clic.
+    if (e.target.closest && e.target.closest("a, button")) return;
     attrape = true;
     ring.classList.add("is-dragging");
     ring.setPointerCapture(e.pointerId);

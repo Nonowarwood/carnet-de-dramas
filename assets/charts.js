@@ -89,12 +89,22 @@
     var unite = options.unite || "";
     var dec = options.decimales || 0;
     var max = plafond(Math.max.apply(null, donnees.map(function (d) { return d.valeur; })));
+    // Une colonne d'images n'apparaît que si au moins une entrée en fournit une.
+    var avecImage = donnees.some(function (d) { return d.image; });
 
     var corps = donnees.map(function (d) {
       var pct = (d.valeur / max) * 100;
       return (
         '<div class="viz-row">' +
-        '<span class="viz-row__label">' + echapper(d.label) + "</span>" +
+        // Vignette et libellé forment un seul groupe calé contre la barre,
+        // sinon l'image flotte loin du texte quand le libellé est court.
+        '<span class="viz-row__tete">' +
+        (avecImage
+          ? '<span class="viz-row__img">' +
+            (d.image ? '<img src="' + echapper(d.image) + '" alt="" loading="lazy">' : "") +
+            "</span>"
+          : "") +
+        '<span class="viz-row__label">' + echapper(d.label) + "</span></span>" +
         // --pct pilote à la fois la longueur de la barre et la position de
         // l'étiquette de valeur, qui reste ainsi collée à la pointe.
         '<span class="viz-row__track" style="--pct:' + pct + '%">' +
@@ -106,7 +116,8 @@
     }).join("");
 
     el.innerHTML =
-      '<div class="viz-plot" style="--viz-max:' + max + '">' + corps + "</div>" +
+      '<div class="viz-plot' + (avecImage ? " viz-plot--images" : "") +
+      '" style="--viz-max:' + max + '">' + corps + "</div>" +
       '<p class="viz-axis mono"><span>0</span><span>' + fr(max, 0) + " " + echapper(unite) + "</span></p>" +
       tableauDonnees([options.colonne || "Élément", options.mesure || "Valeur"],
         donnees.map(function (d) { return [d.label, fr(d.valeur, dec) + " " + unite]; }));

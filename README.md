@@ -27,6 +27,7 @@ assets/anim.js          Révélations, compteurs, transitions de page
 assets/guide.js         Visite guidée interactive
 assets/style.css        Feuille de style unique, carrousel, graphiques et guide
 assets/posters/         Affiches, nommées d'après le titre en minuscules-tirets
+assets/people/          Portraits des acteurs, nommés d'après leur nom en minuscules-tirets
 ```
 
 ## La note du public
@@ -125,9 +126,20 @@ La palette des graphiques est validée pour les daltonismes sur fond blanc
 | Les diffuseurs | `#0f8a6a` |
 | Les genres | `#c9308a` |
 
+Les graphiques du temps et des acteurs portent une vignette par ligne : l'affiche
+pour les séries, le portrait pour les acteurs. Il suffit de passer une clé `image`
+dans les données d'une barre pour que la colonne apparaisse.
+
+La section des genres se termine par un index complet — chaque genre et les séries
+qui le portent — dont les puces renvoient vers `visionnages.html?genre=…`, ce qui
+présélectionne le filtre correspondant.
+
 À noter : MyDramaList ne recense que le **diffuseur d'origine**, pas le studio de
 production. La section « diffuseurs » mesure donc qui a diffusé, pas qui a produit,
 et le dit explicitement.
+
+Les portraits d'acteurs viennent des vignettes de casting des fiches de séries : les
+pages « personne » de MyDramaList renvoient 403 aux accès automatisés.
 
 ## Carrousel
 
@@ -155,6 +167,13 @@ Tout est dans `assets/anim.js` et conditionné à `prefers-reduced-motion` : si 
 visiteur a demandé moins d'animations, les éléments sont posés directement dans
 leur état final. Les états initiaux sont conditionnés à la classe `js` posée en
 tête de document, donc la page reste entièrement lisible sans JavaScript.
+
+## Pied de page
+
+Rendu par `piedDePage()` (`assets/site.js`) à partir des données, donc juste par
+construction : nombre de séries, d'épisodes, d'heures, moyenne, pays, dernière série
+vue, titres notés 5 sur 5, et la liste « à voir ». Chaque page l'appelle dans son
+`<footer id="pied">` en passant son préfixe de chemin.
 
 ## Développement
 

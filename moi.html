@@ -102,6 +102,13 @@
     <div class="reveal" id="graph-genres"></div>
 
     <div class="portrait-head reveal" style="margin:3.5rem 0 1.5rem">
+      <h2 style="font-size:clamp(1.25rem,2.5vw,1.6rem)">Quelle série dans quel genre</h2>
+      <p>Les vingt-huit genres relevés sur les trente séries. Chaque titre renvoie
+      vers la liste filtrée sur ce genre.</p>
+    </div>
+    <div class="reveal" id="genres-detail"></div>
+
+    <div class="portrait-head reveal" style="margin:3.5rem 0 1.5rem">
       <h2 style="font-size:clamp(1.25rem,2.5vw,1.6rem)">Ce que je note le mieux</h2>
       <p>Ma note moyenne sur 5 par genre. Seuls les genres présents dans au
       moins trois séries figurent ici — en dessous, la moyenne ne veut rien dire.</p>
@@ -111,10 +118,7 @@
 
 </main>
 
-<footer class="wrap footer mono">
-  <span>Calculé à partir des 30 fiches du carnet</span>
-  <span>Durées, casting et diffuseurs&nbsp;: <a href="https://mydramalist.com">MyDramaList</a></span>
-</footer>
+<footer class="wrap pied" id="pied"></footer>
 
 <script src="assets/data.js"></script>
 <script src="assets/site.js"></script>
@@ -171,6 +175,7 @@
       return {
         label: d.titre,
         valeur: Math.round((d.episodesNb * d.dureeEp) / 60 * 10) / 10,
+        image: affiche(d),
         detail: d.titre + " — " + d.episodesNb + " ép. de " + d.dureeEp + " min"
       };
     })
@@ -199,7 +204,12 @@
     " acteurs reviennent au moins deux fois dans un rôle principal.";
 
   Viz.barres($("graph-acteurs"), recurrents.map(function (a) {
-    return { label: a.label, valeur: a.valeur, detail: a.label + " — " + a.titres.join(", ") };
+    return {
+      label: a.label,
+      valeur: a.valeur,
+      image: "assets/people/" + slug(a.label) + ".jpg",
+      detail: a.label + " — " + a.titres.join(", ")
+    };
   }), { unite: "séries", colonne: "Acteur", mesure: "Rôles principaux" });
 
   /* ---------------- 3. Les années ---------------- */
@@ -268,6 +278,25 @@
     unite: "séries", colonne: "Genre", mesure: "Séries"
   });
 
+  // Index complet : chaque genre et les séries qui le portent.
+  $("genres-detail").innerHTML = Object.keys(genres)
+    .sort(function (a, b) {
+      return genres[b].length - genres[a].length || a.localeCompare(b, "fr");
+    })
+    .map(function (g) {
+      return (
+        '<div class="genre-rangee">' +
+        '<span class="genre-rangee__nom">' + esc(g) +
+        '<span class="mono">' + genres[g].length + "</span></span>" +
+        '<span class="genre-rangee__titres">' +
+        genres[g].map(function (d) {
+          return '<a class="puce" href="visionnages.html?genre=' +
+            encodeURIComponent(g) + '">' + esc(d.titre) + "</a>";
+        }).join("") +
+        "</span></div>"
+      );
+    }).join("");
+
   // Moyenne par genre, restreinte aux genres assez représentés pour
   // qu'une moyenne ait un sens.
   var parNote = Object.keys(genres)
@@ -290,6 +319,8 @@
       detail: g.label + " — " + String(g.valeur).replace(".", ",") + "/5 sur " + g.n + " séries"
     };
   }), { unite: "", decimales: 2, colonne: "Genre", mesure: "Ma note moyenne / 5" });
+
+  document.getElementById("pied").innerHTML = piedDePage("");
 
   if (window.Anim) window.Anim.rafraichir();
 })();

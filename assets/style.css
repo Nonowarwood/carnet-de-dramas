@@ -1433,3 +1433,164 @@ body.guide-ouvert { overflow: hidden; }
   .viz-row__label { font-size: 0.75rem; }
   .viz-col__track { height: 8rem; }
 }
+
+/* ---------------- Vignettes dans les graphiques ---------------- */
+
+.viz-plot--images .viz-row { grid-template-columns: minmax(9rem, 15rem) minmax(0, 1fr); }
+
+.viz-row__tete {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.6rem;
+}
+
+.viz-row__img {
+  display: block;
+  flex: none;
+  width: 2.5rem;
+  aspect-ratio: 3 / 4;
+  background: var(--grey-20);
+  overflow: hidden;
+}
+
+.viz-row__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.viz-row:hover .viz-row__img img { transform: scale(1.12); }
+
+@media (max-width: 48rem) {
+  .viz-plot--images .viz-row { grid-template-columns: minmax(6.5rem, 9rem) minmax(0, 1fr); }
+  .viz-row__img { width: 1.75rem; }
+  .viz-row__tete { gap: 0.4rem; }
+}
+
+/* ===============================================================
+   PIED DE PAGE
+   =============================================================== */
+
+.pied {
+  border-top: 1px solid var(--line);
+  padding-top: 3rem;
+  padding-bottom: 2rem;
+}
+
+.pied__grille {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 2.5rem var(--gut);
+  padding-bottom: 3rem;
+}
+
+.pied__titre { margin: 0 0 0.9rem; color: var(--grey-50); }
+
+.pied__texte {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--grey-70);
+  max-width: 22rem;
+}
+
+.pied__liste { list-style: none; margin: 0; padding: 0; }
+
+.pied__liste li {
+  padding: 0.3rem 0;
+  font-size: 0.9375rem;
+  color: var(--grey-70);
+  border-bottom: 1px solid var(--line-hair);
+}
+
+.pied__liste b {
+  color: var(--ink);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  margin-right: 0.35rem;
+}
+
+.pied__liste--liens a {
+  color: var(--grey-70);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: color 0.15s ease, gap 0.25s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.pied__liste--liens a::after { content: "\2192"; opacity: 0; transition: opacity 0.2s ease; }
+.pied__liste--liens a:hover { color: var(--orange); gap: 0.7rem; }
+.pied__liste--liens a:hover::after { opacity: 1; }
+
+.pied__vedette {
+  margin: 0 0 0.3rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.pied__detail { margin: 0; font-size: 0.875rem; line-height: 1.6; color: var(--grey-70); }
+
+.pied__bas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+  color: var(--grey-50);
+}
+
+.pied__bas a { color: var(--grey-70); border-bottom: 1px solid var(--orange); text-decoration: none; }
+.pied__bas a:hover { background: var(--orange); color: var(--paper); }
+
+/* ---------------- Index des genres ---------------- */
+
+.genre-rangee {
+  display: grid;
+  grid-template-columns: minmax(7rem, 10rem) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: baseline;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--line-hair);
+}
+
+.genre-rangee:first-child { border-top: 1px solid var(--line); }
+
+.genre-rangee__nom {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.genre-rangee__nom .mono { color: var(--grey-50); }
+
+.genre-rangee__titres { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+
+.puce {
+  display: inline-block;
+  padding: 0.25rem 0.55rem;
+  background: var(--grey-05);
+  border: 1px solid var(--line-hair);
+  color: var(--grey-70);
+  font-size: 0.8125rem;
+  text-decoration: none;
+  transition: background 0.15s linear, color 0.15s linear, border-color 0.15s linear;
+}
+
+.puce:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+@media (max-width: 40rem) {
+  .genre-rangee { grid-template-columns: 1fr; gap: 0.5rem; }
+}

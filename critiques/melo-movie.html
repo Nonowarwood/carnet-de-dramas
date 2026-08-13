@@ -98,10 +98,7 @@
 
 </main>
 
-<footer class="wrap footer mono">
-  <span>Carnet personnel &mdash; notes issues de mes visionnages</span>
-  <span>Affiches et notes des fans&nbsp;: <a href="https://mydramalist.com">MyDramaList</a></span>
-</footer>
+<footer class="wrap pied" id="pied"></footer>
 
 <script src="../assets/data.js"></script>
 <script src="../assets/site.js"></script>
@@ -113,6 +110,8 @@
   document.getElementById("meta-note").innerHTML =
     "<b>Ma note " + formatNote(melo.note) + "/5</b> &middot; Public " +
     arrondi(melo.consensus, 1) + "/10";
+
+  document.getElementById("pied").innerHTML = piedDePage("../");
 })();
 </script>
 <script src="../assets/anim.js"></script>

@@ -269,3 +269,82 @@ function fiche(d, i, base) {
     "</article>"
   );
 }
+
+/* ===============================================================
+   PIED DE PAGE
+
+   Rendu à partir des données plutôt qu'écrit en dur : il reste juste
+   dès qu'un visionnage est ajouté.
+   =============================================================== */
+
+function piedDePage(base) {
+  base = base || "";
+  var stats = calculerStats(DRAMAS);
+
+  var minutes = DRAMAS.reduce(function (a, d) { return a + d.episodesNb * d.dureeEp; }, 0);
+  var episodes = DRAMAS.reduce(function (a, d) { return a + d.episodesNb; }, 0);
+  var dernier = DRAMAS[DRAMAS.length - 1];
+  var preferees = DRAMAS.filter(function (d) { return d.note === 5; });
+  var pays = {};
+  DRAMAS.forEach(function (d) { pays[d.pays] = true; });
+
+  function ligne(cle, valeur) {
+    return "<li><b>" + valeur + "</b> " + cle + "</li>";
+  }
+
+  function lien(href, texte) {
+    return '<li><a href="' + base + href + '">' + texte + "</a></li>";
+  }
+
+  return (
+    '<div class="pied__grille">' +
+
+    '<div class="pied__bloc">' +
+    '<p class="pied__titre mono">Le carnet</p>' +
+    '<p class="pied__texte">Journal de visionnage tenu depuis mars 2025. ' +
+    "Chaque série y est notée sur cinq, résumée, et comparée à l'avis du public. " +
+    "Quelques-unes ont droit à une vraie critique.</p>" +
+    "</div>" +
+
+    '<div class="pied__bloc">' +
+    '<p class="pied__titre mono">En chiffres</p>' +
+    '<ul class="pied__liste">' +
+    ligne("séries", DRAMAS.length) +
+    ligne("épisodes", episodes) +
+    ligne("heures de visionnage", Math.round(minutes / 60)) +
+    ligne("de moyenne sur 5", arrondi(stats.moyenne, 2)) +
+    ligne("pays d'origine", Object.keys(pays).length) +
+    "</ul></div>" +
+
+    '<div class="pied__bloc">' +
+    '<p class="pied__titre mono">Le dernier vu</p>' +
+    '<p class="pied__vedette">' + esc(dernier.titre) + "</p>" +
+    '<p class="pied__detail mono">' + (dernier.annee || "") +
+    (dernier.note !== null ? " &middot; " + formatNote(dernier.note) + "/5" : "") + "</p>" +
+    '<p class="pied__titre mono" style="margin-top:1.25rem">Notées 5 sur 5</p>' +
+    '<p class="pied__detail">' +
+    preferees.map(function (d) { return esc(d.titre); }).join("<br>") + "</p>" +
+    "</div>" +
+
+    '<div class="pied__bloc">' +
+    '<p class="pied__titre mono">Parcourir</p>' +
+    '<ul class="pied__liste pied__liste--liens">' +
+    lien("index.html", "Le carrousel") +
+    lien("carnet.html", "Le carnet") +
+    lien("visionnages.html", "Les visionnages") +
+    lien("moi.html", "Le portrait chiffré") +
+    lien("critiques/melo-movie.html", "La critique de Melo Movie") +
+    "</ul>" +
+    '<p class="pied__titre mono" style="margin-top:1.25rem">À voir ensuite</p>' +
+    '<p class="pied__detail">' + A_VOIR.map(esc).join("<br>") + "</p>" +
+    "</div>" +
+
+    "</div>" +
+
+    '<div class="pied__bas mono">' +
+    "<span>Carnet personnel &mdash; Noah Guerbois</span>" +
+    "<span>Notes du public&nbsp;: MyDramaList et Viki, recentrées avant moyenne</span>" +
+    '<span>Affiches, durées et casting&nbsp;: <a href="https://mydramalist.com">MyDramaList</a></span>' +
+    "</div>"
+  );
+}
