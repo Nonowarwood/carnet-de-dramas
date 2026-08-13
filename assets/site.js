@@ -44,6 +44,11 @@ function slug(titre) {
     .replace(/^-+|-+$/g, "");
 }
 
+/* Chemin de la fiche individuelle d'une série. */
+function pageSerie(d, base) {
+  return (base || "") + "series/" + slug(d.titre) + ".html";
+}
+
 function affiche(d, base) {
   if (d.affiche === false) return null;
   return (base || "") + "assets/posters/" + slug(d.titre) + ".jpg";
@@ -237,9 +242,7 @@ function rangee(d, i, base) {
     "</span>" +
     score;
 
-  return d.critique
-    ? '<a class="row" href="' + base + esc(d.critique) + '">' + contenu + "</a>"
-    : '<div class="row">' + contenu + "</div>";
+  return '<a class="row" href="' + pageSerie(d, base) + '">' + contenu + "</a>";
 }
 
 /* ---------------- Fiche détaillée ---------------- */
@@ -287,7 +290,7 @@ function fiche(d, i, base) {
         : '<div class="fiche__poster"></div>') +
     "</div>" +
     "<div>" +
-    '<h3 class="fiche__title">' + esc(d.titre) +
+    '<h3 class="fiche__title"><a href="' + pageSerie(d, base) + '">' + esc(d.titre) + "</a>" +
     (d.mention ? ' <span class="fiche__mention">' + esc(d.mention) + "</span>" : "") +
     "</h3>" +
     '<p class="fiche__vu mono">Vu en ' + moisEnClair(d.mois) + "</p>" +

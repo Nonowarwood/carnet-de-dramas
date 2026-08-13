@@ -129,6 +129,19 @@
     <div class="reveal" id="graph-genres-notes"></div>
   </section>
 
+  <!-- ------------------------------ 8. L'écart ------------------------------ -->
+  <section class="wrap portrait-section viz viz--ecart" id="section-ecart">
+    <div class="portrait-head reveal">
+      <span class="mono" style="color:var(--orange)">08 — L'écart</span>
+      <h2>Là où je ne suis pas d'accord</h2>
+      <p id="ecart-phrase"></p>
+    </div>
+
+    <div class="figures reveal" id="ecart-chiffres" style="margin-bottom:3rem"></div>
+
+    <div class="reveal" id="graph-ecart"></div>
+  </section>
+
 </main>
 
 <footer class="wrap pied" id="pied"></footer>
@@ -139,6 +152,8 @@
 <script>
 (function () {
   var $ = function (id) { return document.getElementById(id); };
+
+  preparerConsensus(DRAMAS);
 
   /* ---------------- Agrégats ---------------- */
 
@@ -241,8 +256,8 @@
 
   var acteurs = {};
   DRAMAS.forEach(function (d) {
-    d.acteurs.forEach(function (a) {
-      (acteurs[a] = acteurs[a] || []).push(d.titre);
+    d.roles.forEach(function (r) {
+      (acteurs[r[0]] = acteurs[r[0]] || []).push(d.titre);
     });
   });
 
@@ -384,6 +399,52 @@
       detail: g.label + " — " + String(g.valeur).replace(".", ",") + "/5 sur " + g.n + " séries"
     };
   }), { unite: "", decimales: 2, colonne: "Genre", mesure: "Ma note moyenne / 5" });
+
+
+  /* ---------------- 8. L'écart avec le public ---------------- */
+
+  // Ma note sur 5 est ramenée sur 10 pour être comparable au consensus.
+  var ecarts = DRAMAS
+    .filter(function (d) { return d.note !== null && d.consensus != null; })
+    .map(function (d) {
+      return { label: d.titre, a: d.note * 2, b: d.consensus, ecart: d.note * 2 - d.consensus };
+    })
+    .sort(function (x, y) { return y.ecart - x.ecart; });
+
+  var haut = ecarts[0];
+  var bas = ecarts[ecarts.length - 1];
+  var accords = ecarts.filter(function (e) { return Math.abs(e.ecart) < 0.5; });
+  var surcotes = ecarts.filter(function (e) { return e.ecart > 0; });
+  var moyen = ecarts.reduce(function (a, e) { return a + Math.abs(e.ecart); }, 0) / ecarts.length;
+
+  function pt(n) { return (Math.round(n * 10) / 10).toString().replace(".", ","); }
+
+  $("ecart-phrase").textContent =
+    "Ma note ramenée sur dix, face à celle du public. " + pt(moyen) +
+    " point d'écart en moyenne, mais réparti très inégalement\u00a0: je surcote " +
+    haut.label + " de " + pt(haut.ecart) + " point et je sous-cote " + bas.label +
+    " de " + pt(Math.abs(bas.ecart)) + ". Sur " + accords.length +
+    " titres en revanche, on tombe d'accord à moins d'un demi-point.";
+
+  $("ecart-chiffres").innerHTML = [
+    [pt(moyen).replace(",", "."), 1, "point d'écart moyen"],
+    [surcotes.length, 0, "titres surcotés"],
+    [ecarts.length - surcotes.length, 0, "titres sous-cotés"],
+    [accords.length, 0, "accords nets"]
+  ].map(function (f) {
+    return '<div class="figure"><span class="figure__value">' +
+      '<span data-compte="' + f[0] + '" data-decimales="' + f[1] + '">0</span></span>' +
+      '<span class="figure__label mono">' + f[2] + "</span></div>";
+  }).join("");
+
+  Viz.halteres($("graph-ecart"), ecarts, {
+    // Aucune note ne descend sous 5 : l'échelle démarre à 4 pour que les
+    // écarts soient lisibles, et les deux bornes figurent sur l'axe.
+    min: 4,
+    max: 10,
+    series: ["Ma note", "Le public"],
+    colonne: "Série"
+  });
 
   document.getElementById("pied").innerHTML = piedDePage("");
 

@@ -19,15 +19,18 @@ index.html              Porte d'entrée : le carrousel cylindrique des 30 affich
 carnet.html             Chiffres clés, critiques, derniers visionnages, à voir
 visionnages.html        Les 30 fiches, avec recherche, tri et filtre par pays
 moi.html                « Ce que mes visionnages disent de moi » : le portrait chiffré
+series/                 Une page par série, générée (voir plus bas)
 critiques/              Une page par critique
+outils/                 Le générateur des pages de série
 assets/data.js          Toutes les données de visionnage
 assets/site.js          Icônes, jauges, note de consensus, rendu des fiches
-assets/charts.js        Graphiques (barres, colonnes, barre empilée)
+assets/charts.js        Graphiques (barres, colonnes, barre empilée, haltères)
+assets/serie.js         Rendu d'une fiche individuelle
 assets/anim.js          Révélations, compteurs, transitions de page
 assets/guide.js         Visite guidée interactive
 assets/style.css        Feuille de style unique, carrousel, graphiques et guide
 assets/posters/         Affiches, nommées d'après le titre en minuscules-tirets
-assets/people/          Portraits des acteurs, nommés d'après leur nom en minuscules-tirets
+assets/people/          Portraits du casting principal, nommés d'après le nom en minuscules-tirets
 ```
 
 ## La note du public
@@ -75,7 +78,7 @@ Tout se passe dans `assets/data.js`. Copier un bloc du tableau `DRAMAS` et compl
 | `dureeEp`    | Durée d'un épisode en minutes                                  |
 | `chaine`     | Diffuseur d'origine                                            |
 | `realisateur`| Réalisateur                                                    |
-| `acteurs`    | Rôles principaux, dans l'ordre du générique                    |
+| `roles`      | Rôles principaux, sous forme `[acteur, personnage]`             |
 | `mdl`        | Chemin de la fiche MyDramaList, ex. `"/758615-melo-movie"`      |
 | `note`       | Ma note sur 5 (`null` si pas encore notée)                     |
 | `mois`       | Mois de visionnage, au format `"AAAA-MM"`                       |
@@ -147,6 +150,39 @@ et le dit explicitement.
 
 Les portraits d'acteurs viennent des vignettes de casting des fiches de séries : les
 pages « personne » de MyDramaList renvoient 403 aux accès automatisés.
+
+## Les fiches individuelles
+
+Chaque série a sa page — `series/melo-movie.html` — avec son affiche, ses
+informations, les deux notes et l'écart entre elles, son synopsis, son casting
+avec portraits et noms de personnages, les séries proches par genre, et la
+navigation vers le titre vu juste avant ou juste après.
+
+Ces pages sont **générées**, mais ne contiennent aucune donnée figée : seuls le
+titre, la description de partage et le slug le sont. Tout le contenu est rendu au
+chargement par `assets/serie.js` depuis `data.js`. Modifier une note ou un synopsis
+se répercute donc immédiatement, sans rien régénérer.
+
+Le générateur ne sert qu'à créer la page d'une **nouvelle** série, ou à supprimer
+celle d'une série renommée :
+
+```sh
+node outils/generer-series.js
+```
+
+Il n'a aucune dépendance et supprime au passage les pages devenues orphelines.
+
+## Le graphique d'écart
+
+La section « L'écart » du portrait compare ma note, ramenée sur dix, à celle du
+public, sur un graphique en haltères : deux points reliés par un trait, triés du
+titre que je surcote le plus à celui que je sous-cote le plus. Seul l'écart est
+étiqueté — poser les deux valeurs sur vingt-neuf lignes noierait le graphique, le
+détail passe par l'infobulle et le tableau.
+
+L'échelle démarre à 4 plutôt qu'à 0, les deux bornes étant écrites sur l'axe : sur
+un graphique de points, c'est la position qui encode la valeur, pas une longueur
+partant de zéro, et aucune note ne descend sous 5.
 
 ## Carrousel
 

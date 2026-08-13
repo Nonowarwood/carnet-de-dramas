@@ -219,5 +219,65 @@
     });
   }
 
-  window.Viz = { barres: barres, colonnes: colonnes, empilee: empilee };
+  /* ---------------- Haltères ----------------
+
+     Deux valeurs par ligne, reliées par un trait : la position de chaque
+     point se lit en absolu, la longueur du trait donne l'écart. Seul
+     l'écart est étiqueté — poser les deux valeurs sur 29 lignes noierait
+     le graphique ; le détail passe par l'infobulle et le tableau. */
+
+  function halteres(el, donnees, options) {
+    options = options || {};
+    var max = options.max || 10;
+    // Sur un graphique de points, c'est la position qui encode la valeur, pas
+    // une longueur partant de zéro : on peut donc resserrer l'échelle sur la
+    // plage utile, à condition que les bornes soient écrites sur l'axe.
+    var min = options.min || 0;
+    var noms = options.series || ["A", "B"];
+
+    function pct(v) { return ((v - min) / (max - min)) * 100; }
+
+    var corps = donnees.map(function (d) {
+      var a = pct(d.a), b = pct(d.b);
+      var gauche = Math.min(a, b), largeur = Math.abs(b - a);
+      var signe = d.a - d.b >= 0 ? "+" : "\u2212";
+
+      return (
+        '<div class="viz-row viz-row--halt">' +
+        '<span class="viz-row__label">' + echapper(d.label) + "</span>" +
+        '<span class="viz-halt">' +
+        '<span class="viz-halt__lien" style="left:' + gauche + "%;width:" + largeur + '%"></span>' +
+        '<span class="viz-halt__pt viz-halt__pt--b" style="left:' + b + '%" data-tip="' +
+        echapper(noms[1] + " — " + fr(d.b, 1) + " / " + max) + '"></span>' +
+        '<span class="viz-halt__pt viz-halt__pt--a" style="left:' + a + '%" data-tip="' +
+        echapper(noms[0] + " — " + fr(d.a, 1) + " / " + max) + '"></span>' +
+        "</span>" +
+        '<span class="viz-halt__ecart mono">' + signe + fr(Math.abs(d.a - d.b), 1) + "</span>" +
+        "</div>"
+      );
+    }).join("");
+
+    var legende =
+      '<div class="viz-legend mono">' +
+      '<span class="viz-key"><i class="viz-key__pt viz-key__pt--a"></i>' + echapper(noms[0]) + "</span>" +
+      '<span class="viz-key"><i class="viz-key__pt viz-key__pt--b"></i>' + echapper(noms[1]) + "</span>" +
+      "</div>";
+
+    el.innerHTML =
+      legende +
+      '<div class="viz-plot viz-plot--halt">' + corps + "</div>" +
+      '<p class="viz-axis mono"><span>' + fr(min, 0) + " / " + max + "</span><span>" +
+      fr(max, 0) + " / " + max + "</span></p>" +
+      tableauDonnees([options.colonne || "Titre", noms[0], noms[1], "Écart"],
+        donnees.map(function (d) {
+          return [d.label, fr(d.a, 1), fr(d.b, 1),
+                  (d.a - d.b >= 0 ? "+" : "\u2212") + fr(Math.abs(d.a - d.b), 1)];
+        }));
+
+    el.querySelectorAll(".viz-halt__pt").forEach(function (pt) {
+      survol(pt, pt.getAttribute("data-tip"));
+    });
+  }
+
+  window.Viz = { barres: barres, colonnes: colonnes, empilee: empilee, halteres: halteres };
 })();

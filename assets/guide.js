@@ -130,6 +130,28 @@
       },
     ],
 
+    serie: [
+      {
+        cible: ".serie__notes",
+        titre: "Les deux notes",
+        texte:
+          "Ma note sur cinq à gauche, celle du public sur dix à droite, avec le " +
+          "détail des plateformes qui la composent.",
+      },
+      {
+        cible: ".casting",
+        titre: "Le casting",
+        texte: "Les rôles principaux, avec le nom du personnage sous chaque acteur.",
+      },
+      {
+        cible: ".proches",
+        titre: "Dans la même veine",
+        texte:
+          "Les séries du carnet qui partagent le plus de genres avec celle-ci. " +
+          "Le nombre de genres communs décide du classement.",
+      },
+    ],
+
     critique: [
       {
         cible: ".article__meta",
