@@ -225,12 +225,18 @@ Trois thèmes, choisis dans le panneau de réglages :
 | Thème | Papier | Encre | Accent |
 |---|---|---|---|
 | Papier | `#faf9f5` | `#14120f` | `#ff5c2b` |
-| No Labels | `#f1eee6` | `#1e2a4a` | `#8b2318` |
+| No Labels | `#f7efe9` | `#1e2a4a` | `#8b2318` |
 | Nuit | `#121110` | `#f4f1ea` | `#ff6b3d` |
 
 Le thème **No Labels** reprend la charte de mes projets `portfolio` et `comebacks`,
 elle-même tirée de l'album *No Labels Part.02* de Yeonjun : crème, marine, brique,
 filets fins et ombres portées dures.
+
+Le crème a été réchauffé par rapport au jeton d'origine des projets (`#f1eee6`), qui
+penchait vers le jaune. `#f7efe9` place le rouge devant le vert et tire donc
+légèrement vers le rosé. À noter : les planches de l'album sont en réalité presque
+neutres (mesurées entre `#f3f3f1` et `#f5f5f3`) ; la teinte retenue est un parti pris,
+et tient dans un seul jeton si elle doit bouger.
 
 Tout le site étant écrit contre des jetons, un thème ne fait que les redéfinir. Les
 teintes de graphique sont en revanche **choisies par thème**, jamais dérivées : une

@@ -2051,8 +2051,10 @@ input:focus-visible, select:focus-visible {
    crème, marine, brique, filets fins et ombres portées dures. */
 
 :root[data-theme="nolabels"] {
-  --paper:      #f1eee6;
-  --paper-haut: #eae6db;
+  /* Crème chaud tirant sur le rosé : le rouge passe devant le vert, là où
+     le jeton d'origine (#f1eee6) penchait vers le jaune. */
+  --paper:      #f7efe9;
+  --paper-haut: #f1e5de;
   --ink:        #1e2a4a;
 
   --orange:     #8b2318;
@@ -2062,9 +2064,9 @@ input:focus-visible, select:focus-visible {
   --menthe:     #b0a793;
   --menthe-ink: #5d6b52;
 
-  --grey-05: #eae6db;
-  --grey-20: #d6d0c1;
-  --grey-50: #7b8298;
+  --grey-05: #f1e6df;
+  --grey-20: #e3d4cb;
+  --grey-50: #79808f;
   --grey-70: #414c69;
 
   --line:      #1e2a4a;
@@ -2080,7 +2082,10 @@ input:focus-visible, select:focus-visible {
 :root[data-theme="nolabels"] .guide__bulle,
 :root[data-theme="nolabels"] .reglages__panneau { box-shadow: var(--ombre); }
 
-:root[data-theme="nolabels"] .viz { --viz-grid: #dcd6c8; }
+:root[data-theme="nolabels"] .viz { --viz-grid: #e4d6ce; }
+
+/* Les planches de l'album ont un grain de papier très présent. */
+:root[data-theme="nolabels"] body::after { opacity: 0.075; }
 
 /* ---------------- Sombre ----------------
    Steps choisis pour le fond sombre, pas une inversion du thème clair. */
