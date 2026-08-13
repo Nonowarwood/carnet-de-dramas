@@ -280,14 +280,12 @@ function fiche(d, i, base) {
     '<article class="fiche reveal">' +
     '<div class="fiche__num mono">' + numero(i) + "</div>" +
     "<div>" +
-    (img && d.mdl
-      ? '<a class="fiche__affiche" href="https://mydramalist.com' + esc(d.mdl) + '"' +
-        ' target="_blank" rel="noopener" title="Voir ' + esc(d.titre) + ' sur MyDramaList">' +
+    (img
+      ? '<a class="fiche__affiche" href="' + pageSerie(d, base) + '"' +
+        ' title="Voir la fiche de ' + esc(d.titre) + '">' +
         '<img class="fiche__poster" src="' + img + '" alt="Affiche de ' + esc(d.titre) + '" loading="lazy">' +
-        '<span class="fiche__affiche-note mono">MyDramaList &#8599;</span></a>'
-      : img
-        ? '<img class="fiche__poster" src="' + img + '" alt="Affiche de ' + esc(d.titre) + '" loading="lazy">'
-        : '<div class="fiche__poster"></div>') +
+        '<span class="fiche__affiche-note mono">Voir la fiche</span></a>'
+      : '<div class="fiche__poster"></div>') +
     "</div>" +
     "<div>" +
     '<h3 class="fiche__title"><a href="' + pageSerie(d, base) + '">' + esc(d.titre) + "</a>" +

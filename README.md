@@ -7,10 +7,26 @@ En ligne : <https://nonowarwood.github.io/carnet-de-dramas/>
 
 ## Direction artistique
 
-Grotesque serrée en gros corps, filets noirs pleine largeur, libellés en monospace
-capitales espacées, accent orange `#ff5c2b` complété de lilas et de vert d'eau.
-Aucun angle arrondi, aucun emoji : les repères visuels sont des numéros `01 → 30`
-et des icônes SVG. Un seul thème, clair, assumé comme tel.
+**Archivo** en variable pour le titrage et le texte, **JetBrains Mono** pour les
+libellés en capitales espacées — les deux servies depuis `assets/fonts/`, jamais
+depuis un CDN, pour que le site ait le même caractère sur toutes les machines. Le
+sous-ensemble latin suffit au français ; l'extension n'est téléchargée qu'en cas de
+besoin, grâce à `unicode-range`.
+
+Papier légèrement chaud (`#faf9f5`) plutôt qu'un blanc d'écran, encre noire chaude,
+et un grain fin posé sur tout le document pour enlever au fond son aspect d'aplat.
+Accent orange `#ff5c2b` pour les aplats, `#c8401a` dès qu'il faut porter du petit
+texte — un accent vif ne tient pas le contraste à 11 px. Lilas et vert d'eau en
+appui, dans la mosaïque et dans les repères de section.
+
+Filets noirs de 2 px pour les divisions majeures, cheveux pour les séparations
+courantes. Aucun angle arrondi, aucun emoji : les repères visuels sont des numéros
+`01 → 30`, des carrés de couleur et des icônes SVG. Un seul thème, clair, assumé
+comme tel.
+
+Une règle tenue partout, héritée de la data-visualisation : **le texte ne porte
+jamais une couleur d'accent qui ne tiendrait pas le contraste**. L'identité passe
+par une marque colorée posée à côté du texte, pas par le texte lui-même.
 
 ## Structure
 
@@ -29,6 +45,7 @@ assets/serie.js         Rendu d'une fiche individuelle
 assets/anim.js          Révélations, compteurs, transitions de page
 assets/guide.js         Visite guidée interactive
 assets/style.css        Feuille de style unique, carrousel, graphiques et guide
+assets/fonts/           Archivo et JetBrains Mono, en variable, servies localement
 assets/posters/         Affiches, nommées d'après le titre en minuscules-tirets
 assets/people/          Portraits du casting principal, nommés d'après le nom en minuscules-tirets
 ```

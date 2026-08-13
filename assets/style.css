@@ -4,26 +4,105 @@
    Parti pris assumé : un seul thème, clair. Aucun arrondi.
    =============================================================== */
 
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("fonts/archivo-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("fonts/archivo-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url("fonts/jetbrains-mono-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url("fonts/jetbrains-mono-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ===============================================================
+   JETONS
+
+   Un papier légèrement chaud plutôt qu'un blanc d'écran, une encre
+   noire chaude, et deux teintes secondaires — lilas et vert d'eau —
+   qui sortent enfin de la seule mosaïque. Chaque couleur d'accent
+   existe en deux états : une version pleine pour les aplats, une
+   version encrée assez sombre pour porter du petit texte.
+   =============================================================== */
+
 :root {
-  --paper:  #ffffff;
-  --ink:    #000000;
-  --orange: #ff5c2b;
-  --lilac:  #cbb8f2;
-  --mint:   #a9c6b2;
+  /* ---- Surfaces ---- */
+  --paper:      #faf9f5;
+  --paper-haut: #ffffff;
+  --ink:        #14120f;
 
-  --grey-05: #f4f2ef;
-  --grey-20: #e2ded8;
-  --grey-50: #8f8a83;
-  --grey-70: #4a4641;
+  /* ---- Accents ---- */
+  --orange:      #ff5c2b;
+  --orange-ink:  #c8401a;
+  --lilas:       #cbb8f2;
+  --lilas-ink:   #5b3fc4;
+  --menthe:      #a9c6b2;
+  --menthe-ink:  #0d7a5f;
 
-  --line:        #000000;
-  --line-hair:   rgba(0, 0, 0, 0.14);
+  /* ---- Gris, calés sur le papier chaud ---- */
+  --grey-05: #f2efe8;
+  --grey-20: #e0dbd0;
+  --grey-50: #8b857a;
+  --grey-70: #46423b;
 
-  --display: "Helvetica Neue", Helvetica, Inter, "Segoe UI", Arial, sans-serif;
-  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  --line:      #14120f;
+  --line-hair: rgba(20, 18, 15, 0.13);
 
-  --bar: 4.75rem;          /* hauteur de la barre de navigation */
-  --gut: clamp(1rem, 3vw, 2.5rem);
+  /* ---- Typographie ---- */
+  --display: Archivo, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --t-xs:  0.6875rem;
+  --t-s:   0.8125rem;
+  --t-m:   1rem;
+  --t-l:   1.125rem;
+  --t-xl:  1.375rem;
+
+  /* ---- Espacement ---- */
+  --e1: 0.25rem;
+  --e2: 0.5rem;
+  --e3: 0.75rem;
+  --e4: 1rem;
+  --e5: 1.5rem;
+  --e6: 2rem;
+  --e7: 3rem;
+  --e8: 4.5rem;
+  --e9: 6.5rem;
+
+  /* ---- Mouvement ---- */
+  --sortie: cubic-bezier(0.19, 1, 0.22, 1);
+  --douce:  cubic-bezier(0.33, 0, 0.15, 1);
+  --court:  0.18s;
+  --moyen:  0.32s;
+  --long:   0.72s;
+
+  --bar: 4.75rem;
+  --gut: clamp(1.25rem, 3.5vw, 3rem);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -35,11 +114,27 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--display);
-  font-size: 1rem;
-  line-height: 1.45;
+  font-size: var(--t-m);
+  line-height: 1.5;
+  font-synthesis: none;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
+
+/* Grain de papier : une trame fine posée sur tout le document, qui
+   enlève au fond son aspect d'aplat d'écran sans jamais se remarquer. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 170px 170px;
+}
+
+@media (prefers-reduced-motion: reduce) { body::after { opacity: 0.03; } }
 
 img { display: block; max-width: 100%; }
 
@@ -49,16 +144,18 @@ img { display: block; max-width: 100%; }
 
 .mono {
   font-family: var(--mono);
-  font-size: 0.6875rem;
+  font-size: var(--t-xs);
+  font-weight: 500;
   line-height: 1.4;
   text-transform: uppercase;
-  letter-spacing: 0.13em;
+  letter-spacing: 0.15em;
 }
 
 .display {
   font-weight: 700;
+  font-stretch: 94%;
   letter-spacing: -0.035em;
-  line-height: 0.92;
+  line-height: 0.9;
 }
 
 /* ---------------- Barre de navigation ---------------- */
@@ -231,7 +328,7 @@ img { display: block; max-width: 100%; }
 
 /* ---------------- Sections ---------------- */
 
-.section { padding-top: 3.5rem; padding-bottom: 3.5rem; }
+.section { padding-top: var(--e7); padding-bottom: var(--e8); }
 
 .section__head {
   display: flex;
@@ -244,7 +341,7 @@ img { display: block; max-width: 100%; }
 }
 
 .section__title { margin: 0; color: var(--grey-50); }
-.section__count { color: var(--orange); }
+.section__count { color: var(--orange-ink); }
 
 /* ---------------- Article mis en avant ---------------- */
 
@@ -438,7 +535,16 @@ img { display: block; max-width: 100%; }
 
 .toolbar__field { display: flex; align-items: center; border-left: 1px solid var(--line-hair); }
 .toolbar__field:first-child { border-left: 0; flex: 1 1 14rem; min-width: 0; }
-.toolbar__field label { padding: 0 0.85rem; color: var(--grey-50); white-space: nowrap; }
+.toolbar__field label {
+  padding: 0 0.85rem;
+  font-family: var(--mono);
+  font-size: var(--t-xs);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--grey-50);
+  white-space: nowrap;
+}
 
 .toolbar input, .toolbar select {
   appearance: none;
@@ -541,7 +647,7 @@ img { display: block; max-width: 100%; }
   color: var(--grey-50);
   text-decoration: none;
 }
-.backlink:hover { color: var(--orange); }
+.backlink:hover { color: var(--orange-ink); }
 .backlink svg { width: 0.7em; height: 0.7em; }
 
 @media (max-width: 48rem) {
@@ -942,7 +1048,7 @@ a.row:hover { padding-left: 0.6rem; }
   transition: top 0.5s cubic-bezier(0.19, 1, 0.22, 1), left 0.5s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-.guide__compteur { margin: 0 0 0.6rem; color: var(--orange); }
+.guide__compteur { margin: 0 0 0.6rem; color: var(--orange-ink); }
 
 .guide__titre {
   margin: 0 0 0.5rem;
@@ -1010,7 +1116,7 @@ a.row:hover { padding-left: 0.6rem; }
   cursor: pointer;
 }
 
-.guide__fermer:hover { color: var(--orange); }
+.guide__fermer:hover { color: var(--orange-ink); }
 .guide__fermer svg { width: 0.75rem; height: 0.75rem; }
 
 body.guide-ouvert { overflow: hidden; }
@@ -1355,7 +1461,7 @@ body.guide-ouvert { overflow: hidden; }
   cursor: pointer;
 }
 
-.viz-table summary:hover { color: var(--orange); }
+.viz-table summary:hover { color: var(--orange-ink); }
 
 .viz-table table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
 
@@ -1378,7 +1484,12 @@ body.guide-ouvert { overflow: hidden; }
 
 /* ---------------- Sections de la page portrait ---------------- */
 
-.portrait-section { padding-top: 4rem; padding-bottom: 4rem; border-top: 1px solid var(--line); }
+.portrait-section {
+  padding-top: var(--e8);
+  padding-bottom: var(--e8);
+  /* Filet épais pour les divisions majeures, cheveu pour le reste. */
+  border-top: 2px solid var(--line);
+}
 
 .portrait-head { margin-bottom: 2.5rem; }
 
@@ -1605,8 +1716,8 @@ body.guide-ouvert { overflow: hidden; }
   transition: opacity 0.2s ease, transform 0.25s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-.genre__nom:hover { color: var(--orange); }
-.genre__nom:hover .mono { color: var(--orange); }
+.genre__nom:hover { color: var(--orange-ink); }
+.genre__nom:hover .mono { color: var(--orange-ink); }
 .genre__nom:hover::after { opacity: 1; transform: none; }
 
 .genre__titres { color: var(--grey-70); font-size: 1rem; line-height: 1.65; }
@@ -1635,7 +1746,7 @@ body.guide-ouvert { overflow: hidden; }
 
 /* ---------------- Mois de visionnage sur la fiche ---------------- */
 
-.fiche__vu { margin: 0 0 0.35rem; color: var(--orange); }
+.fiche__vu { margin: 0 0 0.35rem; color: var(--orange-ink); }
 
 /* Vingt colonnes de mois : sur petit écran, une étiquette sur deux suffit. */
 @media (max-width: 52rem) {
@@ -1793,7 +1904,7 @@ body.guide-ouvert { overflow: hidden; }
 .serie__note-vide { font-size: 1.1rem !important; font-style: italic; color: var(--grey-50); }
 .serie__sources { display: flex; flex-wrap: wrap; gap: 0.35rem 1rem; color: var(--grey-50); }
 
-.serie__ecart { margin: 1rem 0 0; color: var(--orange); }
+.serie__ecart { margin: 1rem 0 0; color: var(--orange-ink); }
 
 .serie__synopsis {
   margin: 1.75rem 0 0;
@@ -1805,7 +1916,7 @@ body.guide-ouvert { overflow: hidden; }
 
 /* ---------------- Sections ---------------- */
 
-.serie__section { padding: 2.5rem 0; border-top: 1px solid var(--line); }
+.serie__section { padding: var(--e7) 0; border-top: 2px solid var(--line); }
 
 .serie__titre-section { margin: 0 0 1.5rem; color: var(--grey-50); font-weight: 600; }
 
@@ -1843,7 +1954,7 @@ body.guide-ouvert { overflow: hidden; }
 }
 .proche:hover img { transform: translateY(-4px); }
 .proche__titre { margin: 0; font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; }
-.proche:hover .proche__titre { color: var(--orange); }
+.proche:hover .proche__titre { color: var(--orange-ink); }
 .proche__meta { margin: 0.25rem 0 0; color: var(--grey-50); }
 
 /* ---------------- Précédent / suivant ---------------- */
@@ -1891,3 +2002,36 @@ body.guide-ouvert { overflow: hidden; }
 }
 
 .fiche__title a:hover { background-size: 100% 2px; }
+
+/* ---------------- Repère de section ----------------
+   La teinte est portée par un carré, jamais par le texte : à 11 px, une
+   couleur d'accent ne tiendrait pas le contraste. */
+
+.section-num {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--grey-70);
+}
+
+.section-num i {
+  width: 9px;
+  height: 9px;
+  flex: none;
+  background: var(--viz-hue, var(--orange));
+}
+
+.viz--ecart { --viz-hue: #e2551f; }
+
+/* ---------------- Focus ---------------- */
+
+a:focus-visible, button:focus-visible, summary:focus-visible,
+input:focus-visible, select:focus-visible {
+  outline: 2px solid var(--orange-ink);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+/* ---------------- Sélection ---------------- */
+
+::selection { background: var(--ink); color: var(--paper); }
